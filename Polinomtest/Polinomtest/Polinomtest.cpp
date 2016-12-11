@@ -97,12 +97,11 @@ void table(vector<vector<edge>> &H,vector<edge> &E)
     }
 }
 
-vector<int> gnodepower(int s,int t, vector<vector<edge>> &H)
+vector<int> gnodepower( vector<vector<edge>> &H)
 {   vector<int> nodepower(H.size());
 	int i=0;
     while( i<nodepower.size() ) {
 		for (int j=0; j<H[i].size(); j++) if ( H[i][j].ex==true ) nodepower[i]++;
-        //if ( (i==s) || (i==t) ) nodepower[i]=H.size(); //костыль
 		i++;
 	}
 	return nodepower;
@@ -113,26 +112,20 @@ void DFS(vector<vector<edge>> &H,vector<bool> &visited, int q)
 {
      visited[q]=true;
 	 for (int i=0; i<H.size(); i++) for (int j=i+1; j<H[i].size(); j++) if ( (H[i][j].ex==true)&&( (!visited[i])||(!visited[j]) ) ) {
-		 if (!visited[i]){
-		    // cout<<i<<" ";
-		     DFS(H,visited,i);
-		 }
-		 else {
-			// cout<<j<<" ";
-			 DFS(H,visited,j);
-		 }
+		 if (!visited[i]) DFS(H,visited,i);
+		 else DFS(H,visited,j);
 	 }
 
 }
 
-bool gconnected (int s,int t,vector<vector<edge>> &H)
+bool gconnected (vector<vector<edge>> &H)
 {
 	 int count=0;
 	 visited.resize(H.size());
 	 for (int i=0; i<visited.size(); i++) visited[i]=false;
-     DFS(H,visited,s);
+     DFS(H,visited,0);
 	 for (int i=0; i<visited.size(); i++) if (visited[i]==true) count++;
-	 cout<<"Связность графа для "<<s<<" = "<<H.size()<<" "<<count<<endl;
+	 cout<<"Связность графа для "<<"0"<<" = "<<H.size()<<" >= "<<count<<endl;
 	 if (count!=H.size()) return false;
      else return true;
 }
@@ -141,34 +134,33 @@ void renumerate (int s, int t, vector<vector<edge>> &H)
 {
 	edge F,G; 
 	cout<<"renumerate:"<<s<<" "<<t<<endl;
-	if (s!=0 && t!=1) for (int i=0; i<H.size(); i++) { //чтобы тождественную не делать
-		if ((H[s][i].ex==true)&&(H[0][i].ex==true)&&(i!=s)) {  // меняем строки и стобцы для s и 0, при i=s неверно работает 
-		    F=H[s][i];
-		    G=H[i][s];
-		    H[s][i]==H[0][i];
-		    H[i][s]==H[i][0];
-		    H[0][i]==F;
-		    H[i][0]==G;
-		}
-		if ((H[t][i].ex==true)&&(H[1][i].ex==true)&&(i!=t)) { // t и 1
-		    F=H[t][i];
-		    G=H[i][t];
-		    H[t][i]==H[1][i];
-		    H[i][t]==H[i][1];
-		    H[1][i]==F;
-		    H[i][1]==G;
-		}
+	if (s!=0) for (int i=0; i<H.size(); i++) if ((H[s][i].ex==true)&&(H[0][i].ex==true)&&(i!=s)) {  // меняем строки и стобцы для s и 0, при i=s неверно работает 
+		F==H[s][i];
+		G==H[i][s];
+	    cout<<"что-то делаем1"<<endl;
+		H[s][i]==H[0][i];
+		H[i][s]==H[i][0];
+		H[0][i]==F;
+		H[i][0]==G;
 	}
-	s=0;t=1;
+	if (t!=1) for (int i=0; i<H.size(); i++) if ((H[t][i].ex==true)&&(H[1][i].ex==true)&&(i!=t)) { // t и 1
+		F=H[t][i];
+	    G=H[i][t];
+	    cout<<"что-то делаем2"<<endl;
+		H[t][i]==H[1][i];
+		H[i][t]==H[i][1];
+		H[1][i]==F;
+		H[i][1]==G;
+	}
 }
 
-void delnode (int s, int t, vector<vector<edge>> &H,int q)
+void delnode ( vector<vector<edge>> &H,int q)
 {
 	cout<<"Удаляемая вершина:"<<q<<endl;
 	H.erase(H.begin()+q);
 	for (int i=0; i<H.size(); i++) H[i].erase(H[i].begin()+q);
-	if (q<H.size()) {
-		//cout<<"Перенумеровали"<<endl;
+	/*
+    if (q<H.size()) {
 	    for (int i=0; i<q; i++) for (int j=q; j<H.size(); j++) if (H[i][j].ex==true) H[i][j].node2--;
 	    for (int i=q; i<H.size(); i++) for (int j=0; j<q; j++) if (H[i][j].ex==true) H[i][j].node1--;
 	    for (int i=q; i<H.size(); i++) for (int j=q; j<H.size(); j++) if (H[i][j].ex==true){
@@ -176,12 +168,13 @@ void delnode (int s, int t, vector<vector<edge>> &H,int q)
 		    H[i][j].node2--;
 	    }
 	}
-    if (s>q) s--;
-	if (t>q) t--;
+	*/
+	//if (s>q) s--;
+	//if (t>q) t--;
 
 }
 
-void deledge (int s,int t,vector<vector<edge>> &H,int q,int w) //при удалении ребра может возникнуть нулевая вершина
+void deledge (vector<vector<edge>> &H,int q,int w) //при удалении ребра может возникнуть нулевая вершина
 {  
 	cout<<"удалили ребро:"<<q<<" "<<w<<endl;
 	edge F;F.ex=false;
@@ -192,89 +185,105 @@ void deledge (int s,int t,vector<vector<edge>> &H,int q,int w) //при удалении ре
 	//if (*smallest==0) delnode(s,t,H,smallest - nodepower.begin());
 }
 
-void contractedge (int s, int t, vector<vector<edge>> &H,int q,int w)
+void contractedge ( vector<vector<edge>> &H,int q,int w)
 {
 	cout<<"стянули ребро:"<<q<<" "<<w<<endl;
-	if (w==s||w==t) { // если в разрешающее ребро попадает s или t
+	if (w==0||w==1) { // если в разрешающее ребро попадает s или t
 		int r=q;
 		q=w;
 		w=r;
 	}
     for (int i=0; i<H[w].size(); i++) if (H[w][i].ex==true && i!=q) {
 		if (H[q][i].ex) {
-			H[q][i]==H[w][i]+H[q][i]-H[w][i]*H[q][i];
-			H[i][q]==H[i][w]+H[i][q]-H[i][w]*H[i][q];
+			H[q][i] == H[w][i]+H[q][i]-H[w][i]*H[q][i];
+			H[i][q] == H[i][w]+H[i][q]-H[i][w]*H[i][q];
 		}
 		if (!H[q][i].ex) {
 			 H[q][i] == H[w][i];
 		     H[i][q] == H[i][w];
 		}
 	} 
-	delnode (s,t,H,w);
+	delnode (H,w);
 }
-void penduntreduction(int s, int t, vector<vector<edge>> &H)
+edge penduntreduction( vector<vector<edge>> &H, edge F)
 {
-	vector<int> nodepower=gnodepower(s,t,H);
+	int s,t;
+	vector<int> nodepower=gnodepower(H);
 	cout<<"Редукция висячих вершин:"<<endl;
 	vector<int>::iterator smallest = min_element( nodepower.begin() , nodepower.end() ); 
-	int k, r = smallest - nodepower.begin();
+	int  r = smallest - nodepower.begin();
 	if((*smallest==1)&&(H.size()>2)) {         //иначе всё удалим
-       for (int i=0; i<H[r].size(); i++) if ((H[r][i].ex==true)) { //находим инцедентное ребро  
-	   sum = sum*H[r][i]; 
-	   k=i;
+       for (int i=0; i<H[r].size(); i++) if ((H[r][i].ex==true  )) { //находим инцедентное ребро 
+	   F.C.resize(H[r][i].C.size());
+	   F == F*H[r][i];
+	   cout<<"Ребро:"<<r<<","<<i<<endl;
+	   if (r!=0 && r!=1) delnode(H,r);
+	   else {
+		   if (r==0) {
+			   s=i;
+			   delnode(H,r);
+			   if (s==H.size()) s--;
+			   for (int i=0; i<H.size(); i++) { for (int j=0; j<H[i].size(); j++) cout<<H[i][j].ex<<" "; cout<<endl;}
+			   renumerate (s,1,H); 
+		   }
+		   if (r==1) {
+			   t=i;
+			   delnode(H,r);
+			   if (t==H.size()) t--;
+			   for (int i=0; i<H.size(); i++) { for (int j=0; j<H[i].size(); j++) cout<<H[i][j].ex<<" "; cout<<endl;}
+			   renumerate (0,t,H); 
+		   }
+	   }
 	   break;
 	   }
-	   if (r!=s && r!=t) delnode(s,t,H,r);
-	   else {
-		   if (r==s) {
-			   s=k;
-			   //renumerate (s,t,H);
-			   delnode(s,t,H,r);
-		   }
-		   if (r==t) {
-			   t=k;
-			   //renumerate (s,t,H);
-			   delnode(s,t,H,r);
-		   }
-	   }
-	   penduntreduction(s,t,H);
+	   return penduntreduction(H,F);
 	}
+	return F;
 
 }
-void bridgereduction(int s,int t, vector<vector<edge>> &H)
+void bridgereduction( vector<vector<edge>> &H)
 {
 	cout<<"Редукция моста!"<<endl;
-	if(visited[s]&&visited[t]) for (int i=0; i<H.size(); i++) if (!visited[i]) {cout<<"Удалили несвязную вершину:"<<i<<endl; delnode(s,t,H,i); }
-	if((!visited[s])&&(!visited[t])) for (int i=0; i<H.size(); i++) if (visited[i]) {cout<<"Удалили несвязную вершину:"<<i<<endl; delnode(s,t,H,i); }
+	if(visited[0]&&visited[1]) for (int i=0; i<H.size(); i++) if (!visited[i]) {cout<<"Удалили несвязную вершину:"<<i<<endl; delnode(H,i); }
+	if((!visited[0])&&(!visited[1])) for (int i=0; i<H.size(); i++) if (visited[i]) {cout<<"Удалили несвязную вершину:"<<i<<endl; delnode(H,i); }
 }
 
-edge fedge(int s,int t,vector<vector<edge>> &H)
+edge fedge(vector<vector<edge>> &H)
 {
 	edge F;
-	vector<int> nodepower=gnodepower(s,t,H);
-	nodepower[s]=H.size();nodepower[t]=H.size();// костыль
+	vector<int> nodepower=gnodepower(H);
+	nodepower[0]=H.size();nodepower[1]=H.size();// костыль
 	vector<int>::iterator smallest = min_element( nodepower.begin(), nodepower.end() );// возращает nodepower.end() если диапозон пуст, не s,t
 	int r=smallest - nodepower.begin();
 	/*cout << "Наименьший элемент " << *smallest << endl;
       cout << "Индекс этого элемента " << smallest - nodepower.begin() << endl;*/
-	for (int i=0; i<H[r].size(); i++) if ( H[i][r].ex==true  ) {  // ищем в строке инцидентное ребро полученной врешине может быть s или t
-		F = H[i][r]; 
+	for (int i=0; i<H[r].size(); i++) if ( H[r][i].ex==true  ) {  // ищем в строке инцидентное ребро полученной врешине может быть s или t
+		F == H[r][i]; 
+		F.node1=r;
+		F.node2=i;
 		break;
 	}
 	return F;
 }
 
-edge procedure (int s,int t,vector<vector<edge>> &H,bool connected) // F псевдоребро
+edge procedure (vector<vector<edge>> &H, bool connected) // F псевдоребро
 {
 	cout<<"Размерность матрицы смежности до редкукции:"<<H.size()<<endl;
     for (int i=0; i<H.size(); i++) { for (int j=0; j<H[i].size(); j++) cout<<H[i][j].ex<<" "; cout<<endl;}
 
 	if (connected!=true) {
-		bridgereduction(s,t,H);
+		bridgereduction(H);
 		connected=true;
 	}
-	penduntreduction(s,t,H);
 
+	edge F;
+	F.C.push_back(1);
+	F.power=0;
+	F == penduntreduction(H,F);
+    cout<<"вот F:"<<endl;
+	copy( F.C.begin(), F.C.end(), ostream_iterator<int>(cout," ") );
+	cout<<endl<<F.power<<endl;
+    
 	cout<<"Размерность матрицы смежности после редукции:"<<H.size()<<endl;
     for (int i=0; i<H.size(); i++) { for (int j=0; j<H[i].size(); j++) cout<<H[i][j].ex<<" "; cout<<endl;}
 
@@ -286,7 +295,9 @@ edge procedure (int s,int t,vector<vector<edge>> &H,bool connected) // F псевдор
 		cout<<H[0][1].power<<endl;
 		cout<<"-------------------------------"<<endl;
 	
-		if (H.size()==2) return H[0][1];
+		if ( (H.size()==2) && (F.C.size()>2) ) return F*H[0][1];
+		else return H[0][1];
+
 		if (H.size()==5) {
         return G - ( H[0][1]*H[0][2]* ( (G - H[1][2])*H[1][4]*((G - H[0][4])*H[0][3]*H[2][4]*(H[3][4] + H[1][3]*H[2][3]*(G - H[3][4])) +
 		       (G - H[0][3])*H[1][3]*H[2][3]*(H[2][4] + H[0][4]*H[3][4]*(G - H[2][4]))) + H[0][3]*H[0][4]*(G - H[1][2]*H[1][3]*H[1][4]) ) +
@@ -301,7 +312,7 @@ edge procedure (int s,int t,vector<vector<edge>> &H,bool connected) // F псевдор
 		}
 	}
 	else {
-		 edge W=fedge(s,t,H);
+		 edge W=fedge(H);
 		 edge F1,F2;
 		 vector<vector<edge>> H1(H.size());
          vector<vector<edge>> H2(H.size());
@@ -309,18 +320,24 @@ edge procedure (int s,int t,vector<vector<edge>> &H,bool connected) // F псевдор
 			 H1[i]=H[i];
 			 H2[i]=H[i];
 
-		 }		 
+		 }	
+		 F.C.resize(W.C.size());
 		 F1.C.resize(W.C.size());F1.C[0]=1;
 		 F1.power=1;
          F2.C.resize(W.C.size());F2.C[1]=1;
 		 F2.power=1;
-         deledge (s,t,H1,W.node1,W.node2);
-		 //contractedge (s,t,H2,W.node1,W.node2);
-		 bool r=gconnected(s,t,H1);
+		 F1==F*F1;
+		 F2==F*F2;
+         deledge (H1,W.node1,W.node2);
+		 contractedge (H2,W.node1,W.node2);
+		 bool r=gconnected(H1);
 		 if (r!=true) cout<<"получили несвязный граф внутри рекурсии"<<endl;
-		 
-		 sum = F1*procedure (s, t, H1, r);
-			 //F1*procedure (s, t, H1, r) + F2*procedure (s, t, H2, connected);
+
+		 cout<<"-------------------------------"<<endl;
+
+		 //system("pause>>void");
+		 sum = F1*procedure ( H1, r) + F2*procedure ( H2, connected);
+			 //F1*procedure ( H1, r) + F2*procedure ( H2, connected);
 		 return sum;
 	}	
 }
@@ -355,6 +372,7 @@ while (count!=m) {
 	  for (int i=0; i<E.size(); i++) if ( ((E[i].node1==q.node1)&&(E[i].node2==q.node2)) || ((E[i].node2==q.node1)&&(E[i].node1==q.node2)) ) {
 		  cout<<"("<<i<<")"<<endl;
 		  E[i]==E[i]+q-E[i]*q;
+		  //cout<<E[i].power<<endl;
 		  reduct=true;
 	  }
 	  if (reduct==false) E.push_back(q);
@@ -371,15 +389,16 @@ cout<<endl<<endl;
 
 vector<vector<edge>> S(n); 
 table(S,E);
-renumerate (1,0,S);
+renumerate (1,0,S);// после этого 0 1
 for (int i=0; i<S.size(); i++) { for (int j=0; j<S[i].size(); j++) cout<<S[i][j].ex<<" "; cout<<endl;}
 
-if (!gconnected(1,0,S)) cout<<"несвязный граф на входе!"<<endl;
-//sum.C.resize(m);sum.power=0;
-procedure(1,0,S,gconnected(1,0,S));
+bool r=gconnected(S);
+if (!r) cout<<"несвязный граф на входе!"<<endl;
+//edge F;
+procedure(S,r);
 cout<<"Ответ:"<<endl;
 copy( sum.C.begin(), sum.C.end(), ostream_iterator<int>(cout," ") );//как пример
-cout<<endl<<"Степень:"<<sum.power<<" Вершины:"<<sum.node1<<","<<sum.node2<<" Сущ:"<<sum.ex<<endl;
+cout<<endl<<"Степень:"<<sum.power<<endl;
 /*
 array2.front()Первый элемент массива array2
 array2.back()Последний элемент массива array2
