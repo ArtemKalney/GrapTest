@@ -29,6 +29,7 @@ edge operator *(edge x,edge y)
      F.C.resize(x.C.size());
 	 F.simple = 0;
 	 F.power = 0;
+
 	 output<<endl<<"Operator *:"<<endl;
 	 output<<"Edge x:"<<endl;
 	 copy( x.C.begin(), x.C.end(), ostream_iterator<int>(output," ") );
@@ -37,7 +38,7 @@ edge operator *(edge x,edge y)
 	 copy( y.C.begin(), y.C.end(), ostream_iterator<int>(output," ") );
 	 output<<endl<<"power = "<<y.power<<" ; simple = "<<y.simple<<endl;
 
-	 if (x.simple > 0 && x.power!=1) cout<<"Eror"<<endl;
+     if (x.simple > 0 && x.power!=1) cout<<"Eror"<<endl;
 	 if (y.simple > 0 && y.power!=1) cout<<"Eror"<<endl;
 
 	 x.power += x.simple;
@@ -55,7 +56,7 @@ edge operator *(edge x,edge y)
 		 }
          output<<"Edge x*y:"<<endl;
 	     copy( F.C.begin(), F.C.end(), ostream_iterator<int>(output," ") );
-	     output<<endl<<"power = "<<x.power<<" ; simple = "<<x.simple<<endl;
+	     output<<endl<<"power = "<<F.power<<" ; simple = "<<F.simple<<endl;
 	 }
 	 catch (char *str){
 	       output<<str<<endl;
@@ -71,10 +72,9 @@ edge operator *(edge x,edge y)
 edge operator +(edge x,edge y)
 {   edge F;
     F.C.resize(x.C.size()); 
-	x.power += x.simple;
-	y.power += y.simple;
     F.power = max(x.power,y.power);
 	F.simple = 0;
+
 	output<<endl<<"Operator +:"<<endl;
 	output<<"Edge x:"<<endl;
 	copy( x.C.begin(), x.C.end(), ostream_iterator<int>(output," ") );
@@ -83,6 +83,11 @@ edge operator +(edge x,edge y)
 	copy( y.C.begin(), y.C.end(), ostream_iterator<int>(output," ") );
 	output<<endl<<"power = "<<y.power<<" ; simple = "<<y.simple<<endl;
 
+	if (x.simple > 0 && x.power!=1) cout<<"Eror"<<endl;
+	if (y.simple > 0 && y.power!=1) cout<<"Eror"<<endl;
+
+	x.power += x.simple;
+	y.power += y.simple;
 	if (x.simple > 0) for (int i=0; i<x.power; i++) x.C[i] = Bin(x.power,i);
 	if (y.simple > 0) for (int i=0; i<y.power; i++) y.C[i] = Bin(y.power,i);
 
@@ -90,14 +95,15 @@ edge operator +(edge x,edge y)
 	I.C.resize(x.C.size());
 	I.power = abs(x.power-y.power);
 	I.simple = 0;
-	for (int j=0; j<=I.power; j++) I.C[j] = Bin(I.power,I.power-j);
+	for (int j=0; j<=I.power; j++) I.C[j] = Bin(I.power,j);
+	
 	if (x.power<y.power) x = x * I;
 	if (y.power<x.power) y = y * I;
-	for (int i=0; i<x.C.size(); i++) F.C[i] = x.C[i]+y.C[i];
+	for (int i=0; i<x.C.size(); i++) F.C[i] = x.C[i] + y.C[i];
     
 	output<<"Edge x+y:"<<endl;
 	copy( F.C.begin(), F.C.end(), ostream_iterator<int>(output," ") );
-	output<<endl<<"power = "<<x.power<<" ; simple = "<<x.simple<<endl;
+	output<<endl<<"power = "<<F.power<<" ; simple = "<<F.simple<<endl;
 	output<<"End operator + ;"<<endl<<endl;
 	return F;
 }
@@ -105,10 +111,9 @@ edge operator +(edge x,edge y)
 edge operator -(edge x,edge y)
 {   edge F;
     F.C.resize(x.C.size()); 
-	x.power += x.simple;
-	y.power += y.simple;
     F.power = max(x.power,y.power);
 	F.simple = 0;
+
 	output<<endl<<"Operator -:"<<endl;
 	output<<"Edge x:"<<endl;
 	copy( x.C.begin(), x.C.end(), ostream_iterator<int>(output," ") );
@@ -116,7 +121,12 @@ edge operator -(edge x,edge y)
 	output<<"Edge y:"<<endl;
 	copy( y.C.begin(), y.C.end(), ostream_iterator<int>(output," ") );
 	output<<endl<<"power = "<<y.power<<" ; simple = "<<y.simple<<endl;
+    
+	if (x.simple > 0 && x.power!=1) cout<<"Eror"<<endl;
+	if (y.simple > 0 && y.power!=1) cout<<"Eror"<<endl;
 
+	x.power += x.simple;
+	y.power += y.simple;
 	if (x.simple > 0) for (int i=0; i<x.power; i++) x.C[i] = Bin(x.power,i);
 	if (y.simple > 0) for (int i=0; i<y.power; i++) y.C[i] = Bin(y.power,i);
 
@@ -124,14 +134,15 @@ edge operator -(edge x,edge y)
 	I.C.resize(x.C.size());
 	I.power = abs(x.power-y.power);
 	I.simple = 0;
-    for (int j=0; j<=I.power; j++) I.C[j] = Bin(I.power,I.power-j);
-	if (x.power<y.power) x = x*I;
-	if (y.power<x.power) y = y*I;
+    for (int j=0; j<=I.power; j++) I.C[j] = Bin(I.power,j);
+	
+	if (x.power < y.power) x = x * I;
+	if (y.power < x.power) y = y * I;
 	for (int i=0; i<x.C.size(); i++) F.C[i] = x.C[i] - y.C[i];
 	
 	output<<"Edge x-y :"<<endl;
 	copy( F.C.begin(), F.C.end(), ostream_iterator<int>(output," ") );
-	output<<endl<<"power = "<<x.power<<" ; simple = "<<x.simple<<endl;
+	output<<endl<<"power = "<<F.power<<" ; simple = "<<F.simple<<endl;
 	output<<"End operator - ;"<<endl<<endl;
 	return F;
 }
@@ -142,16 +153,19 @@ edge operator ~(edge x)
 	output<<"Edge x:"<<endl;
 	copy( x.C.begin(), x.C.end(), ostream_iterator<int>(output," ") );
 	output<<endl<<"power = "<<x.power<<" ; simple = "<<x.simple<<endl;
+	
+	if (x.simple > 0 && x.power!=1) cout<<"Eror"<<endl;
+
 	x.power += x.simple;
 	if (x.simple > 0) for (int i=0; i<x.power; i++) x.C[i] = Bin(x.power,i);
 
 	edge F = x;
 	F.simple = 0;
-	for (int i=0; i<=x.power; i++) F.C[i] = Bin(x.power,x.power-i) - x.C[i];
+	for (int i=0; i<=x.power; i++) F.C[i] = Bin(x.power,i) - x.C[i];
 
 	output<<"Edge ~x:"<<endl;
 	copy( F.C.begin(), F.C.end(), ostream_iterator<int>(output," ") );
-	output<<endl<<"power = "<<x.power<<" ; simple = "<<x.simple<<endl;
+	output<<endl<<"power = "<<F.power<<" ; simple = "<<F.simple<<endl;
 	output<<"End operator ~ ;"<<endl<<endl;
 	return F;
 }
@@ -165,17 +179,8 @@ void table(vector<vector<edge>> &H,vector<edge> &E)
 	    for (int j=0; j<H[i].size(); j++) {
 		    H[i][j].ex = false;
 		    for (int w=0; w<E.size(); w++) {
-				if ((i==E[w].node1&&j==E[w].node2)||(i==E[w].node2&&j==E[w].node1)) H[i][j] = E[w];
-
-               /*
-				if (i==E[w].node1 && j==E[w].node2) H[i][j] = E[w];
-				if (i==E[w].node2 && j==E[w].node1) {
-					int q = E[w].node2;
-					E[w].node2 = E[w].node1;
-                    E[w].node1 = q;
+				if ((i==E[w].node1 && j==E[w].node2) || (i==E[w].node2 && j==E[w].node1)) 
 					H[i][j] = E[w];
-				}
-		        */
 		     }
 	    }
     }
@@ -195,11 +200,10 @@ vector<int> gnodepower( vector<vector<edge>> &H)
 void DFS(vector<vector<edge>> &H,vector<bool> &visited, int q)
 {
      visited[q]=true;
-	 for (int i=0; i<H.size(); i++) for (int j=i+1; j<H[i].size(); j++) if ( (H[i][j].ex==true)&&( (!visited[i])||(!visited[j]) ) ) {
+	 for (int i=0; i<H.size(); i++) for (int j=i+1; j<H[i].size(); j++) if ( (H[i][j].ex)&&( (!visited[i])||(!visited[j]) ) ) {
 		 if (!visited[i]) DFS(H,visited,i);
 		 else DFS(H,visited,j);
 	 }
-
 }
 
 bool gconnected (vector<vector<edge>> &H)
@@ -219,6 +223,9 @@ void delnode ( vector<vector<edge>> &H,int q)
 	output<<"Deleted node:"<<q<<endl;
 	H.erase(H.begin()+q);
 	for (int i=0; i<H.size(); i++) H[i].erase(H[i].begin()+q);
+
+	output<<"After delete:"<<endl;
+	for (int i=0; i<H.size(); i++) { for (int j=0; j<H[i].size(); j++) output<<H[i][j].ex<<" "; output<<endl;}
 }
 
 void deledge (vector<vector<edge>> &H,int q,int w) 
@@ -228,22 +235,22 @@ void deledge (vector<vector<edge>> &H,int q,int w)
 	F.ex = false;
     H[q][w] = F;
     H[w][q] = F;
+
 }
 
 void contractedge ( vector<vector<edge>> &H,int q,int w)
 {
-	output<<"Contracted edge:"<<q<<" "<<w<<endl;
-	
-	if (w==0||w==1) { // if allowing edge is 0 or 1
+	output<<"Contracted edge:"<<q<<" "<<w<<endl;	
+	if (w==0 || w==1) { // if allowing edge is 0 or 1
 		int r=q;
 		q=w;
 		w=r;
 	}
 	
     for (int i=0; i<H[w].size(); i++) if (H[w][i].ex && i!=q) { 
-		if (H[q][i].ex && H[w][i].power==1 ) { //  power==1 is falg of simple edge?
+		if (H[q][i].ex && H[w][i].power==1 ) { //  power==1 is falg of simple edge
 		    H[q][i].simple += H[w][i].simple + 1 ;
-		    H[q][i].simple += H[i][w].simple + 1 ;
+		    H[i][q].simple += H[i][w].simple + 1 ;
 		}
 
 		if (H[q][i].ex && H[w][i].power!=1 ) {
@@ -264,13 +271,14 @@ void contractedge ( vector<vector<edge>> &H,int q,int w)
 
 void renumerate (int s, int t, vector<vector<edge>> &H) 
 {
-	output<<"Renumerate:"<<s<<" "<<t<<endl; //case s=t?
+	output<<"Renumerate:"<<s<<" "<<t<<endl; 
 	if (s!=t) {
 		vector<edge> F,G;
 		F = H[s];
 		G = H[t];
 
 		for (int i=0; i<H.size(); i++) if (i!=s && i!=t) swap(F[i],G[i]);
+		
 		output<<"Just clear strings and columns for nodes:"<<s<<" "<<t<<endl;
 		for (int i=0; i<H.size(); i++) { //clear strings and columns for nodes s,t
 			if (H[t][i].ex) deledge(H,t,i); //take into account the symmetry
@@ -279,14 +287,19 @@ void renumerate (int s, int t, vector<vector<edge>> &H)
 	    
 		for (int i=0; i<H.size(); i++) { // filling
 	         if ( F[i].ex && i!=s) {
+				 F[i].node1 = s; // Becouse F[i] has another nodes and H[s][i] could not exist
+                 F[i].node2 = i;
 			     H[s][i] = F[i];
-		         if (i!=t) H[i][s] = F[i]; // if do not fill another string
+				 if (i!=t)  H[i][s] = F[i];   // if do not fill another string 
 			 }
 			 if ( G[i].ex && i!=t) {
+				 G[i].node1 = t; 
+                 G[i].node2 = i;
 			     H[t][i] = G[i];
-		         if (i!=s) H[i][t] = G[i];
+				 if (i!=s) H[i][t] = G[i];
 			 }
 	    }
+    output<<"After renumerate:"<<s<<" "<<t<<endl;
 	for (int i=0; i<H.size(); i++) { for (int j=0; j<H[i].size(); j++) output<<H[i][j].ex<<" "; output<<endl;}
 	}
 }
@@ -296,33 +309,35 @@ edge penduntreduction( vector<vector<edge>> &H, edge F)
 	int s,t;
 	vector<int> nodepower = gnodepower(H);
 	output<<"Pendunt reduction:"<<endl;
-    vector <int>::iterator it,smallest=nodepower.begin();
-    for(it=nodepower.begin();it<nodepower.end();++it) if (*it == 1) smallest = it;
+    
+	vector <int>::iterator it,smallest=nodepower.begin();
+    for(it=nodepower.begin();it<nodepower.end();++it) if (*it == 1) smallest = it; // can be 0,1
     int r = smallest - nodepower.begin();
 
 	if ( (*smallest==1) && (H.size()>2) ) { //otherwise all will be deleted
        for (int i = H[r].size() - 1; i >= 0; i--) if (H[r][i].ex) { //find incident edge
            output<<"Pendunt node:"<<r<<endl;
 	       output<<"Edge incident to pendunt node:"<<r<<","<<i<<endl;
+		   
 		   F = F*H[r][i];
 	       if (r!=0 && r!=1) delnode(H,r);
 	       else {
 		        if (r==0) {
-			        s=i;
+			        s = i;
 			        delnode(H,r);
 			        if (s==H.size()) s--;
-			        renumerate (s,0,H); //case s=0?
+			        renumerate (s,0,H); //case s=0 noting to do
 		        }              
 		        if (r==1) {
-			        t=i;
+			        t = i;
 			        delnode(H,r);
 			        if (t==H.size()) t--;
-			        renumerate (t,1,H); //case t=1?
+			        renumerate (t,1,H); 
 		        }
 	       }
 		   break;// arise the eror if abort this
-	   }
-	   return penduntreduction(H,F);
+	    }
+	return penduntreduction(H,F);
 	}
 	return F;
 
@@ -330,22 +345,35 @@ edge penduntreduction( vector<vector<edge>> &H, edge F)
 void bridgereduction( vector<vector<edge>> &H)
 {
 	cout<<"Bridge reduction!"<<endl;
-	if(visited[0]&&visited[1]) for (int i=0; i<H.size(); i++) if (!visited[i]) {cout<<"Deleted uncinnected node:"<<i<<endl; delnode(H,i); }
-	if((!visited[0])&&(!visited[1])) for (int i=0; i<H.size(); i++) if (visited[i]) {cout<<"Deleted uncinnected node:"<<i<<endl; delnode(H,i); }
+	if(visited[0] && visited[1]) for (int i=0; i<H.size(); i++) 
+		if (!visited[i]) {
+			cout<<"Deleted uncinnected node:"<<i<<endl; 
+			delnode(H,i); 
+		}
+	if(!visited[0] && !visited[1]) for (int i=0; i<H.size(); i++) 
+		if (visited[i]) {
+			cout<<"Deleted uncinnected node:"<<i<<endl; 
+			delnode(H,i); 
+		}
 }
 
 edge fedge(vector<vector<edge>> &H)
 {
 	edge F;
-	vector<int> nodepower=gnodepower(H);
+	vector<int> nodepower = gnodepower(H);
 	vector <int>::iterator it,smallest=nodepower.begin();
-    for(it=nodepower.begin();it<nodepower.end();++it) 
-		if (*it <= *smallest && (it - nodepower.begin())!=0 && (it - nodepower.begin())!=1) smallest = it;
+    
+	for (it=nodepower.begin();it<nodepower.end();++it) 
+		if (*it <= *smallest && (it - nodepower.begin())!=0 && (it - nodepower.begin())!=1) smallest = it; //can't be 0,1
+	//becouse after deledge we can get unconnected graph in case nodepower=1
     int r = smallest - nodepower.begin();
+	
 	for (int i = H[r].size() - 1; i >= 0; i--) if ( H[r][i].ex ) {  //find incident edge selected node, maybe 0,1
 		F = H[r][i]; 
-		F.node1=r;
-		F.node2=i;
+
+		output<<"Allowing edge initially:"<<H[r][i].node1<<" "<<H[r][i].node2<<endl;
+		F.node1 = r;
+		F.node2 = i;
 		break;
 	}
 	return F;
@@ -355,10 +383,15 @@ edge procedure (vector<vector<edge>> &H, edge F, bool connected)
 {
 	output<<"Adjacency matrix before reduction:"<<endl;
     for (int i=0; i<H.size(); i++) { for (int j=0; j<H[i].size(); j++) output<<H[i][j].ex<<" "; output<<endl;}
+	output<<"Simple edges:"<<endl;
+	for (int i=0; i<H.size(); i++) { for (int j=0; j<H[i].size(); j++) if (H[i][j].simple>=0) output<<H[i][j].simple<<"\t";
+	    else  output<<"none\t"; 
+		output<<endl;
+	}
 
-	if (connected!=true) {
+	if (!connected) {
 		bridgereduction(H);
-		connected=true;
+		connected = true;
 	}
 	F = penduntreduction(H,F);
 
@@ -394,19 +427,27 @@ edge procedure (vector<vector<edge>> &H, edge F, bool connected)
 	else {
 		 edge W = fedge(H);
 		 output<<"Allowing edge:"<<W.node1<<" "<<W.node2<<endl;
+		 
 		 vector<vector<edge>> H1(H.size());
          vector<vector<edge>> H2(H.size());
 		 for (int i=0; i<H.size(); i++)  { 
-			 H1[i]=H[i];
-			 H2[i]=H[i];
+			 H1[i] = H[i];
+			 H2[i] = H[i];
 		 }
 		 edge F1,F2;
-		 F1 = F;
-		 F1.power++;
-		 F2 = F;
-		 F2.power++;
-		 F2.C.insert(F2.C.begin(),0);
-		 F2.C.pop_back();
+		 if (W.power != 1) cout<<"Eror"<<endl;
+		 if (W.simple == 0 && W.power == 1) {
+			 F1 = F;
+			 F1.power++;
+		     F2 = F;
+		     F2.power++;
+		     F2.C.insert(F2.C.begin(), 0);
+		     F2.C.pop_back();
+		 }
+		 else {
+		 F1 = F*W;
+		 F2 = F*~W;
+		 }
          
 		 output<<"p*F:"<<endl;
 	     copy( F1.C.begin(), F1.C.end(), ostream_iterator<int>(output," ") );
@@ -415,12 +456,13 @@ edge procedure (vector<vector<edge>> &H, edge F, bool connected)
 	     copy( F2.C.begin(), F2.C.end(), ostream_iterator<int>(output," ") );
 	     output<<endl<<F2.power<<" "<<F2.simple<<endl;
        
-         deledge (H1,W.node1,W.node2);
-		 contractedge (H2,W.node1,W.node2);
-		 bool r = gconnected(H1);
+         contractedge (H1, W.node1, W.node2);
+		 deledge (H2, W.node1, W.node2);
+		 
+		 bool r = gconnected(H2);
 		 if (!r) cout<<"Get unconnected graph into the recursion"<<endl;
 
-		 return  procedure ( H1, F1, r ) + procedure ( H2, F2, connected ) ;
+		 return  procedure ( H1, F1, connected ) + procedure ( H2, F2, r ) ;
 			 //F1*procedure ( H1, r ) + F2*procedure ( H2, connected );
 	}	
 }
@@ -432,27 +474,27 @@ ifstream input("C://input.txt");
 if (!input.is_open()) cout << "File can not be opened!\n"; 
 else {
      char str[50];
-	 int n=0,m=0;
+	 int n = 0, m = 0;
 	 vector<edge> E;
      input.getline(str,50); output<<str<<endl;
-     int buf,count=0;
-     input>>buf; output<<"n="<<buf<<" ";
+     int buf, count = 0;
+     input>>buf; output<<"Number of nodes n="<<buf<<endl;
      n = buf;
-     input>>buf; output<<"m="<<buf<<endl;
+     input>>buf; output<<"Number of edges m="<<buf<<endl;
      m = buf;
      while (count!=m) {
-	       bool reduct=false;
+	       bool reduct = false;
 	       edge q;
-	       q.simple = 0;
+	       q.simple = 0; // filling data for new edge
 	       q.ex = true;
 	       q.power = 1;
 	       q.C.push_back(1);
-	       q.C.resize(m + 1);
-           input>>buf; output<<buf-1<<" ";
-	       q.node1 = buf-1;
-	       input>>buf; output<<buf-1<<endl;
-	       q.node2 = buf-1;
-	       for (int i=0; i<E.size(); i++) 
+	       q.C.resize(m + 1); 
+           input>>buf; output<<buf - 1<<" ";
+	       q.node1 = buf - 1; // numerate start from 0
+	       input>>buf; output<<buf - 1<<endl;
+	       q.node2 = buf - 1;
+	       for (int i=0; i<E.size(); i++) // work with multi edges
 			   if ( ((E[i].node1==q.node1) && (E[i].node2==q.node2)) || ((E[i].node1==q.node2) && (E[i].node2==q.node1)) ) {
 		          E[i].simple++;
 		          output<<"E["<<i<<"].simple="<<E[i].simple<<endl;
@@ -461,13 +503,13 @@ else {
 	       if (reduct == false) E.push_back(q);
 	       count++;
     }
-    input>>str;output<<str<<endl;
+    input>>str; output<<str<<endl; // end of input
     if (strcmp(str,"$$$")!=0) cout<<"Uncorrect entry"<<endl; // 0 = ; 1 < ; -1 >
     else {
 	     cout<<"Correct entry"<<endl;
-         int s=1,t=0;
-         output<<"Connectivity of edge:"<<s<<" "<<t<<endl;
-         if (s!=t) {
+         int s = 1, t = 2; 
+         output<<"Connectivity of nodes:"<<s<<" "<<t<<endl;
+         if (s!=t && s<t) {
 	         output<<"Simple edges:"<<endl;
 	         for (int i=0; i<E.size(); i++) output<<E[i].simple<<" ";
              output<<endl;
@@ -477,32 +519,25 @@ else {
 	         output<<"Adjacency matrix:"<<endl;
              for (int i=0; i<S.size(); i++) { for (int j=0; j<S[i].size(); j++) output<<S[i][j].ex<<" "; output<<endl;}
 
-	         if (s!=0 && t!=1) { // after this 0,1
-                 if (s!=1 && t!=0) {
+	         if (s!=0 || t!=1) { // after this 0,1
+                 if (s!=0 && t!=1) {
                  renumerate (s,0,S);
                  renumerate (t,1,S);
                  }
-                 if (s==1 && t!=0) {
-                 renumerate (s,0,S);
-                 renumerate (t,0,S);
-                 }
-                 if (s!=1 && t==0) {
-                 renumerate (s,1,S);
-                 renumerate (t,1,S);
-                 }
-                 if (s==1 && t==0) renumerate (s,t,S);
+                 if (s==0 && t!=1) renumerate (t,1,S);
+                 if (s!=0 && t==1) renumerate (s,0,S);
              } 
 	         output<<"Adjacency matrix after initial renumerate:"<<endl;
              for (int i=0; i<S.size(); i++) { for (int j=0; j<S[i].size(); j++) output<<S[i][j].ex<<" "; output<<endl;}
 
              bool r = gconnected(S);
              if (!r) cout<<"Unconnected graph on input!"<<endl;
-             edge F;
+
+             edge F; // create pseudo edge for computing
 	         F.C.push_back(1);
              F.C.resize(m + 1);
 	         F.power=0;
 	         F.simple=0;
-
              sum = procedure(S, F, r);
              cout<<"Solution:"<<endl;
              copy( sum.C.begin(), sum.C.end(), ostream_iterator<int>(cout," ") );
