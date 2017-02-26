@@ -1,11 +1,5 @@
-// stdafx.h: включаемый файл дл€ стандартных системных включаемых файлов
-// или включаемых файлов дл€ конкретного проекта, которые часто используютс€, но
-// не часто измен€ютс€
-//
-
 #pragma once
 
-#include "targetver.h"
 #include <stdio.h>
 #include <tchar.h>
 #include <fstream>
@@ -16,19 +10,3 @@
 #include <iterator>
 #include <ctime>
 using namespace std;
-
-struct edge    
-{   
-    vector<int> C; 
-	int power;
-	int node1;
-	int node2;
-	int simple;
-	bool ex;
-};
-
-
-
-
-
-// TODO. ”становите здесь ссылки на дополнительные заголовки, требующиес€ дл€ программы

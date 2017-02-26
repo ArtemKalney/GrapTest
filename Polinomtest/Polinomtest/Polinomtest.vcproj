@@ -171,6 +171,10 @@
 			UniqueIdentifier="{4FC737F1-C7A5-4376-A066-2A32D752A2FF}"
 			>
 			<File
+				RelativePath=".\Cclass.cpp"
+				>
+			</File>
+			<File
 				RelativePath=".\main.cpp"
 				>
 				<FileConfiguration
@@ -191,7 +195,7 @@
 				</FileConfiguration>
 			</File>
 			<File
-				RelativePath=".\Polinomtest.cpp"
+				RelativePath=".\pairconnection.cpp"
 				>
 			</File>
 		</Filter>
@@ -201,11 +205,19 @@
 			UniqueIdentifier="{93995380-89BD-4b04-88EB-625FBE52EBFB}"
 			>
 			<File
-				RelativePath=".\stdafx.h"
+				RelativePath=".\Cclass.h"
 				>
 			</File>
 			<File
-				RelativePath=".\targetver.h"
+				RelativePath=".\funcs.h"
+				>
+			</File>
+			<File
+				RelativePath=".\globals.h"
+				>
+			</File>
+			<File
+				RelativePath=".\stdafx.h"
 				>
 			</File>
 		</Filter>
