@@ -16,12 +16,12 @@ vector<int> gnodepower( vector<vector<edge>> &H)
 	return nodepower;
 }
 
-void DFS(vector<vector<edge>> &H, vector<bool> &visited, int q)
+void DFS(vector<vector<edge>> &H, int q)
 {
      visited[q] = true;
 	 for (int i=0; i<H.size(); i++) for (int j=i+1; j<H[i].size(); j++) if ( H[i][j].ex && ( !visited[i] || !visited[j] ) ) {
-		 if (!visited[i]) DFS(H, visited, i);
-		 else DFS(H, visited, j);
+		 if (!visited[i]) DFS(H, i);
+		 else DFS(H, j);
 	 }
 }
 
@@ -31,7 +31,7 @@ bool gconnected (vector<vector<edge>> &H)
 	 visited.resize(H.size());
 	 for (int i=0; i<visited.size(); i++) visited[i] = false;
 
-     DFS(H, visited, 0);
+     DFS(H, 0);
 	 for (int i=0; i<visited.size(); i++) if (visited[i]) count++;
 
 	 if (count!=H.size()) return false;
@@ -59,7 +59,6 @@ void contractedge ( vector<vector<edge>> &H,int q, int w)
 		w = q;
 		q = r;
 	}
-    if (q==0 || q==1) cout<<"Eror in Contract edge"<<endl;
 
     for (int i=0; i<H[q].size(); i++) if (H[q][i].ex && i!=w) { // do not consider H[q][w]
 		if (H[w][i].ex && H[q][i].power == 1 && H[w][i].power == 1) { //  power==1 is falg of simple edge
@@ -177,11 +176,10 @@ bool exis(vector<int> P, int x)
 	return false;
 }
 
-vector<int> chainreduction(vector<vector<edge>> &H, vector<int> Ch, vector<int> V, bool found)
-{ 
+vector<int> fchain(vector<vector<edge>> &H, vector<int> &V) 
+{
 	vector<int> nodepower = gnodepower(H);
 	vector<int> P; // chain nodes vector
-	int count = 0;
     
 	bool find = false;
 	int i = 0;
@@ -198,7 +196,7 @@ vector<int> chainreduction(vector<vector<edge>> &H, vector<int> Ch, vector<int> 
 		   i++;
 	}
 
-	if (P.size() > 0) { // expand vector in both sides if it is not empty
+	if (!P.empty()) { // expand vector in both sides if it is not empty
         i = P.front();
 		while (nodepower[i] == 2 && i != P.back())  
 			   // find node incident to left node of our chain and add it
@@ -215,7 +213,17 @@ vector<int> chainreduction(vector<vector<edge>> &H, vector<int> Ch, vector<int> 
 					break;
 			   }
 
-		for (int j=0; j<P.size(); j++) if (P[j] == 0 || P[j] == 1) count++; // count selected nodes in chain
+	    return P;
+	}
+	return P;
+}
+
+vector<int> chainreduction(vector<vector<edge>> &H, vector<int> Ch, vector<int> V, bool found)
+{ 
+   vector<int> P = fchain(H, V);
+   int count = 0; 
+   if (!P.empty()) {
+		for (int i=0; i<P.size(); i++) if (P[i] == 0 || P[i] == 1) count++; // count selected nodes in chain
         
 		vector<int>::iterator it, r = P.begin();
 		if (count == 1) {
@@ -248,10 +256,10 @@ vector<int> chainreduction(vector<vector<edge>> &H, vector<int> Ch, vector<int> 
 	        newedge.C.push_back(1);
 		    for (int j=0; j<P.size() - 1; j++) newedge = newedge*H[P[j]][P[j + 1]];
 			for (int j=1; j<P.size() - 1; j++) {
+				 delnode(H, P[j]); // delete only inner nodes of chain
 				 for (int k=0; k<P.size(); k++) if (P[j] < P[k] ) P[k]--; // not forget about P
 				 for (int k=0; k<Ch.size(); k++) if (P[j] < Ch[k] ) Ch[k]--; // not forget about Ch
 				 for (int k=0; k<V.size(); k++) if (P[j] < V[k] ) V[k]--; // not forget about V
-				 delnode(H, P[j]); // delete only inner nodes of chain
 			}
 			int x = P.front(), y = P.back();
 
@@ -350,8 +358,7 @@ edge procedure(vector<vector<edge>> &H, edge F, bool connected)
 	    for (it=Ch.begin(); it<Ch.end(); ++it) if (*it == 0 || *it == 1 ) r = it; 
 		int q = r - Ch.begin(); // place of pivote node t=(0 or 1) into vector Ch 
 
-		edge P;
-		edge L;
+		edge P, L;
 		P.C.push_back(1);
 		L.C.push_back(1);
 		vector<vector<edge>> G(H.size());
@@ -360,36 +367,36 @@ edge procedure(vector<vector<edge>> &H, edge F, bool connected)
 		for (int i=q; i<Ch.size() - 1; i++) P = P*G[Ch[i]][Ch[i + 1]];
         
 		for (int i=1; i<Ch.size() - 1; i++) { // after this we get 2 nodes from chain, one of them can be pivote
-		     for (int j=0; j<Ch.size(); j++) if (Ch[i] < Ch[j]) Ch[j]--; // not forget about Ch
 		     delnode(G, Ch[i]); 
+			 for (int j=0; j<Ch.size(); j++) if (Ch[i] < Ch[j]) Ch[j]--; // not forget about Ch
 	    }
 		vector<vector<edge>> G1(G.size());
 		for (int i=0; i<G.size(); i++) G1[i] = G[i]; // after reduction G changed
-		int x = Ch.back(), y = Ch.front(); // amazing
-		//int x = Ch.front(), y = Ch.back();
-		if (r == Ch.begin()) renumerate(G, x, *r);
-		if (r != Ch.begin() && r != Ch.end() - 1) renumerate(G, x, 1);  // after delete: s - node out of chain always 0, so t=1
-		edge k = procedure(G, F, connected);
-		if (r == Ch.end() - 1) renumerate(G, y, *r);
-		if (r != Ch.begin() && r != Ch.end() - 1) renumerate(G1, y, 1);   
-		edge w = procedure(G1, F, connected);
+		int x = Ch.front(), y = Ch.back(); // matter x<=>y
+		if (r == Ch.begin()) renumerate(G, y, *r); // s=0||1 
+		if (r != Ch.begin() && r != Ch.end() - 1) renumerate(G, y, 1);  // after delete: s - node out of chain always 0, so t=1
+		edge k = procedure(G, F, connected); // Rsy
+		if (r == Ch.end() - 1) renumerate(G1, x, *r); // s=0||1 
+		if (r != Ch.begin() && r != Ch.end() - 1) renumerate(G1, x, 1);   
+		edge w = procedure(G1, F, connected); // Rsx
         
 		Ch = Chain;
 		G.resize(H.size());
 		for (int i=0; i<H.size(); i++) G[i] = H[i];
 		for (int i=0; i<Ch.size() - 1; i++) { // after we get 1 pivote node from chain
+			contractedge(G, Ch[i], Ch[i + 1]);
 			for (int j=0; j<Ch.size(); j++) { // usually delete Ch[i], but not always
 				int w = Ch[i];
 				if (Ch[i] == 0 || Ch[i] == 1) w = Ch[i + 1];
 				if (w < Ch[j]) Ch[j]--; // not forget about Ch
 			}
-			contractedge(G, Ch[i], Ch[i + 1]);
 			if (Ch[i] == 0 || Ch[i] == 1) {
 					Ch.erase(Ch.begin() + i + 1);
 					i--;
 			}
 		}
-		edge m = procedure(G, F, connected); // no renumerate becouse s,t always pivote nodes
+		edge m = procedure(G, F, connected); // Rs<x,y>
+		// no renumerate becouse s,t always pivote nodes
         
 		return P*k + L*w - P*L*(k + w - m);
 	}
@@ -406,8 +413,7 @@ edge procedure(vector<vector<edge>> &H, edge F, bool connected)
 			w = u;
 		}
 
-		edge P;
-		edge L;
+		edge P, L;
 		P.C.push_back(1);
 		L.C.push_back(1);
 		vector<vector<edge>> G(H.size());
@@ -416,8 +422,8 @@ edge procedure(vector<vector<edge>> &H, edge F, bool connected)
 		for (int i=q; i<w; i++) P = P*G[Ch[i]][Ch[i + 1]];
 		for (int i=w; i<Ch.size() - 1; i++) L = L*G[Ch[i]][Ch[i + 1]];
 		for (int i=1; i<Ch.size() - 1; i++) {
-			 for (int j=0; j<Ch.size(); j++) if (Ch[i] < Ch[j]) Ch[j]--; // not forget about Ch
 		     delnode(G, Ch[i]); 
+			 for (int j=0; j<Ch.size(); j++) if (Ch[i] < Ch[j]) Ch[j]--; // not forget about Ch
 	    }
 		int x = Ch.front(), y = Ch.back(); // doesn't matter x<=>y
 		if (x != 0 && x != 1 && y != 0 && y != 1) {
@@ -445,6 +451,11 @@ edge procedure(vector<vector<edge>> &H, edge F, bool connected)
 	}
 	edge F1, F2;
     if (W.simple == 0 && W.power == 1) {
+		if (F.C.size() == 1) {
+			F.C.resize(H.size());
+			F.power = 0;
+			F.simple = 0;
+		}
 	    F1 = F;
         F1.power++;
         F2 = F;

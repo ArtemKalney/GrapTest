@@ -16,8 +16,8 @@ edge operator *(edge x, edge y)
 {  
 	edge F;
      if (!x.C.empty() && !y.C.empty()) { // for edges not zero attendance
-		 if ( x.C.size() == 1 ) return y; // * on 1; can't +, -, ~ for 1
-		 if ( y.C.size() == 1 ) return x;
+		 if (x.C.size() == 1) return y;  // * on 1; can't ~ for 1
+		 if (y.C.size() == 1) return x;
          F.C.resize(x.C.size());
 		 F.power = 0;
 	     F.simple = 0;
@@ -55,6 +55,16 @@ edge operator +(edge x,edge y)
 {   
 	edge F;
     if (!x.C.empty() && !y.C.empty()) { // for edges not zero attendance
+		if (x.C.size() == 1 && y.C.size() != 1) { // need for chainreduction2
+			x.C.resize(y.C.size());
+			x.power = 0;
+			x.simple = 0;
+		}
+		if (x.C.size() != 1 && y.C.size() == 1) {
+			y.C.resize(x.C.size());
+			y.power = 0;
+			y.simple = 0;
+		}
         F.C.resize(x.C.size()); 
 	    F.simple = 0;
 		F.ex = true; // need for chainreduction
@@ -69,16 +79,18 @@ edge operator +(edge x,edge y)
 	    if (y.simple > 0) for (int i=0; i<y.power; i++) y.C[i] = Bin(y.power, i);
 		x.simple = 0;
 		y.simple = 0;
+        
+		if (x.power != y.power) {
+            edge I;
+	        I.C.resize(x.C.size());
+	        I.power = abs(x.power - y.power);
+	        I.simple = 0;
+	        for (int j=0; j<=I.power; j++) I.C[j] = Bin(I.power, j);
+	        if (x.power < y.power) x = x*I; 
+	        if (y.power < x.power) y = y*I;
+		}
 
-        edge I;
-	    I.C.resize(x.C.size());
-	    I.power = abs(x.power - y.power);
-	    I.simple = 0;
-	    for (int j=0; j<=I.power; j++) I.C[j] = Bin(I.power, j);
-	    if (x.power < y.power) x = x*I; 
-	    if (y.power < x.power) y = y*I;
-
-		for (int i=0; i<x.C.size(); i++) F.C[i] = x.C[i] + y.C[i];
+		for (int i=0; i<F.C.size(); i++) F.C[i] = x.C[i] + y.C[i];
 	}
 	if (!x.C.empty() && y.C.empty()) F = x;
 	if (x.C.empty() && !y.C.empty()) F = y;
@@ -89,6 +101,16 @@ edge operator -(edge x,edge y)
 {   
 	edge F;
     if (!x.C.empty() && !y.C.empty()) { // for edges not zero attendance
+		if (x.C.size() == 1 && y.C.size() != 1) { // need for chainreduction2
+			x.C.resize(y.C.size());
+			x.power = 0;
+			x.simple = 0;
+		}
+		if (x.C.size() != 1 && y.C.size() == 1) {
+			y.C.resize(x.C.size());
+			y.power = 0;
+			y.simple = 0;
+		}
         F.C.resize(x.C.size()); 
 	    F.simple = 0;
 		F.ex = true;
@@ -104,18 +126,26 @@ edge operator -(edge x,edge y)
 		x.simple = 0;
 		y.simple = 0;
 
-        edge I;
-	    I.C.resize(x.C.size());
-	    I.power = abs(x.power - y.power);
-	    I.simple = 0;
-	    for (int j=0; j<=I.power; j++) I.C[j] = Bin(I.power, j);
-	    if (x.power < y.power) x = x*I; 
-	    if (y.power < x.power) y = y*I;
+        if (x.power != y.power) {
+            edge I;
+	        I.C.resize(x.C.size());
+	        I.power = abs(x.power - y.power);
+	        I.simple = 0;
+	        for (int j=0; j<=I.power; j++) I.C[j] = Bin(I.power, j);
+	        if (x.power < y.power) x = x*I; 
+	        if (y.power < x.power) y = y*I;
+		}
 
-		for (int i=0; i<x.C.size(); i++) F.C[i] = x.C[i] - y.C[i];
+		for (int i=0; i<F.C.size(); i++) F.C[i] = x.C[i] - y.C[i];
 	}
-	if (!x.C.empty() && y.C.empty()) F = x;
-	if (x.C.empty() && !y.C.empty()) F = y;
+	if (!x.C.empty() && y.C.empty()) {
+		//for (int i=0; i<x.C.size(); i++) x.C[i] = -x.C[i]; 
+		F = x;
+	}
+	if (x.C.empty() && !y.C.empty()) {
+		for (int i=0; i<y.C.size(); i++) y.C[i] = -y.C[i]; // ?
+		F = y;
+	}
 	return F;
 }
 
@@ -139,4 +169,24 @@ edge operator ~(edge x)
 		F.C.push_back(1);
 	}
 	return F;
+}
+
+edge operator *(int x, edge y)
+{  
+	 edge F;
+     if (!y.C.empty()) { // for edges not zero attendance
+         F = y;
+         for (int i=0; i<F.C.size(); i++) F.C[i] = x*F.C[i];
+	 }
+	 return F;
+}
+
+edge operator *(edge x, int y)
+{  
+	 edge F;
+     if (!x.C.empty()) { // for edges not zero attendance
+         F = x;
+         for (int i=0; i<F.C.size(); i++) F.C[i] = y*F.C[i];
+	 }
+	 return F;
 }
