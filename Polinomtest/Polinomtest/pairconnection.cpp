@@ -4,7 +4,7 @@
 #include "Cclass.h"
 
 vector<bool> visited;
-int num = 0, num2 = 0, num3 = 0, num4 = 0, num5 = 0;
+int num = 0, num2 = 0, num3 = 0, num4 = 0, num5 = 0, ch =0, ch1 = 0, ch2 = 0;
 
 vector<int> gnodepower( vector<vector<edge>> &H)
 {   vector <int> nodepower(H.size());
@@ -19,7 +19,7 @@ vector<int> gnodepower( vector<vector<edge>> &H)
 void DFS(vector<vector<edge>> &H, int q)
 {
      visited[q] = true;
-	 for (int i=0; i<H.size(); i++) for (int j=i+1; j<H[i].size(); j++) if ( H[i][j].ex && ( !visited[i] || !visited[j] ) ) {
+	 for (int i=0; i<H.size(); i++) for (int j=i + 1; j<H[i].size(); j++) if (H[i][j].ex && (!visited[i] || !visited[j])) {
 		 if (!visited[i]) DFS(H, i);
 		 else DFS(H, j);
 	 }
@@ -61,7 +61,7 @@ void contractedge ( vector<vector<edge>> &H,int q, int w)
 	}
 
     for (int i=0; i<H[q].size(); i++) if (H[q][i].ex && i!=w) { // do not consider H[q][w]
-		if (H[w][i].ex && H[q][i].power == 1 && H[w][i].power == 1) { //  power==1 is falg of simple edge
+		if (H[w][i].ex && H[q][i].power == 1 && H[w][i].power == 1) { // power==1 is falg of simple edge
 		    H[w][i].simple += H[q][i].simple + 1;
 		    H[i][w].simple += H[q][i].simple + 1;
 		}
@@ -79,11 +79,11 @@ void contractedge ( vector<vector<edge>> &H,int q, int w)
 
 void renumerate (vector<vector<edge>> &H, int s, int t) 
 {
-	if (s!=t) {
+	if (s != t) {
 		vector<edge> F, G;
 		F = H[s];
 		G = H[t];
-		for (int i=0; i<H.size(); i++) if (i!=s && i!=t) swap(F[i], G[i]);
+		for (int i=0; i<H.size(); i++) if (i != s && i != t) swap(F[i], G[i]);
 		
 		for (int i=0; i<H.size(); i++) { //clear strings and columns for nodes s,t
 			if (H[t][i].ex) deledge(H, t, i); //take into account the symmetry
@@ -91,13 +91,13 @@ void renumerate (vector<vector<edge>> &H, int s, int t)
 		}
 	    
 		for (int i=0; i<H.size(); i++) { // filling
-	         if ( F[i].ex && i!=s) {
+	         if (F[i].ex && i != s) {
 			     H[s][i] = F[i];
-				 if (i!=t)  H[i][s] = F[i]; // if do not fill another string 
+				 if (i != t)  H[i][s] = F[i]; // if do not fill another string 
 			 }
-			 if ( G[i].ex && i!=t) {
+			 if (G[i].ex && i != t) {
 			     H[t][i] = G[i];
-				 if (i!=s) H[i][t] = G[i];
+				 if (i != s) H[i][t] = G[i];
 			 }
 	    }
 	}
@@ -109,26 +109,25 @@ edge penduntreduction( vector<vector<edge>> &H, edge F , int q, bool w)
 	if (w) nodepower.erase(nodepower.begin() + q); // in one penduntreduction we not consider pendunt node 0 || 1
     
 	vector <int>::iterator it, smallest = nodepower.end() - 1;
-    for(it=nodepower.begin();it<nodepower.end();++it) if ( *it == 1 ) smallest = it; 
+    for(it=nodepower.begin();it<nodepower.end();++it) if (*it == 1) smallest = it; 
     int r = smallest - nodepower.begin(); // find pendunt node, can be 0,1
 
-	if ( *smallest==1 && H.size()>2 ) { //otherwise all will be deleted
-       for (int i = H[r].size() - 1; i >= 0; i--) 
-		   if (H[r][i].ex) { //find incident edge to pendunt node, can't be 0,1 || 1,0
-		       
-	           if (r!=0 && r!=1) delnode(H,r);
-			   if ( (r == 1 && i !=0) || (r == 0 && i != 1) ) {
-					F = F*H[r][i];
-				    delnode(H,r);
-				    i--; // after delenode not forget about i
-			        if (i != 1) renumerate (H, i, 1); // always must be 1
-	           }
-			   if ( (r == 1 && i == 0) || (r == 0 && i == 1) ) { // that do not have loop
-				   q = r;
-				   w = true;
-			   }
-		   break;// arise the eror if abort this
-	       }
+	if (*smallest == 1 && H.size() > 2) { //otherwise all will be deleted
+        for (int i = H[r].size() - 1; i >= 0; i--) if (H[r][i].ex) { 
+		     //find incident edge to pendunt node, can't be 0,1 || 1,0
+			 if ((r == 1 && i == 0) || (r == 0 && i == 1)) { // that do not have loop
+				 q = r;
+				 w = true;
+		     }
+	         if (r!=0 && r!=1) delnode(H,r);
+			 if ((r == 1 && i !=0) || (r == 0 && i != 1)) {
+				  F = F*H[r][i];
+				  delnode(H,r);
+				  i--; // after delenode not forget about i
+			      if (i != 1) renumerate (H, i, 1); // always must be 1
+	         }
+	    break;// arise the eror if abort this
+	    }
 	return penduntreduction(H, F, q, w);
 	}
 	return F;
@@ -160,7 +159,7 @@ edge fedge(vector<vector<edge>> &H)
 	       //becouse after deledge we can get unconnected graph in case nodepower=1
     int r = smallest - nodepower.begin(); //can't be 0,1
 	
-	for (int i = H[r].size() - 1; i >= 0; i--) if ( H[r][i].ex ) {  //find incident edge selected node, can be 0,1
+	for (int i = H[r].size() - 1; i >= 0; i--) if (H[r][i].ex) {  //find incident edge selected node, can be 0,1
 		F = H[r][i]; 
 		F.node1 = r; // Becouse we use only matrix coefficients
 		F.node2 = i;
@@ -224,11 +223,13 @@ vector<int> chainreduction(vector<vector<edge>> &H, vector<int> Ch, vector<int> 
    int count = 0; 
    if (!P.empty()) {
 		for (int i=0; i<P.size(); i++) if (P[i] == 0 || P[i] == 1) count++; // count selected nodes in chain
+
+		if (count == 1 || count == 2) ch++;
         
 		vector<int>::iterator it, r = P.begin();
 		if (count == 1) {
 	        for (it=P.begin(); it<P.end(); ++it) if (*it == 0 || *it == 1 ) r = it; 
-		    if ((r == P.begin() || r == P.end()) && !Ch.empty()) count = 0; 
+			if ((r == P.begin() || r == P.end() - 1) && !Ch.empty()) count = 0; // reduct special chains
 		}
 
 		if ((count == 1 || count == 2) && !found) {
@@ -239,7 +240,7 @@ vector<int> chainreduction(vector<vector<edge>> &H, vector<int> Ch, vector<int> 
 			if (count == 1) {
 				if (!Ch.empty()) {
 				    for (it=Ch.begin(); it<Ch.end() - 1; ++it) if (*it == 0 || *it == 1 ) r = it;  // Ch.back()=count
-				    if (r == Ch.begin() || r == Ch.end() - 2) V.clear(); // next recursive call reduct Ch
+					if (r == Ch.begin() || r == Ch.end() - 2) V.clear(); // next recursive call reduct Ch 
 				}
 				for (int j=0; j<P.size(); j++) if (!exis(V, P[j])) V.push_back(P[j]);
 			}
@@ -271,6 +272,36 @@ vector<int> chainreduction(vector<vector<edge>> &H, vector<int> Ch, vector<int> 
 			H[x][y] = newedge; 
 		    H[y][x] = newedge;
 		    }
+
+			if (!Ch.empty()) { // expand vector in both sides if it is not empty
+				count = Ch.back();
+				Ch.pop_back();
+				vector<int> nodepower = gnodepower(H);
+
+                int i = Ch.front();
+		        while (nodepower[i] == 2 && i != Ch.back())  
+			           // find node incident to left node of our chain and add it
+			           for (int j=0; j<H[i].size(); j++) if (H[i][j].ex && j != Ch[1]) {
+						    if (j != Ch.back()) { 
+								Ch.insert(Ch.begin(), j);
+								if (!exis(V, j)) V.push_back(j);
+							}
+			                i = j;
+					        break; 
+			           }
+                i = Ch.back();
+		        while (nodepower[i] == 2 && i != Ch.front()) 
+			           for (int j=0; j<H[i].size(); j++) if (H[i][j].ex && j != Ch[Ch.size() - 2]) {
+						    if (j != Ch.front()) {
+							   Ch.push_back(j);
+							   if (!exis(V, j)) V.push_back(j);
+							}
+					        i = j;
+					        break;
+			           }
+
+				Ch.push_back(count);
+	        }
             
 	        return chainreduction(H, Ch, V, found);
 		}
@@ -280,10 +311,8 @@ vector<int> chainreduction(vector<vector<edge>> &H, vector<int> Ch, vector<int> 
 
 edge procedure(vector<vector<edge>> &H, edge F, bool connected) 
 {
-
-	if (H.size() < 5) {
+	if (H.size() < 6) {
 		num++;
-	    
 		if (H.size() == 2) {
 			num2++;
 			return F*H[0][1];
@@ -300,12 +329,12 @@ edge procedure(vector<vector<edge>> &H, edge F, bool connected)
 		
 		if (H.size() == 5) {
 			num5++;
-            return F*( ~( H[0][1]*H[0][2]* ( ~H[1][2]*H[1][4]*( ~H[0][4]*H[0][3]*H[2][4]*(H[3][4] + H[1][3]*H[2][3]*~H[3][4]) +
-		           ~H[0][3]*H[1][3]*H[2][3]*(H[2][4] + H[0][4]*H[3][4]*~H[2][4])) + H[0][3]*H[0][4]*~(H[1][2]*H[1][3]*H[1][4]) ) +
-		           H[0][1]*H[1][3]* ( ~H[1][4]*H[0][4]*(~H[0][3]*H[0][2]*H[3][4]*(H[2][3] + H[1][2]*H[2][4]*~H[2][3]) +
-		           ~H[0][2]*H[1][2]*H[2][4]*(H[3][4] + H[0][3]*H[2][3]*~H[3][4])) + H[1][2]*H[1][4] ) +
-		           ~H[1][3]*H[0][1]*H[0][3]*H[1][2]* ( ~H[0][2]*H[0][4]*H[2][3]*(H[2][4] + H[1][4]*H[3][4]*~H[2][4]) +
-		           ~H[0][4]*H[1][4]*H[3][4]*(H[2][3] + H[1][4]*H[2][4]*~H[2][3]) ) ) );
+            return F*( ~( ~H[0][1]*~H[0][2]* ( H[1][2]*~H[1][4]*( H[0][4]*~H[0][3]*~H[2][4]*(~H[3][4] + ~H[1][3]*~H[2][3]*H[3][4]) +
+		           H[0][3]*~H[1][3]*~H[2][3]*(~H[2][4] + ~H[0][4]*~H[3][4]*H[2][4])) + ~H[0][3]*~H[0][4]*~(~H[1][2]*~H[1][3]*~H[1][4]) ) +
+		           ~H[0][1]*~H[1][3]* ( H[1][4]*~H[0][4]*(H[0][3]*~H[0][2]*~H[3][4]*(~H[2][3] + ~H[1][2]*~H[2][4]*H[2][3]) +
+		           H[0][2]*~H[1][2]*~H[2][4]*(~H[3][4] + ~H[0][3]*~H[2][3]*H[3][4])) + ~H[1][2]*~H[1][4] ) +
+		           H[1][3]*~H[0][1]*~H[0][3]*~H[1][2]* ( H[0][2]*~H[0][4]*~H[2][3]*(~H[2][4] + ~H[1][4]*~H[3][4]*H[2][4]) +
+		           H[0][4]*~H[1][4]*~H[3][4]*(~H[2][3] + ~H[0][2]*~H[2][4]*H[2][3]) ) ) );
 		}
 	}
 
@@ -324,9 +353,8 @@ edge procedure(vector<vector<edge>> &H, edge F, bool connected)
 	    Chain.pop_back();
 	}
 
-	if (H.size() < 5) {
+	if (H.size() < 6) {
 		num++;
-	    
 		if (H.size() == 2) {
 			num2++;
 			return F*H[0][1];
@@ -343,16 +371,17 @@ edge procedure(vector<vector<edge>> &H, edge F, bool connected)
 		
 		if (H.size() == 5) {
 			num5++;
-            return F*( ~( H[0][1]*H[0][2]* ( ~H[1][2]*H[1][4]*( ~H[0][4]*H[0][3]*H[2][4]*(H[3][4] + H[1][3]*H[2][3]*~H[3][4]) +
-		           ~H[0][3]*H[1][3]*H[2][3]*(H[2][4] + H[0][4]*H[3][4]*~H[2][4])) + H[0][3]*H[0][4]*~(H[1][2]*H[1][3]*H[1][4]) ) +
-		           H[0][1]*H[1][3]* ( ~H[1][4]*H[0][4]*(~H[0][3]*H[0][2]*H[3][4]*(H[2][3] + H[1][2]*H[2][4]*~H[2][3]) +
-		           ~H[0][2]*H[1][2]*H[2][4]*(H[3][4] + H[0][3]*H[2][3]*~H[3][4])) + H[1][2]*H[1][4] ) +
-		           ~H[1][3]*H[0][1]*H[0][3]*H[1][2]* ( ~H[0][2]*H[0][4]*H[2][3]*(H[2][4] + H[1][4]*H[3][4]*~H[2][4]) +
-		           ~H[0][4]*H[1][4]*H[3][4]*(H[2][3] + H[1][4]*H[2][4]*~H[2][3]) ) ) );
+            return F*( ~( ~H[0][1]*~H[0][2]* ( H[1][2]*~H[1][4]*( H[0][4]*~H[0][3]*~H[2][4]*(~H[3][4] + ~H[1][3]*~H[2][3]*H[3][4]) +
+		           H[0][3]*~H[1][3]*~H[2][3]*(~H[2][4] + ~H[0][4]*~H[3][4]*H[2][4])) + ~H[0][3]*~H[0][4]*~(~H[1][2]*~H[1][3]*~H[1][4]) ) +
+		           ~H[0][1]*~H[1][3]* ( H[1][4]*~H[0][4]*(H[0][3]*~H[0][2]*~H[3][4]*(~H[2][3] + ~H[1][2]*~H[2][4]*H[2][3]) +
+		           H[0][2]*~H[1][2]*~H[2][4]*(~H[3][4] + ~H[0][3]*~H[2][3]*H[3][4])) + ~H[1][2]*~H[1][4] ) +
+		           H[1][3]*~H[0][1]*~H[0][3]*~H[1][2]* ( H[0][2]*~H[0][4]*~H[2][3]*(~H[2][4] + ~H[1][4]*~H[3][4]*H[2][4]) +
+		           H[0][4]*~H[1][4]*~H[3][4]*(~H[2][3] + ~H[0][2]*~H[2][4]*H[2][3]) ) ) );
 		}
 	}
 
 	if (count == 1) {
+		ch1++;
 		vector<int> Ch = Chain;
 		vector<int>::iterator it, r;
 	    for (it=Ch.begin(); it<Ch.end(); ++it) if (*it == 0 || *it == 1 ) r = it; 
@@ -373,8 +402,8 @@ edge procedure(vector<vector<edge>> &H, edge F, bool connected)
 		vector<vector<edge>> G1(G.size());
 		for (int i=0; i<G.size(); i++) G1[i] = G[i]; // after reduction G changed
 		int x = Ch.front(), y = Ch.back(); // matter x<=>y
-		if (r == Ch.begin()) renumerate(G, y, *r); // s=0||1 
-		if (r != Ch.begin() && r != Ch.end() - 1) renumerate(G, y, 1);  // after delete: s - node out of chain always 0, so t=1
+		if (r == Ch.begin()) renumerate(G, y, *r); // s=0||1, becouse we don't delete pivote node
+		if (r != Ch.begin() && r != Ch.end() - 1) renumerate(G, y, 1); // after delete: s - node out of chain always 0, so t=1
 		edge k = procedure(G, F, connected); // Rsy
 		if (r == Ch.end() - 1) renumerate(G1, x, *r); // s=0||1 
 		if (r != Ch.begin() && r != Ch.end() - 1) renumerate(G1, x, 1);   
@@ -401,6 +430,7 @@ edge procedure(vector<vector<edge>> &H, edge F, bool connected)
 		return P*k + L*w - P*L*(k + w - m);
 	}
 	if (count == 2) {
+		ch2++;
 		vector<int> Ch = Chain;
 		vector<int>::iterator it, r;
 	    for (it=Ch.begin(); it<Ch.end(); ++it) if (*it == 0) r = it; 
@@ -440,7 +470,6 @@ edge procedure(vector<vector<edge>> &H, edge F, bool connected)
 	}
 
     edge W = fedge(H);
-	if (W.node1 == 0 || W.node1 == 1) cout<<"Eror in fedge"<<endl;
     if ((W.node1==1 && W.node2==0) || (W.node1==0 && W.node2==1)) cout<<"Eror in Allowing edge"<<endl;
 		 
     vector<vector<edge>> H1(H.size());
@@ -451,11 +480,6 @@ edge procedure(vector<vector<edge>> &H, edge F, bool connected)
 	}
 	edge F1, F2;
     if (W.simple == 0 && W.power == 1) {
-		if (F.C.size() == 1) {
-			F.C.resize(H.size());
-			F.power = 0;
-			F.simple = 0;
-		}
 	    F1 = F;
         F1.power++;
         F2 = F;

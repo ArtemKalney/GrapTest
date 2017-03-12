@@ -175,6 +175,14 @@
 				>
 			</File>
 			<File
+				RelativePath=".\chainreduction1.cpp"
+				>
+			</File>
+			<File
+				RelativePath=".\chainreduction2.cpp"
+				>
+			</File>
+			<File
 				RelativePath=".\main.cpp"
 				>
 				<FileConfiguration

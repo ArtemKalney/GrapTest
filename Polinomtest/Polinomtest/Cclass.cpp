@@ -2,13 +2,13 @@
 #include "stdafx.h"
 #include "Cclass.h"
 
-int factor(int k) {
-	int l=1;
+double factor(int k) {
+	double l = 1;
 	for (int i=2; i<=k; i++) l = l*i;
 	return l;
 }
 
-int Bin(int k,int l) {
+double Bin(int k, int l) {
     return factor(k) / (factor(l)*factor(k - l));
 }
 
@@ -16,7 +16,7 @@ edge operator *(edge x, edge y)
 {  
 	edge F;
      if (!x.C.empty() && !y.C.empty()) { // for edges not zero attendance
-		 if (x.C.size() == 1) return y;  // * on 1; can't ~ for 1
+		 if (x.C.size() == 1) return y;  // * on 1;
 		 if (y.C.size() == 1) return x;
          F.C.resize(x.C.size());
 		 F.power = 0;
@@ -26,10 +26,16 @@ edge operator *(edge x, edge y)
 		 if (x.simple > 0 && x.power!=1) cout<<"Eror in Operator *"<<endl; // coudn't be becouse we contract them
 		 if (y.simple > 0 && y.power!=1) cout<<"Eror in Operator *"<<endl;
 
-	     x.power += x.simple; // paralel reduction
-	     y.power += y.simple;
-	     if (x.simple > 0) for (int i=0; i<x.power; i++) x.C[i] = Bin(x.power,i); 
-	     if (y.simple > 0) for (int i=0; i<y.power; i++) y.C[i] = Bin(y.power,i);
+	     if (x.simple > 0) { // paralel reduction
+			x.power += x.simple;
+			x.simple = 0;
+			for (int i=0; i<x.power; i++) x.C[i] = Bin(x.power, i);
+		 }
+		 if (y.simple > 0) {
+			 y.power += y.simple;
+			 y.simple = 0;
+			 for (int i=0; i<y.power; i++) y.C[i] = Bin(y.power, i);
+		 }
      
          try {	
 		     F.power = x.power + y.power; 
@@ -66,19 +72,23 @@ edge operator +(edge x,edge y)
 			y.simple = 0;
 		}
         F.C.resize(x.C.size()); 
+		F.power = max(x.power, y.power);
 	    F.simple = 0;
 		F.ex = true; // need for chainreduction
 
 	    if (x.simple > 0 && x.power!=1) cout<<"Eror in Operator +"<<endl;
 	    if (y.simple > 0 && y.power!=1) cout<<"Eror in Operator +"<<endl;
 
-	    x.power += x.simple; // paralel reduction
-     	y.power += y.simple;
-		F.power = max(x.power, y.power);
-	    if (x.simple > 0) for (int i=0; i<x.power; i++) x.C[i] = Bin(x.power, i);
-	    if (y.simple > 0) for (int i=0; i<y.power; i++) y.C[i] = Bin(y.power, i);
-		x.simple = 0;
-		y.simple = 0;
+	    if (x.simple > 0) { // paralel reduction
+			x.power += x.simple;
+			x.simple = 0;
+			for (int i=0; i<x.power; i++) x.C[i] = Bin(x.power, i);
+		}
+		if (y.simple > 0) {
+			y.power += y.simple;
+			y.simple = 0;
+			for (int i=0; i<y.power; i++) y.C[i] = Bin(y.power, i);
+		}
         
 		if (x.power != y.power) {
             edge I;
@@ -112,19 +122,23 @@ edge operator -(edge x,edge y)
 			y.simple = 0;
 		}
         F.C.resize(x.C.size()); 
+		F.power = max(x.power, y.power);
 	    F.simple = 0;
 		F.ex = true;
 
 	    if (x.simple > 0 && x.power!=1) cout<<"Eror in Operator -"<<endl;
 	    if (y.simple > 0 && y.power!=1) cout<<"Eror in Operator -"<<endl;
 
-	    x.power += x.simple; // paralel reduction
-     	y.power += y.simple;
-		F.power = max(x.power, y.power);
-	    if (x.simple > 0) for (int i=0; i<x.power; i++) x.C[i] = Bin(x.power, i);
-	    if (y.simple > 0) for (int i=0; i<y.power; i++) y.C[i] = Bin(y.power, i);
-		x.simple = 0;
-		y.simple = 0;
+	    if (x.simple > 0) { // paralel reduction
+			x.power += x.simple;
+			x.simple = 0;
+			for (int i=0; i<x.power; i++) x.C[i] = Bin(x.power, i);
+		}
+		if (y.simple > 0) {
+			y.power += y.simple;
+			y.simple = 0;
+			for (int i=0; i<y.power; i++) y.C[i] = Bin(y.power, i);
+		}
 
         if (x.power != y.power) {
             edge I;
@@ -153,16 +167,20 @@ edge operator ~(edge x)
 {   
 	edge F;
 	if (!x.C.empty()) { // for edges not zero attendance
+		if (x.C.size() == 1) return F;
 		F.C.resize(x.C.size()); 
 		F.simple = 0;
 		F.ex = true;
 
 	    if (x.simple > 0 && x.power!=1) cout<<"Eror in Operator ~"<<endl;
 
-	    x.power += x.simple; // paralel reduction
+	    if (x.simple > 0) { // paralel reduction
+			x.power += x.simple;
+			x.simple = 0;
+			for (int i=0; i<x.power; i++) x.C[i] = Bin(x.power, i);
+		}
+        
 		F.power = x.power;
-	    if (x.simple > 0) for (int i=0; i<x.power; i++) x.C[i] = Bin(x.power, i);
-
 	    for (int i=0; i<=F.power; i++) F.C[i] = Bin(x.power, i) - x.C[i];
 	}
 	else {
