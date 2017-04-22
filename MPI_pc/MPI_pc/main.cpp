@@ -3,7 +3,7 @@
 ofstream output("C://output.txt");
 ifstream input("C://input.txt");
 
-int num = 0, num2 = 0, num3 = 0, num4 = 0, num5 = 0;
+int num = 0, num2 = 0, num3 = 0, num4 = 0, num5 = 0, chr = 0, ch1 = 0, ch2 = 0;
 vector<bool> visited;
 vector<edge> Bin;
 bool busy;
@@ -24,6 +24,7 @@ void str::printstr() {
 	}
 	cout << "H.F : " << endl;
 	for (int i = 0; i < F.size(); i++) F[i].printedge();
+	cout << "H.ex = " << ex << endl;
 }
 
 void edge::outprintedge() {
@@ -41,6 +42,7 @@ void str::outprintstr() {
 	}
 	output << "H.F : " << endl;
 	for (int i = 0; i < F.size(); i++) F[i].outprintedge();
+	output << "H.ex = " << ex << endl;
 }
 
 char *Pack(edge e, int buf_size, int vector_size) {
@@ -106,40 +108,11 @@ vector<edge> Unpack_vector(char buf[], int buf_size, int vector_size, int positi
 	return F;
 }
 
-char *Pack_matrix(vector<vector<edge>> G, int buf_size, int vector_size) {
-	int vector_buf_size = G.size()*buf_size + sizeof(int); // assume matrix is square
-	int matrix_buf_size = G.size()*vector_buf_size; // cant do this at one int
-	char *buf = new char[matrix_buf_size], *buf_vector;
-	int position = 0;
-	for (int i = 0; i < G.size(); i++) {
-		buf_vector = Pack_vector(G[i], buf_size, vector_size);
-		MPI_Pack(buf_vector, vector_buf_size, MPI_PACKED, buf, matrix_buf_size, &position, MPI_COMM_WORLD); //packed?
-	}
-
-	return buf;
-
-}
-
-vector<vector<edge>> Unpack_matrix(char buf[], int buf_size, int vector_size) {
-	vector<edge> F;
-	vector<vector<edge>> G;
-	F = Unpack_vector(buf, buf_size, vector_size, 0); // vector_buf_size is enough for OUT buf, buf don't reduce
-	int vector_buf_size = F.size()*buf_size + sizeof(int);
-	G.resize(F.size()); // assume matrix is square
-	G[0] = F;
-	for (int i = 1; i < G.size(); i++) {
-		F = Unpack_vector(buf, buf_size, vector_size, i*vector_buf_size); // vector_buf_size is enough for OUT buf, buf don't reduce
-		G[i] = F;
-	}
-
-	return G;
-}
-
-char *Pack_data(str H, int buf_size, int vector_size)
+char* Pack_data(str H, int buf_size, int vector_size)
 {
-	int str_buf_size = 0, position = 0, vector_buf_size;
+	int position = 0, vector_buf_size;
+	int str_buf_size = H.F.size()*buf_size + sizeof(int) + sizeof(bool);
 	for (int i = 1; i < H.G.size(); i++) str_buf_size += i*buf_size + sizeof(int);
-	str_buf_size += H.F.size()*buf_size + sizeof(int);
 	char *buf = new char[str_buf_size], *buf_vector;
 	for (int i = 0; i < H.G.size(); i++) for (int j = 0; j <= i; j++) H.G[i].erase(H.G[i].begin());
 
@@ -151,11 +124,13 @@ char *Pack_data(str H, int buf_size, int vector_size)
 	vector_buf_size = H.F.size()*buf_size + sizeof(int);
 	buf_vector = Pack_vector(H.F, buf_size, vector_size);
 	MPI_Pack(buf_vector, vector_buf_size, MPI_PACKED, buf, str_buf_size, &position, MPI_COMM_WORLD); //packed?
+	MPI_Pack(&H.ex, 1, MPI_BYTE, buf, str_buf_size, &position, MPI_COMM_WORLD); //packed?
 
 	return buf;
 }
 
-str Unpack_data(char buf[], int buf_size, int vector_size)
+
+str Unpack_data(char* buf, int buf_size, int vector_size)
 {
 	str H;
 	edge N;
@@ -170,6 +145,8 @@ str Unpack_data(char buf[], int buf_size, int vector_size)
 		position += H.G[i].size()*buf_size + sizeof(int);
 	}
 	H.F = Unpack_vector(buf, buf_size, vector_size, position);
+	position += H.F.size()*buf_size + sizeof(int);
+	MPI_Unpack(buf, 1, &position, &H.ex, 1, MPI_BYTE, MPI_COMM_WORLD);
 
 	for (int i = 1; i < H.G.size(); i++) for (int j = 0; j <= i; j++) H.G[i].insert(H.G[i].begin(), N);
 	for (int i = 1; i < H.G.size(); i++) for (int j = 0; j < i; j++) H.G[i][j] = H.G[j][i];
@@ -425,6 +402,12 @@ void renumerate(vector<vector<edge>> &H, int s, int t)
 		G = H[t];
 		for (int i = 0; i<H.size(); i++) if (i != s && i != t) swap(F[i], G[i]);
 
+		if (!visited.empty() && max(s, t) < visited.size()) {
+			bool r = visited[s];
+			visited[s] = visited[t];
+			visited[t] = r;
+		}
+
 		for (int i = 0; i<H.size(); i++) { //clear strings and columns for nodes s,t
 			if (H[t][i].ex) deledge(H, t, i); //take into account the symmetry
 			if (H[s][i].ex) deledge(H, s, i);
@@ -515,7 +498,7 @@ vector<vector<edge>> get_info()
 			bool r = gconnected(S);
 			if (!r) cout << "Unconnected graph on input!" << endl;
 
-			int s = 1, t = 2;
+			int s = 0, t = 2;
 
 			if (s < t) {
 				if (s != 0 || t != 1) { // after this 0,1
@@ -697,6 +680,7 @@ vector<int> chainreduction(vector<vector<edge>> &H, vector<int> Ch, vector<int> 
 		else count = 0; // to reduct chain(s) when we find count=2
 
 		if (count == 0) { // Replace chain by edge
+			chr++;
 			edge newedge;
 			newedge.C.push_back(1);
 			for (int j = 0; j<P.size() - 1; j++) newedge = newedge*H[P[j]][P[j + 1]];
@@ -718,7 +702,6 @@ vector<int> chainreduction(vector<vector<edge>> &H, vector<int> Ch, vector<int> 
 			}
 
 			if (!Ch.empty()) { // expand vector in both sides if it is not empty
-				count = Ch.back();
 				Ch.pop_back();
 				vector<int> nodepower = gnodepower(H);
 
@@ -743,6 +726,8 @@ vector<int> chainreduction(vector<vector<edge>> &H, vector<int> Ch, vector<int> 
 						break;
 					}
 
+				count = 0;
+				for (int i = 0; i<Ch.size(); i++) if (Ch[i] == 0 || Ch[i] == 1) count++; // count selected nodes in chain
 				Ch.push_back(count);
 			}
 			return chainreduction(H, Ch, V, found);
@@ -753,33 +738,33 @@ vector<int> chainreduction(vector<vector<edge>> &H, vector<int> Ch, vector<int> 
 
 void procedure(vector<vector<edge>> &H, edge F, bool connected, int buf_size, int vector_size, int rank)
 {
-	cout << "slave " << rank << " start factoring" << endl;
+	//cout << "slave " << rank << " start factoring" << endl;
 	if (!connected) {
 		if (!bridgereduction(H)) return;
 		else connected = true;
 	}
 
-	if (H.size() < 4) {
-		cout << "slave " << rank << " end factoring" << endl;
+	if (H.size() < 6) {
+		//cout << "slave " << rank << " end factoring" << endl;
 		num++;
 		if (H.size() == 2) {
 			num2++;
 			edge e = F*H[0][1];
 			sum = sum + e;
-			e.printedge();
+			//e.printedge();
 		}
 		if (H.size() == 3) {
 			num3++;
 			edge e = F*(H[0][1] + H[1][2] * H[0][2] - H[0][1] * H[1][2] * H[0][2]);
 			sum = sum + e;
-			e.printedge();
+			//e.printedge();
 		}
 		if (H.size() == 4) {
 			num4++;
 			edge e = F*(H[0][1] + ~H[0][1] * (H[1][2] * H[0][2] + H[0][3] * H[1][3] - H[1][2] * H[0][2] * H[0][3] * H[1][3] +
 				H[1][2] * H[2][3] * H[0][3] * ~H[1][3] * ~H[0][2] + ~H[1][2] * H[2][3] * ~H[0][3] * H[1][3] * H[0][2]));
 			sum = sum + e;
-			e.printedge();
+			//e.printedge();
 		}
 
 		if (H.size() == 5) {
@@ -791,7 +776,7 @@ void procedure(vector<vector<edge>> &H, edge F, bool connected, int buf_size, in
 				H[1][3] * ~H[0][1] * ~H[0][3] * ~H[1][2] * (H[0][2] * ~H[0][4] * ~H[2][3] * (~H[2][4] + ~H[1][4] * ~H[3][4] * H[2][4]) +
 					H[0][4] * ~H[1][4] * ~H[3][4] * (~H[2][3] + ~H[0][2] * ~H[2][4] * H[2][3]))));
 			sum = sum + e;
-			e.printedge();
+			//e.printedge();
 		}
 		return;
 	}
@@ -799,34 +784,35 @@ void procedure(vector<vector<edge>> &H, edge F, bool connected, int buf_size, in
 	F = penduntreduction(H, F, 0, false);
 
 	vector<int> Chain, V;
-	//Chain = chainreduction(H, Chain, V, false);
+	Chain = chainreduction(H, Chain, V, false);
 	int count = 0;
 	if (!Chain.empty()) {
 		count = Chain.back();
 		Chain.pop_back();
 	}
+	//count = 0;
 
-	if (H.size() < 4) {
-		cout << "slave " << rank << " end factoring" << endl;
+	if (H.size() < 6) {
+		//cout << "slave " << rank << " end factoring" << endl;
 		num++;
 		if (H.size() == 2) {
 			num2++;
 			edge e = F*H[0][1];
 			sum = sum + e;
-			e.printedge();
+			//e.printedge();
 		}
 		if (H.size() == 3) {
 			num3++;
 			edge e = F*(H[0][1] + H[1][2] * H[0][2] - H[0][1] * H[1][2] * H[0][2]);
 			sum = sum + e;
-			e.printedge();
+			//e.printedge();
 		}
 		if (H.size() == 4) {
 			num4++;
 			edge e = F*(H[0][1] + ~H[0][1] * (H[1][2] * H[0][2] + H[0][3] * H[1][3] - H[1][2] * H[0][2] * H[0][3] * H[1][3] +
 				H[1][2] * H[2][3] * H[0][3] * ~H[1][3] * ~H[0][2] + ~H[1][2] * H[2][3] * ~H[0][3] * H[1][3] * H[0][2]));
 			sum = sum + e;
-			e.printedge();
+			//e.printedge();
 		}
 
 		if (H.size() == 5) {
@@ -838,9 +824,174 @@ void procedure(vector<vector<edge>> &H, edge F, bool connected, int buf_size, in
 				H[1][3] * ~H[0][1] * ~H[0][3] * ~H[1][2] * (H[0][2] * ~H[0][4] * ~H[2][3] * (~H[2][4] + ~H[1][4] * ~H[3][4] * H[2][4]) +
 					H[0][4] * ~H[1][4] * ~H[3][4] * (~H[2][3] + ~H[0][2] * ~H[2][4] * H[2][3]))));
 			sum = sum + e;
-			e.printedge();
+			//e.printedge();
 		}
 		return;
+	}
+
+	if (count == 1) {
+		//cout << "slave " << rank << " get hain with 1 pivote" << endl;
+		ch1++;
+		int s, t;
+		bool terminal = false;
+		vector<int> Ch(Chain);
+		vector<int>::iterator it, r;
+		int coun = 0;
+		for (it = Ch.begin(); it < Ch.end(); ++it) if (*it == 0 || *it == 1) r = it;
+		int q = r - Ch.begin(); // place of pivote node t=(0 or 1) into vector Ch
+		if (r == Ch.begin() || r == Ch.end() - 1) terminal = true;
+		s = *r;
+		s == 0 ? t = 1 : t = 0; // need for case terminal
+
+		edge P, L;
+		P.C.push_back(1);
+		L.C.push_back(1);
+		vector<vector<edge>> G(H);
+		for (int i = 0; i<q; i++) L = L*G[Ch[i]][Ch[i + 1]];
+		for (int i = q; i<Ch.size() - 1; i++) P = P*G[Ch[i]][Ch[i + 1]];
+
+		for (int i = 1; i<Ch.size() - 1; i++) { // after this we get 2 nodes from chain, one of them can be pivote
+			delnode(G, Ch[i]);
+			for (int j = 0; j<Ch.size(); j++) if (Ch[i] < Ch[j]) Ch[j]--; // not forget about Ch
+		}
+		int x = Ch.front(), y = Ch.back(); // matter x<=>y
+
+		vector<vector<edge>> G1(G);
+		bool connec = gconnected(G);
+		vector<bool> visited1(visited);
+		if (!connec) cout << "Get unconnected in chr1" << endl;
+
+		(terminal) ? renumerate(G, y, t) : renumerate(G, y, 1);  // s=0||1, becouse we don't delete pivote node, after delete: s - node out of chain always 0, so t=1
+
+		//cout << "slave " << rank << " ask for help" << endl;
+		int just_value;
+		MPI_Send(&just_value, 0, MPI_INT, HOST_PROCESSOR, I_NEED_HELP_TAG, MPI_COMM_WORLD); // ask for help
+		int help_processor = 0;
+		MPI_Status status;
+		MPI_Recv(&help_processor, 1, MPI_INT, HOST_PROCESSOR, I_NEED_HELP_TAG, MPI_COMM_WORLD, &status); // get answer
+
+		if (help_processor != 0) {
+			//cout << "slave " << rank << " have help from " << help_processor << endl;
+			str Gp;
+			Gp.G = G;
+			Gp.F.push_back(F*(P - P*L));
+			Gp.ex = connec;
+			int str_buf_size = Gp.F.size()*buf_size + sizeof(int) + sizeof(bool);
+			for (int i = 1; i < Gp.G.size(); i++) str_buf_size += i*buf_size + sizeof(int);
+			char *buf_str = Pack_data(Gp, buf_size, vector_size);
+			MPI_Send(buf_str, str_buf_size, MPI_PACKED, help_processor, GPINFO_TAG, MPI_COMM_WORLD);
+			delete[] buf_str;
+		}
+		else procedure(G, F*(P - P*L), connec, buf_size, vector_size, rank); // Rsy = k
+
+		visited = visited1; // same size so all right
+		G = G1;
+		(terminal) ? renumerate(G, x, t) : renumerate(G, x, 1);
+
+		//cout << "slave " << rank << " ask for help" << endl;
+		just_value;
+		MPI_Send(&just_value, 0, MPI_INT, HOST_PROCESSOR, I_NEED_HELP_TAG, MPI_COMM_WORLD); // ask for help
+		help_processor = 0;
+		MPI_Recv(&help_processor, 1, MPI_INT, HOST_PROCESSOR, I_NEED_HELP_TAG, MPI_COMM_WORLD, &status); // get answer
+
+		if (help_processor != 0) {
+			//cout << "slave " << rank << " have help from " << help_processor << endl;
+			str Gp;
+			Gp.G = G;
+			Gp.F.push_back(F*(L - P*L));
+			Gp.ex = connec;
+			int str_buf_size = Gp.F.size()*buf_size + sizeof(int) + sizeof(bool);
+			for (int i = 1; i < Gp.G.size(); i++) str_buf_size += i*buf_size + sizeof(int);
+			char *buf_str = Pack_data(Gp, buf_size, vector_size);
+			MPI_Send(buf_str, str_buf_size, MPI_PACKED, help_processor, GPINFO_TAG, MPI_COMM_WORLD);
+			delete[] buf_str;
+		}
+		else procedure(G, F*(L - P*L), connec, buf_size, vector_size, rank); // Rsx = w
+
+		G = G1;
+		if (x == 0 || x == 1 || y == 0 || y == 1) // only 1 case can be
+			(x == 0 || x == 1) ? contractedge(G, y, x) : contractedge(G, x, y); // don't delete pivote node, get t
+		else {
+			int xy = x;
+			if (y < xy) xy--; // not forget about xy
+			contractedge(G, y, x);
+			renumerate(G, xy, 1); // if terminal x or y is pivote
+		}
+
+		edge m;
+
+		if (!connec) {
+			visited = visited1;
+			int component1_size = 0;
+			for (int i = 0; i < visited.size(); i++) if (visited[i]) component1_size++;
+			int component2_size = visited.size() - component1_size;
+
+			if (component1_size != 1 && component2_size != 1) {
+				cout << "Decomposition chr1:" << component1_size << " & " << component2_size << endl;
+				vector<vector<edge>> J(G1);
+
+				if (!terminal) s = 0; // else s = s 
+				if ((visited[s] && visited[x]) || (!visited[s] && !visited[x]))
+					(terminal) ? renumerate(G, x, t) : renumerate(G, x, 1);
+				if ((visited[s] && visited[y]) || (!visited[s] && !visited[y]))
+					(terminal) ? renumerate(G, y, t) : renumerate(G, y, 1);
+
+				procedure(J, F, connec, buf_size, vector_size, rank); // dont *F twice
+			}
+			else procedure(G, F*P*L, connected, buf_size, vector_size, rank);
+		}
+		else procedure(G, F*P*L, connected, buf_size, vector_size, rank);
+
+		//procedure(G, F*P*L, connected, buf_size, vector_size, rank); // Rs<x,y> = m, no renumerate becouse s,t always pivote nodes
+
+		return;
+		//return (P - P*L)*k + (L - P*L)*w + P*L*m
+	}
+	if (count == 2) {
+		//cout << "slave " << rank << " get hain with 2 pivotes" << endl;
+		ch2++;
+		vector<int> Ch(Chain);
+		vector<int>::iterator it, r;
+		for (it = Ch.begin(); it<Ch.end(); ++it) if (*it == 0) r = it;
+		int q = r - Ch.begin(); // place of pivote node s=0 into vector Ch 
+		for (it = Ch.begin(); it<Ch.end(); ++it) if (*it == 1) r = it;
+		int w = r - Ch.begin(); // place of pivote node t=1 into vector Ch 
+		if (q > w) { // that * edges in chain, q<w always
+			int u = q;
+			q = w;
+			w = u;
+		}
+
+		edge P, L;
+		P.C.push_back(1);
+		L.C.push_back(1);
+		vector<vector<edge>> G(H);
+		for (int i = 0; i<q; i++) L = L*G[Ch[i]][Ch[i + 1]];
+		for (int i = q; i<w; i++) P = P*G[Ch[i]][Ch[i + 1]];
+		for (int i = w; i<Ch.size() - 1; i++) L = L*G[Ch[i]][Ch[i + 1]];
+		for (int i = 1; i<Ch.size() - 1; i++) {
+			delnode(G, Ch[i]);
+			for (int j = 0; j<Ch.size(); j++) if (Ch[i] < Ch[j]) Ch[j]--; // not forget about Ch
+		}
+		int x = Ch.front(), y = Ch.back(); // doesn't matter x<=>y
+
+		bool connec = gconnected(G);
+		if (!connec) cout << "Get unconnected in chr2" << endl;
+
+		if (x != 0 && x != 1 && y != 0 && y != 1) {
+			renumerate(G, x, 0);
+			renumerate(G, y, 1);
+		}
+		if (x == 0 && y != 1) renumerate(G, y, 1);
+		if (x == 1 && y != 0) renumerate(G, y, 0);
+		if (y == 0 && x != 1) renumerate(G, x, 1);
+		if (y == 1 && x != 0) renumerate(G, x, 0);
+
+		sum = sum + F*P;
+		procedure(G, F*(L - P*L), connec, buf_size, vector_size, rank); // Rxy = n
+
+		return;
+		//return F*P + (L - P*L)*n
 	}
 
 	edge W = fedge(H);
@@ -871,29 +1022,26 @@ void procedure(vector<vector<edge>> &H, edge F, bool connected, int buf_size, in
 	bool connec = gconnected(H2);
 	contractedge(H1, W.node1, W.node2);
 
-	cout << "slave " << rank << " ask for help" << endl;
+	//cout << "slave " << rank << " ask for help" << endl;
 	int just_value;
-	MPI_Send(&just_value, 0, MPI_INT, HOST_PROCESSOR, I_NEED_HELP_TAG, MPI_COMM_WORLD); // просим у хоста помощи
-
+	MPI_Send(&just_value, 0, MPI_INT, HOST_PROCESSOR, I_NEED_HELP_TAG, MPI_COMM_WORLD); // ask for help
 	int help_processor = 0;
 	MPI_Status status;
 	MPI_Recv(&help_processor, 1, MPI_INT, HOST_PROCESSOR, I_NEED_HELP_TAG, MPI_COMM_WORLD, &status); // get answer
 
 	if (help_processor != 0) { // send half work
-		cout << "slave " << rank << " have help from " << help_processor << endl;
+		//cout << "slave " << rank << " have help from " << help_processor << endl;
 		str Gp;
 		Gp.G = H1;
 		Gp.F.push_back(F1);
-		int str_buf_size = Gp.F.size()*buf_size + sizeof(int);
+		Gp.ex = connected;
+		int str_buf_size = Gp.F.size()*buf_size + sizeof(int) + sizeof(bool);
 		for (int i = 1; i < Gp.G.size(); i++) str_buf_size += i*buf_size + sizeof(int);
 		char *buf_str = Pack_data(Gp, buf_size, vector_size);
 		MPI_Send(buf_str, str_buf_size, MPI_PACKED, help_processor, GPINFO_TAG, MPI_COMM_WORLD);
 		delete[] buf_str;
 	}
-	else {
-		cout << "slave " << rank << " have not help" << endl;
-		procedure(H1, F1, connected, buf_size, vector_size, rank);
-	}
+	else procedure(H1, F1, connected, buf_size, vector_size, rank);
 
 	procedure(H2, F2, connec, buf_size, vector_size, rank); // continue with graph wehere deleted
 }
@@ -921,20 +1069,20 @@ void master(int size)
 		Bcast_data(buf_size, vector_size);
 
 		stack<int> free_processors; // free proc
-		cout << "free_processors : ";
+		//cout << "free_processors : ";
 		for (int i = 1; i < size; ++i) {
-			cout << i << " ";
+			//cout << i << " ";
 			free_processors.push(i);
 		}
-		cout << endl;
+		//cout << endl;
 
-		int str_buf_size = Gp.F.size()*buf_size + sizeof(int);
+		int str_buf_size = Gp.F.size()*buf_size + sizeof(int) + sizeof(bool);
 		for (int i = 1; i < Gp.G.size(); i++) str_buf_size += i*buf_size + sizeof(int);
 		char* buf_str = Pack_data(Gp, buf_size, vector_size);
 		MPI_Send(buf_str, str_buf_size, MPI_PACKED, free_processors.top(), GPINFO_TAG, MPI_COMM_WORLD);
 		delete[] buf_str;
 
-		cout << "Out free " << free_processors.top() << endl;
+		//cout << "Out free " << free_processors.top() << endl;
 		free_processors.pop();
 
 		int just_value;
@@ -945,7 +1093,7 @@ void master(int size)
 
 			if (status.MPI_TAG == I_AM_FREE_TAG) // если кто-то освободился
 			{
-				cout << "In free " << status.MPI_SOURCE << endl;
+				//cout << "In free " << status.MPI_SOURCE << endl;
 				MPI_Recv(&just_value, 0, MPI_INT, status.MPI_SOURCE, I_AM_FREE_TAG, MPI_COMM_WORLD, &status); // добавляем свободный процессор обратно в стек/очередь/etc
 				free_processors.push(status.MPI_SOURCE);
 			}
@@ -956,7 +1104,7 @@ void master(int size)
 				int help_processor = 0;
 				if (free_processors.size() > 0) // если есть свободный процессор
 				{
-					cout << "Out free " << free_processors.top() << endl;
+					//cout << "Out free " << free_processors.top() << endl;
 					help_processor = free_processors.top(); // вытаскиваем его из стека
 					free_processors.pop();
 				}
@@ -965,19 +1113,19 @@ void master(int size)
 			}
 		}
 
-		cout << "send stop" << endl;
+		//cout << "send stop" << endl;
 		for (int i = 1; i < size; i++) MPI_Send(&i, 0, MPI_INT, i, STOP_TAG, MPI_COMM_WORLD);
 
-		cout << "get result" << endl;
-		int n, n2, n3, n4, n5;
+		//cout << "get result" << endl;
+		int n, n2, n3, n4, n5, cr, c1, c2;
 		for (int i = 1; i < size; i++) 
 		{
-			cout << "get from " << i << endl;
+			//cout << "get from " << i << endl;
 			char* buf = new char[buf_size];
 			MPI_Recv(buf, buf_size, MPI_PACKED, MPI_ANY_SOURCE, SUM_TAG, MPI_COMM_WORLD, &status);
 			edge s = Unpack(buf, buf_size, vector_size, 0);
 			delete[] buf;
-			s.printedge();
+			//s.printedge();
 			sum = sum + s;
 			MPI_Recv(&n, 1, MPI_INT, MPI_ANY_SOURCE, NUM_TAG, MPI_COMM_WORLD, &status);
 			num += n;
@@ -989,6 +1137,12 @@ void master(int size)
 			num4 += n4;
 			MPI_Recv(&n5, 1, MPI_INT, MPI_ANY_SOURCE, NUM5_TAG, MPI_COMM_WORLD, &status);
 			num5 += n5;
+			MPI_Recv(&cr, 1, MPI_INT, MPI_ANY_SOURCE, CHR_TAG, MPI_COMM_WORLD, &status);
+			chr += cr;
+			MPI_Recv(&c1, 1, MPI_INT, MPI_ANY_SOURCE, CH1_TAG, MPI_COMM_WORLD, &status);
+			ch1 += c1;
+			MPI_Recv(&c2, 1, MPI_INT, MPI_ANY_SOURCE, CH2_TAG, MPI_COMM_WORLD, &status);
+			ch2 += c2;
 		}
 
 		cout << "Solution:" << endl;
@@ -998,6 +1152,10 @@ void master(int size)
 		cout << " 3-dimension graph:" << num3 << endl;
 		cout << " 4-dimension graph:" << num4 << endl;
 		cout << " 5-dimension graph:" << num5 << endl;
+		cout << "Were chains:" << chr + ch1 + ch2 << endl;
+		cout << " chains reduced:" << chr << endl;
+		cout << " 1-st type:" << ch1 << endl;
+		cout << " 2-d type:" << ch2 << endl;
 
 		double value = 0, p = 0.9, z = 0.1;
 		int q = sum.power;
@@ -1009,9 +1167,7 @@ void master(int size)
 
 void slaves(int rank) 
 {
-	cout << "slave " << rank << endl;
-	bool connected = true; // becouse get only contracted
-
+	//cout << "slave " << rank << endl;
 	int buf_size;
 	MPI_Bcast(&buf_size, 1, MPI_INT, HOST_PROCESSOR, MPI_COMM_WORLD);
 
@@ -1027,7 +1183,7 @@ void slaves(int rank)
 	Bin = Unpack_vector(buf_vector, buf_size, vector_size, 0);
 	delete[] buf_vector;
 
-	cout << "Bcast get for slave " << rank << endl; // work
+	//cout << "Bcast get for slave " << rank << endl; // work
 
 	MPI_Status status;
 	int just_value;
@@ -1036,7 +1192,7 @@ void slaves(int rank)
 		MPI_Probe(MPI_ANY_SOURCE, MPI_ANY_TAG, MPI_COMM_WORLD, &status);
 
 		if (status.MPI_TAG == GPINFO_TAG) {
-			cout << "slave " << rank << " get work" << endl;
+			//cout << "slave " << rank << " get work" << endl;
 			int get_size;
 			MPI_Get_count(&status, MPI_PACKED, &get_size);
 			char *buf_str = new char[get_size];
@@ -1044,14 +1200,14 @@ void slaves(int rank)
 			str Gp = Unpack_data(buf_str, buf_size, vector_size);
 			delete[] buf_str;
 
-			procedure(Gp.G, Gp.F.front(), connected, buf_size, vector_size, rank);
+			procedure(Gp.G, Gp.F.front(), Gp.ex, buf_size, vector_size, rank);
 
-			cout << "slave " << rank << " get free" << endl;
+			//cout << "slave " << rank << " get free" << endl;
 			MPI_Send(&just_value, 0, MPI_INT, HOST_PROCESSOR, I_AM_FREE_TAG, MPI_COMM_WORLD);
 		}
 	} while (status.MPI_TAG != STOP_TAG);
 
-	cout << "slave " << rank << " stop working and send result" << endl;
+	//cout << "slave " << rank << " stop working and send result" << endl;
 	char *buf_edge = Pack(sum, buf_size, vector_size);
 	MPI_Send(buf_edge, buf_size, MPI_PACKED, HOST_PROCESSOR, SUM_TAG, MPI_COMM_WORLD);
 	delete[] buf_edge;
@@ -1060,6 +1216,9 @@ void slaves(int rank)
 	MPI_Send(&num3, 1, MPI_INT, HOST_PROCESSOR, NUM3_TAG, MPI_COMM_WORLD);
 	MPI_Send(&num4, 1, MPI_INT, HOST_PROCESSOR, NUM4_TAG, MPI_COMM_WORLD);
 	MPI_Send(&num5, 1, MPI_INT, HOST_PROCESSOR, NUM5_TAG, MPI_COMM_WORLD);
+	MPI_Send(&chr, 1, MPI_INT, HOST_PROCESSOR, CHR_TAG, MPI_COMM_WORLD);
+	MPI_Send(&ch1, 1, MPI_INT, HOST_PROCESSOR, CH1_TAG, MPI_COMM_WORLD);
+	MPI_Send(&ch2, 1, MPI_INT, HOST_PROCESSOR, CH2_TAG, MPI_COMM_WORLD);
 }
 
 int main(int argc, char **argv)

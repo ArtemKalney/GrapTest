@@ -29,6 +29,7 @@ struct edge {
 struct str {
 	vector<vector<edge>> G;
 	vector<edge> F;
+	bool ex;
 	void printstr();
 	void outprintstr();
 };
@@ -45,3 +46,6 @@ struct str {
 #define NUM3_TAG 7
 #define NUM4_TAG 8
 #define NUM5_TAG 9
+#define CHR_TAG 10
+#define CH1_TAG 11
+#define CH2_TAG 12
