@@ -3,10 +3,11 @@
 ofstream output("C://output.txt");
 ifstream input("C://input.txt");
 
-int num = 0, num2 = 0, num3 = 0, num4 = 0, num5 = 0, chr = 0, ch1 = 0, ch2 = 0;
+int num0 = 0, num2 = 0, num3 = 0, num4 = 0, num5 = 0, chr = 0, ch1 = 0, ch2 = 0, chrs = 0,
+    decomp1 = 0, decomp2 = 0, decomp3 = 0, bridges = 0, pendunt = 0, factors = 0;
+
 vector<bool> visited;
 vector<edge> Bin;
-bool busy;
 edge sum;
 
 void edge::printedge() {
@@ -108,11 +109,9 @@ vector<edge> Unpack_vector(char buf[], int buf_size, int vector_size, int positi
 	return F;
 }
 
-char* Pack_data(str H, int buf_size, int vector_size)
+char* Pack_data(str H, int str_buf_size, int buf_size, int vector_size)
 {
 	int position = 0, vector_buf_size;
-	int str_buf_size = H.F.size()*buf_size + sizeof(int) + sizeof(bool);
-	for (int i = 1; i < H.G.size(); i++) str_buf_size += i*buf_size + sizeof(int);
 	char *buf = new char[str_buf_size], *buf_vector;
 	for (int i = 0; i < H.G.size(); i++) for (int j = 0; j <= i; j++) H.G[i].erase(H.G[i].begin());
 
@@ -136,7 +135,7 @@ str Unpack_data(char* buf, int buf_size, int vector_size)
 	edge N;
 	N.ex = false;
 	H.G.push_back(Unpack_vector(buf, buf_size, vector_size, 0)); // vector_buf_size is enough for OUT buf, buf don't reduce
-	int position = H.G[0].size()*buf_size + sizeof(int), count;
+	int position = H.G[0].size()*buf_size + sizeof(int);
 	H.G[0].insert(H.G[0].begin(), N); // get matrix size
 	H.G.resize(H.G[0].size()); // assume is squre
 
@@ -499,7 +498,7 @@ vector<vector<edge>> get_info()
 			if (!r) cout << "Unconnected graph on input!" << endl;
 
 			int s = 0, t = 2;
-
+			
 			if (s < t) {
 				if (s != 0 || t != 1) { // after this 0,1
 					if (s != 0 && t != 1) {
@@ -527,6 +526,7 @@ vector<vector<edge>> get_info()
 
 edge penduntreduction(vector<vector<edge>> &H, edge F, int q, bool find)
 {
+	pendunt++;
 	vector<int> nodepower = gnodepower(H);
 	if (find) nodepower.erase(nodepower.begin() + q); // in penduntreduction we not consider pendunt node 0 || 1
 
@@ -559,6 +559,7 @@ edge penduntreduction(vector<vector<edge>> &H, edge F, int q, bool find)
 
 bool bridgereduction(vector<vector<edge>> &H)
 {
+	bridges++;
 	for (int i = 0; i<H.size(); i++) if (!visited[i]) cout << i + 1 << " ";
 	cout << endl;
 
@@ -736,49 +737,49 @@ vector<int> chainreduction(vector<vector<edge>> &H, vector<int> Ch, vector<int> 
 	return Ch;
 }
 
-void procedure(vector<vector<edge>> &H, edge F, bool connected, int buf_size, int vector_size, int rank)
+edge procedure(vector<vector<edge>> &H, edge F, bool connected, int buf_size, int vector_size, int rank)
 {
+	factors++;
 	//cout << "slave " << rank << " start factoring" << endl;
 	if (!connected) {
-		if (!bridgereduction(H)) return;
-		else connected = true;
+		edge N;
+		N.ex = false;
+		if (!bridgereduction(H)) {
+			num0++;
+			return N;
+		}
+		connected = true;
 	}
 
 	if (H.size() < 6) {
 		//cout << "slave " << rank << " end factoring" << endl;
-		num++;
 		if (H.size() == 2) {
 			num2++;
-			edge e = F*H[0][1];
-			sum = sum + e;
+			return F*H[0][1];
 			//e.printedge();
 		}
 		if (H.size() == 3) {
 			num3++;
-			edge e = F*(H[0][1] + H[1][2] * H[0][2] - H[0][1] * H[1][2] * H[0][2]);
-			sum = sum + e;
+			return F*(H[0][1] + H[1][2] * H[0][2] - H[0][1] * H[1][2] * H[0][2]);
 			//e.printedge();
 		}
 		if (H.size() == 4) {
 			num4++;
-			edge e = F*(H[0][1] + ~H[0][1] * (H[1][2] * H[0][2] + H[0][3] * H[1][3] - H[1][2] * H[0][2] * H[0][3] * H[1][3] +
+			return F*(H[0][1] + ~H[0][1] * (H[1][2] * H[0][2] + H[0][3] * H[1][3] - H[1][2] * H[0][2] * H[0][3] * H[1][3] +
 				H[1][2] * H[2][3] * H[0][3] * ~H[1][3] * ~H[0][2] + ~H[1][2] * H[2][3] * ~H[0][3] * H[1][3] * H[0][2]));
-			sum = sum + e;
 			//e.printedge();
 		}
 
 		if (H.size() == 5) {
 			num5++;
-			edge e = F*(~(~H[0][1] * ~H[0][2] * (H[1][2] * ~H[1][4] * (H[0][4] * ~H[0][3] * ~H[2][4] * (~H[3][4] + ~H[1][3] * ~H[2][3] * H[3][4]) +
+			return F*(~(~H[0][1] * ~H[0][2] * (H[1][2] * ~H[1][4] * (H[0][4] * ~H[0][3] * ~H[2][4] * (~H[3][4] + ~H[1][3] * ~H[2][3] * H[3][4]) +
 				H[0][3] * ~H[1][3] * ~H[2][3] * (~H[2][4] + ~H[0][4] * ~H[3][4] * H[2][4])) + ~H[0][3] * ~H[0][4] * ~(~H[1][2] * ~H[1][3] * ~H[1][4])) +
 				~H[0][1] * ~H[1][3] * (H[1][4] * ~H[0][4] * (H[0][3] * ~H[0][2] * ~H[3][4] * (~H[2][3] + ~H[1][2] * ~H[2][4] * H[2][3]) +
 					H[0][2] * ~H[1][2] * ~H[2][4] * (~H[3][4] + ~H[0][3] * ~H[2][3] * H[3][4])) + ~H[1][2] * ~H[1][4]) +
 				H[1][3] * ~H[0][1] * ~H[0][3] * ~H[1][2] * (H[0][2] * ~H[0][4] * ~H[2][3] * (~H[2][4] + ~H[1][4] * ~H[3][4] * H[2][4]) +
 					H[0][4] * ~H[1][4] * ~H[3][4] * (~H[2][3] + ~H[0][2] * ~H[2][4] * H[2][3]))));
-			sum = sum + e;
 			//e.printedge();
 		}
-		return;
 	}
 
 	F = penduntreduction(H, F, 0, false);
@@ -794,39 +795,33 @@ void procedure(vector<vector<edge>> &H, edge F, bool connected, int buf_size, in
 
 	if (H.size() < 6) {
 		//cout << "slave " << rank << " end factoring" << endl;
-		num++;
 		if (H.size() == 2) {
 			num2++;
-			edge e = F*H[0][1];
-			sum = sum + e;
+			return F*H[0][1];
 			//e.printedge();
 		}
 		if (H.size() == 3) {
 			num3++;
-			edge e = F*(H[0][1] + H[1][2] * H[0][2] - H[0][1] * H[1][2] * H[0][2]);
-			sum = sum + e;
+			return F*(H[0][1] + H[1][2] * H[0][2] - H[0][1] * H[1][2] * H[0][2]);
 			//e.printedge();
 		}
 		if (H.size() == 4) {
 			num4++;
-			edge e = F*(H[0][1] + ~H[0][1] * (H[1][2] * H[0][2] + H[0][3] * H[1][3] - H[1][2] * H[0][2] * H[0][3] * H[1][3] +
+			return F*(H[0][1] + ~H[0][1] * (H[1][2] * H[0][2] + H[0][3] * H[1][3] - H[1][2] * H[0][2] * H[0][3] * H[1][3] +
 				H[1][2] * H[2][3] * H[0][3] * ~H[1][3] * ~H[0][2] + ~H[1][2] * H[2][3] * ~H[0][3] * H[1][3] * H[0][2]));
-			sum = sum + e;
 			//e.printedge();
 		}
 
 		if (H.size() == 5) {
 			num5++;
-			edge e = F*(~(~H[0][1] * ~H[0][2] * (H[1][2] * ~H[1][4] * (H[0][4] * ~H[0][3] * ~H[2][4] * (~H[3][4] + ~H[1][3] * ~H[2][3] * H[3][4]) +
+			return F*(~(~H[0][1] * ~H[0][2] * (H[1][2] * ~H[1][4] * (H[0][4] * ~H[0][3] * ~H[2][4] * (~H[3][4] + ~H[1][3] * ~H[2][3] * H[3][4]) +
 				H[0][3] * ~H[1][3] * ~H[2][3] * (~H[2][4] + ~H[0][4] * ~H[3][4] * H[2][4])) + ~H[0][3] * ~H[0][4] * ~(~H[1][2] * ~H[1][3] * ~H[1][4])) +
 				~H[0][1] * ~H[1][3] * (H[1][4] * ~H[0][4] * (H[0][3] * ~H[0][2] * ~H[3][4] * (~H[2][3] + ~H[1][2] * ~H[2][4] * H[2][3]) +
 					H[0][2] * ~H[1][2] * ~H[2][4] * (~H[3][4] + ~H[0][3] * ~H[2][3] * H[3][4])) + ~H[1][2] * ~H[1][4]) +
 				H[1][3] * ~H[0][1] * ~H[0][3] * ~H[1][2] * (H[0][2] * ~H[0][4] * ~H[2][3] * (~H[2][4] + ~H[1][4] * ~H[3][4] * H[2][4]) +
 					H[0][4] * ~H[1][4] * ~H[3][4] * (~H[2][3] + ~H[0][2] * ~H[2][4] * H[2][3]))));
-			sum = sum + e;
 			//e.printedge();
 		}
-		return;
 	}
 
 	if (count == 1) {
@@ -847,12 +842,13 @@ void procedure(vector<vector<edge>> &H, edge F, bool connected, int buf_size, in
 		P.C.push_back(1);
 		L.C.push_back(1);
 		vector<vector<edge>> G(H);
-		for (int i = 0; i<q; i++) L = L*G[Ch[i]][Ch[i + 1]];
-		for (int i = q; i<Ch.size() - 1; i++) P = P*G[Ch[i]][Ch[i + 1]];
+		for (int i = 0; i < q; i++) L = L*G[Ch[i]][Ch[i + 1]];
+		for (int i = q; i < Ch.size() - 1; i++) P = P*G[Ch[i]][Ch[i + 1]];
+		edge T = P*L;
 
-		for (int i = 1; i<Ch.size() - 1; i++) { // after this we get 2 nodes from chain, one of them can be pivote
+		for (int i = 1; i < Ch.size() - 1; i++) { // after this we get 2 nodes from chain, one of them can be pivote
 			delnode(G, Ch[i]);
-			for (int j = 0; j<Ch.size(); j++) if (Ch[i] < Ch[j]) Ch[j]--; // not forget about Ch
+			for (int j = 0; j < Ch.size(); j++) if (Ch[i] < Ch[j]) Ch[j]--; // not forget about Ch
 		}
 		int x = Ch.front(), y = Ch.back(); // matter x<=>y
 
@@ -864,49 +860,54 @@ void procedure(vector<vector<edge>> &H, edge F, bool connected, int buf_size, in
 		(terminal) ? renumerate(G, y, t) : renumerate(G, y, 1);  // s=0||1, becouse we don't delete pivote node, after delete: s - node out of chain always 0, so t=1
 
 		//cout << "slave " << rank << " ask for help" << endl;
-		int just_value;
-		MPI_Send(&just_value, 0, MPI_INT, HOST_PROCESSOR, I_NEED_HELP_TAG, MPI_COMM_WORLD); // ask for help
-		int help_processor = 0;
-		MPI_Status status;
-		MPI_Recv(&help_processor, 1, MPI_INT, HOST_PROCESSOR, I_NEED_HELP_TAG, MPI_COMM_WORLD, &status); // get answer
+		int just_value, help_processor = 0;
+		if (H.size() >= MAX_DIMENSIONAL) {
+			MPI_Status status;
+			MPI_Send(&just_value, 0, MPI_INT, HOST_PROCESSOR, I_NEED_HELP_TAG, MPI_COMM_WORLD); // ask for help
+			MPI_Recv(&help_processor, 1, MPI_INT, HOST_PROCESSOR, I_NEED_HELP_TAG, MPI_COMM_WORLD, &status); // get answer
+		}
 
+		edge k;
 		if (help_processor != 0) {
 			//cout << "slave " << rank << " have help from " << help_processor << endl;
 			str Gp;
 			Gp.G = G;
-			Gp.F.push_back(F*(P - P*L));
+			Gp.F.push_back(F*(P - T));
 			Gp.ex = connec;
 			int str_buf_size = Gp.F.size()*buf_size + sizeof(int) + sizeof(bool);
 			for (int i = 1; i < Gp.G.size(); i++) str_buf_size += i*buf_size + sizeof(int);
-			char *buf_str = Pack_data(Gp, buf_size, vector_size);
+			char *buf_str = Pack_data(Gp, str_buf_size, buf_size, vector_size);
 			MPI_Send(buf_str, str_buf_size, MPI_PACKED, help_processor, GPINFO_TAG, MPI_COMM_WORLD);
 			delete[] buf_str;
 		}
-		else procedure(G, F*(P - P*L), connec, buf_size, vector_size, rank); // Rsy = k
+		else k = procedure(G, F*(P - T), connec, buf_size, vector_size, rank); // Rsy = k
 
 		visited = visited1; // same size so all right
 		G = G1;
 		(terminal) ? renumerate(G, x, t) : renumerate(G, x, 1);
 
 		//cout << "slave " << rank << " ask for help" << endl;
-		just_value;
-		MPI_Send(&just_value, 0, MPI_INT, HOST_PROCESSOR, I_NEED_HELP_TAG, MPI_COMM_WORLD); // ask for help
 		help_processor = 0;
-		MPI_Recv(&help_processor, 1, MPI_INT, HOST_PROCESSOR, I_NEED_HELP_TAG, MPI_COMM_WORLD, &status); // get answer
+		if (H.size() >= MAX_DIMENSIONAL) {
+			MPI_Status status;
+			MPI_Send(&just_value, 0, MPI_INT, HOST_PROCESSOR, I_NEED_HELP_TAG, MPI_COMM_WORLD); // ask for help
+			MPI_Recv(&help_processor, 1, MPI_INT, HOST_PROCESSOR, I_NEED_HELP_TAG, MPI_COMM_WORLD, &status); // get answer
+		}
 
+		edge w;
 		if (help_processor != 0) {
 			//cout << "slave " << rank << " have help from " << help_processor << endl;
 			str Gp;
 			Gp.G = G;
-			Gp.F.push_back(F*(L - P*L));
+			Gp.F.push_back(F*(L - T));
 			Gp.ex = connec;
 			int str_buf_size = Gp.F.size()*buf_size + sizeof(int) + sizeof(bool);
 			for (int i = 1; i < Gp.G.size(); i++) str_buf_size += i*buf_size + sizeof(int);
-			char *buf_str = Pack_data(Gp, buf_size, vector_size);
+			char *buf_str = Pack_data(Gp, str_buf_size, buf_size, vector_size);
 			MPI_Send(buf_str, str_buf_size, MPI_PACKED, help_processor, GPINFO_TAG, MPI_COMM_WORLD);
 			delete[] buf_str;
 		}
-		else procedure(G, F*(L - P*L), connec, buf_size, vector_size, rank); // Rsx = w
+		else w = procedure(G, F*(L - T), connec, buf_size, vector_size, rank); // Rsx = w
 
 		G = G1;
 		if (x == 0 || x == 1 || y == 0 || y == 1) // only 1 case can be
@@ -933,18 +934,18 @@ void procedure(vector<vector<edge>> &H, edge F, bool connected, int buf_size, in
 				if (!terminal) s = 0; // else s = s 
 				if ((visited[s] && visited[x]) || (!visited[s] && !visited[x]))
 					(terminal) ? renumerate(G, x, t) : renumerate(G, x, 1);
-				if ((visited[s] && visited[y]) || (!visited[s] && !visited[y]))
+				else
 					(terminal) ? renumerate(G, y, t) : renumerate(G, y, 1);
 
-				procedure(J, F, connec, buf_size, vector_size, rank); // dont *F twice
+				m = procedure(J, F*T, connec, buf_size, vector_size, rank); // dont *F twice
 			}
-			else procedure(G, F*P*L, connected, buf_size, vector_size, rank);
+			else m = procedure(G, F*T, connected, buf_size, vector_size, rank);
 		}
-		else procedure(G, F*P*L, connected, buf_size, vector_size, rank);
+		else m = procedure(G, F*T, connected, buf_size, vector_size, rank);
 
 		//procedure(G, F*P*L, connected, buf_size, vector_size, rank); // Rs<x,y> = m, no renumerate becouse s,t always pivote nodes
 
-		return;
+		return k + w + m;
 		//return (P - P*L)*k + (L - P*L)*w + P*L*m
 	}
 	if (count == 2) {
@@ -952,9 +953,9 @@ void procedure(vector<vector<edge>> &H, edge F, bool connected, int buf_size, in
 		ch2++;
 		vector<int> Ch(Chain);
 		vector<int>::iterator it, r;
-		for (it = Ch.begin(); it<Ch.end(); ++it) if (*it == 0) r = it;
+		for (it = Ch.begin(); it < Ch.end(); ++it) if (*it == 0) r = it;
 		int q = r - Ch.begin(); // place of pivote node s=0 into vector Ch 
-		for (it = Ch.begin(); it<Ch.end(); ++it) if (*it == 1) r = it;
+		for (it = Ch.begin(); it < Ch.end(); ++it) if (*it == 1) r = it;
 		int w = r - Ch.begin(); // place of pivote node t=1 into vector Ch 
 		if (q > w) { // that * edges in chain, q<w always
 			int u = q;
@@ -966,12 +967,12 @@ void procedure(vector<vector<edge>> &H, edge F, bool connected, int buf_size, in
 		P.C.push_back(1);
 		L.C.push_back(1);
 		vector<vector<edge>> G(H);
-		for (int i = 0; i<q; i++) L = L*G[Ch[i]][Ch[i + 1]];
-		for (int i = q; i<w; i++) P = P*G[Ch[i]][Ch[i + 1]];
-		for (int i = w; i<Ch.size() - 1; i++) L = L*G[Ch[i]][Ch[i + 1]];
-		for (int i = 1; i<Ch.size() - 1; i++) {
+		for (int i = 0; i < q; i++) L = L*G[Ch[i]][Ch[i + 1]];
+		for (int i = q; i < w; i++) P = P*G[Ch[i]][Ch[i + 1]];
+		for (int i = w; i < Ch.size() - 1; i++) L = L*G[Ch[i]][Ch[i + 1]];
+		for (int i = 1; i < Ch.size() - 1; i++) {
 			delnode(G, Ch[i]);
-			for (int j = 0; j<Ch.size(); j++) if (Ch[i] < Ch[j]) Ch[j]--; // not forget about Ch
+			for (int j = 0; j < Ch.size(); j++) if (Ch[i] < Ch[j]) Ch[j]--; // not forget about Ch
 		}
 		int x = Ch.front(), y = Ch.back(); // doesn't matter x<=>y
 
@@ -987,10 +988,10 @@ void procedure(vector<vector<edge>> &H, edge F, bool connected, int buf_size, in
 		if (y == 0 && x != 1) renumerate(G, x, 1);
 		if (y == 1 && x != 0) renumerate(G, x, 0);
 
-		sum = sum + F*P;
-		procedure(G, F*(L - P*L), connec, buf_size, vector_size, rank); // Rxy = n
+		edge n = F*P;
+		n = n + procedure(G, F*(L - P*L), connec, buf_size, vector_size, rank); // Rxy = n
 
-		return;
+		return n;
 		//return F*P + (L - P*L)*n
 	}
 
@@ -1000,7 +1001,7 @@ void procedure(vector<vector<edge>> &H, edge F, bool connected, int buf_size, in
 
 	vector<vector<edge>> H1(H.size());
 	vector<vector<edge>> H2(H.size());
-	for (int i = 0; i<H.size(); i++) { // Copy H
+	for (int i = 0; i < H.size(); i++) { // Copy H
 		H1[i] = H[i];
 		H2[i] = H[i];
 	}
@@ -1019,15 +1020,65 @@ void procedure(vector<vector<edge>> &H, edge F, bool connected, int buf_size, in
 	}
 
 	deledge(H2, W.node1, W.node2);
-	bool connec = gconnected(H2);
 	contractedge(H1, W.node1, W.node2);
 
+	bool connec = gconnected(H2);
+	vector<bool> visited1(visited);
+	if (!connec) cout << "Get unconnected graph into the factoring" << endl;
+
+	if (!connec) {
+		visited = visited1;
+		int component1_size = 0;
+		for (int i = 0; i < visited.size(); i++) if (visited[i]) component1_size++;
+		int component2_size = visited.size() - component1_size;
+
+		if (component1_size != 1 && component2_size != 1) {
+			cout << "Decomposition :" << component1_size << " & " << component2_size << endl;
+			vector<vector<edge>> J1(H2);
+			vector<vector<edge>> J2(H2);
+			edge F3 = Bin.front();
+
+			edge m = procedure(H2, F2, connec, buf_size, vector_size, rank); // use visited
+
+			if (W.node2 != 0 && W.node2 != 1 && ((visited[0] && !visited[1]) || (!visited[0] && visited[1]))) {
+				cout << "case 1" << endl;
+				visited = visited1;
+				if ((visited[W.node1] && visited[0]) || (!visited[W.node1] && !visited[0])) renumerate(J1, 1, W.node1);
+				else renumerate(J1, 1, W.node2);
+				edge k = procedure(J1, F3, connec, buf_size, vector_size, rank);
+
+				visited = visited1;
+				if ((visited[W.node1] && visited[1]) || (!visited[W.node1] && !visited[1])) renumerate(J2, 0, W.node1);
+				else renumerate(J2, 0, W.node2);
+				edge w = procedure(J2, F3, connec, buf_size, vector_size, rank);
+
+				return F1*k*w + m; // dont *F1 twice
+			}
+			if (W.node2 != 0 && W.node2 != 1 && ((visited[0] && visited[1]) || (!visited[0] && !visited[1]))) {
+				cout << "case 2" << endl;
+				visited = visited1;
+				edge k = procedure(J1, F1, connec, buf_size, vector_size, rank);
+
+				return k + m;
+			}
+			if (W.node2 == 0 || W.node2 == 1) { // if 0 and 1 in one component nothing renum
+				cout << "case 3" << endl;
+				visited = visited1;
+				if (W.node2 == 0 && ((visited[0] && !visited[1]) || (!visited[0] && visited[1]))) renumerate(J1, 0, W.node1); // becouse can't return 0
+				if (W.node2 == 1 && ((visited[0] && !visited[1]) || (!visited[0] && visited[1]))) renumerate(J1, 1, W.node1);
+				edge k = procedure(J1, F1, connec, buf_size, vector_size, rank);
+
+				return k + m;
+			}
+		}
+	}
 	//cout << "slave " << rank << " ask for help" << endl;
-	int just_value;
-	MPI_Send(&just_value, 0, MPI_INT, HOST_PROCESSOR, I_NEED_HELP_TAG, MPI_COMM_WORLD); // ask for help
-	int help_processor = 0;
-	MPI_Status status;
-	MPI_Recv(&help_processor, 1, MPI_INT, HOST_PROCESSOR, I_NEED_HELP_TAG, MPI_COMM_WORLD, &status); // get answer
+	int just_value, help_processor = 0;
+	if (H.size() >= MAX_DIMENSIONAL) {
+		MPI_Status status;
+		MPI_Send(&just_value, 0, MPI_INT, HOST_PROCESSOR, I_NEED_HELP_TAG, MPI_COMM_WORLD); // ask for help
+		MPI_Recv(&help_processor, 1, MPI_INT, HOST_PROCESSOR, I_NEED_HELP_TAG, MPI_COMM_WORLD, &status); // get answer
+	}
 
 	if (help_processor != 0) { // send half work
 		//cout << "slave " << rank << " have help from " << help_processor << endl;
@@ -1037,13 +1088,13 @@ void procedure(vector<vector<edge>> &H, edge F, bool connected, int buf_size, in
 		Gp.ex = connected;
 		int str_buf_size = Gp.F.size()*buf_size + sizeof(int) + sizeof(bool);
 		for (int i = 1; i < Gp.G.size(); i++) str_buf_size += i*buf_size + sizeof(int);
-		char *buf_str = Pack_data(Gp, buf_size, vector_size);
+		char *buf_str = Pack_data(Gp, str_buf_size, buf_size, vector_size);
 		MPI_Send(buf_str, str_buf_size, MPI_PACKED, help_processor, GPINFO_TAG, MPI_COMM_WORLD);
 		delete[] buf_str;
 	}
-	else procedure(H1, F1, connected, buf_size, vector_size, rank);
+	else return procedure(H1, F1, connected, buf_size, vector_size, rank) + procedure(H2, F2, connec, buf_size, vector_size, rank);
 
-	procedure(H2, F2, connec, buf_size, vector_size, rank); // continue with graph wehere deleted
+	return procedure(H2, F2, connec, buf_size, vector_size, rank); // continue with graph wehere deleted
 }
 
 void Bcast_data(int buf_size, int vector_size)
@@ -1078,7 +1129,7 @@ void master(int size)
 
 		int str_buf_size = Gp.F.size()*buf_size + sizeof(int) + sizeof(bool);
 		for (int i = 1; i < Gp.G.size(); i++) str_buf_size += i*buf_size + sizeof(int);
-		char* buf_str = Pack_data(Gp, buf_size, vector_size);
+		char* buf_str = Pack_data(Gp, str_buf_size, buf_size, vector_size);
 		MPI_Send(buf_str, str_buf_size, MPI_PACKED, free_processors.top(), GPINFO_TAG, MPI_COMM_WORLD);
 		delete[] buf_str;
 
@@ -1117,7 +1168,7 @@ void master(int size)
 		for (int i = 1; i < size; i++) MPI_Send(&i, 0, MPI_INT, i, STOP_TAG, MPI_COMM_WORLD);
 
 		//cout << "get result" << endl;
-		int n, n2, n3, n4, n5, cr, c1, c2;
+		int buff;
 		for (int i = 1; i < size; i++) 
 		{
 			//cout << "get from " << i << endl;
@@ -1127,35 +1178,42 @@ void master(int size)
 			delete[] buf;
 			//s.printedge();
 			sum = sum + s;
-			MPI_Recv(&n, 1, MPI_INT, MPI_ANY_SOURCE, NUM_TAG, MPI_COMM_WORLD, &status);
-			num += n;
-			MPI_Recv(&n2, 1, MPI_INT, MPI_ANY_SOURCE, NUM2_TAG, MPI_COMM_WORLD, &status);
-			num2 += n2;
-			MPI_Recv(&n3, 1, MPI_INT, MPI_ANY_SOURCE, NUM3_TAG, MPI_COMM_WORLD, &status);
-			num3 += n3;
-			MPI_Recv(&n4, 1, MPI_INT, MPI_ANY_SOURCE, NUM4_TAG, MPI_COMM_WORLD, &status);
-			num4 += n4;
-			MPI_Recv(&n5, 1, MPI_INT, MPI_ANY_SOURCE, NUM5_TAG, MPI_COMM_WORLD, &status);
-			num5 += n5;
-			MPI_Recv(&cr, 1, MPI_INT, MPI_ANY_SOURCE, CHR_TAG, MPI_COMM_WORLD, &status);
-			chr += cr;
-			MPI_Recv(&c1, 1, MPI_INT, MPI_ANY_SOURCE, CH1_TAG, MPI_COMM_WORLD, &status);
-			ch1 += c1;
-			MPI_Recv(&c2, 1, MPI_INT, MPI_ANY_SOURCE, CH2_TAG, MPI_COMM_WORLD, &status);
-			ch2 += c2;
+			MPI_Recv(&buff, 1, MPI_INT, MPI_ANY_SOURCE, NUM0_TAG, MPI_COMM_WORLD, &status);
+			num0 += buff;
+			MPI_Recv(&buff, 1, MPI_INT, MPI_ANY_SOURCE, NUM2_TAG, MPI_COMM_WORLD, &status);
+			num2 += buff;
+			MPI_Recv(&buff, 1, MPI_INT, MPI_ANY_SOURCE, NUM3_TAG, MPI_COMM_WORLD, &status);
+			num3 += buff;
+			MPI_Recv(&buff, 1, MPI_INT, MPI_ANY_SOURCE, NUM4_TAG, MPI_COMM_WORLD, &status);
+			num4 += buff;
+			MPI_Recv(&buff, 1, MPI_INT, MPI_ANY_SOURCE, NUM5_TAG, MPI_COMM_WORLD, &status);
+			num5 += buff;
+			MPI_Recv(&buff, 1, MPI_INT, MPI_ANY_SOURCE, CHR_TAG, MPI_COMM_WORLD, &status);
+			chr += buff;
+			MPI_Recv(&buff, 1, MPI_INT, MPI_ANY_SOURCE, CH1_TAG, MPI_COMM_WORLD, &status);
+			ch1 += buff;
+			MPI_Recv(&buff, 1, MPI_INT, MPI_ANY_SOURCE, CH2_TAG, MPI_COMM_WORLD, &status);
+			ch2 += buff;
 		}
 
 		cout << "Solution:" << endl;
 		sum.printedge();
-		cout << "Were ends of recursion:" << num << endl;
-		cout << " 2-dimension graph:" << num2 << endl;
-		cout << " 3-dimension graph:" << num3 << endl;
-		cout << " 4-dimension graph:" << num4 << endl;
-		cout << " 5-dimension graph:" << num5 << endl;
-		cout << "Were chains:" << chr + ch1 + ch2 << endl;
-		cout << " chains reduced:" << chr << endl;
-		cout << " 1-st type:" << ch1 << endl;
-		cout << " 2-d type:" << ch2 << endl;
+		cout << "Call prosedure " << factors << endl;
+		cout << "Reductions : " << endl;
+		cout << " bridge reductions " << bridges << endl;
+		cout << " pendunt reducutions " << pendunt << endl;
+		cout << " chains reduced " << chr << endl;
+		cout << " 1-st type " << ch1 << endl;
+		cout << " 2-nd type " << ch2 << endl;
+		cout << " decompositions in chainreduction " << decomp1 << endl;
+		cout << " decompositions in chr " << decomp2 << endl;
+		cout << " decompositions in factoring " << decomp3 << endl;
+		cout << "Were ends of recursion : " << num0 + num2 + num3 + num4 + num5 << endl;
+		cout << " unconnected graphs " << num0 << endl;
+		cout << " 2-dimension graphs " << num2 << endl;
+		cout << " 3-dimension graphs " << num3 << endl;
+		cout << " 4-dimension graphs " << num4 << endl;
+		cout << " 5-dimension graphs " << num5 << endl;
 
 		double value = 0, p = 0.9, z = 0.1;
 		int q = sum.power;
@@ -1200,7 +1258,7 @@ void slaves(int rank)
 			str Gp = Unpack_data(buf_str, buf_size, vector_size);
 			delete[] buf_str;
 
-			procedure(Gp.G, Gp.F.front(), Gp.ex, buf_size, vector_size, rank);
+			sum = sum + procedure(Gp.G, Gp.F.front(), Gp.ex, buf_size, vector_size, rank);
 
 			//cout << "slave " << rank << " get free" << endl;
 			MPI_Send(&just_value, 0, MPI_INT, HOST_PROCESSOR, I_AM_FREE_TAG, MPI_COMM_WORLD);
@@ -1211,7 +1269,7 @@ void slaves(int rank)
 	char *buf_edge = Pack(sum, buf_size, vector_size);
 	MPI_Send(buf_edge, buf_size, MPI_PACKED, HOST_PROCESSOR, SUM_TAG, MPI_COMM_WORLD);
 	delete[] buf_edge;
-	MPI_Send(&num, 1, MPI_INT, HOST_PROCESSOR, NUM_TAG, MPI_COMM_WORLD);
+	MPI_Send(&num0, 1, MPI_INT, HOST_PROCESSOR, NUM0_TAG, MPI_COMM_WORLD);
 	MPI_Send(&num2, 1, MPI_INT, HOST_PROCESSOR, NUM2_TAG, MPI_COMM_WORLD);
 	MPI_Send(&num3, 1, MPI_INT, HOST_PROCESSOR, NUM3_TAG, MPI_COMM_WORLD);
 	MPI_Send(&num4, 1, MPI_INT, HOST_PROCESSOR, NUM4_TAG, MPI_COMM_WORLD);

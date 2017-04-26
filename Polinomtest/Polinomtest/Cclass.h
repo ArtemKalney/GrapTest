@@ -2,14 +2,15 @@
 
 #include "stdafx.h"
 
-struct edge    
-{   
-    vector<int> C; 
+struct edge
+{
+	vector<double> C;
 	int power;
 	int node1;
 	int node2;
 	int simple;
 	bool ex;
+	void printedge();
 };
 
 edge operator *(edge x, edge y);
