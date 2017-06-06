@@ -146,7 +146,7 @@ edge operator -(edge x, edge y)
 	}
 	if (!x.C.empty() && y.C.empty()) F = x;
 	if (x.C.empty() && !y.C.empty()) {
-		cout << "?" << endl;
+		//cout << "?" << endl;
 		F = y;
 		for (int i = 0; i<F.C.size(); i++) F.C[i] = -F.C[i]; // make no differents
 	}

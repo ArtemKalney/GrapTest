@@ -3,7 +3,7 @@
 #include "globals.h"
 #include "Cclass.h"
 
-edge chainreduction1(vector<vector<edge>> &H, edge sum, vector<int> V, edge F, bool connected)
+edge chainreduction1(vector<vector<edge>> &H, edge sum, vector<int> V, bool connected)
 {
 	vector<int> Chain = fchain(H, V);
 	for (int i = 0; i<Chain.size(); i++) if (!exis(V, Chain[i])) V.push_back(Chain[i]);
@@ -53,30 +53,36 @@ edge chainreduction1(vector<vector<edge>> &H, edge sum, vector<int> V, edge F, b
 			int s1 = s;
 			bool connec = gconnected(G);
 			vector<bool> visited1(visited);
-			if (!connec) cout << "Get unconnected in chainreduction1" << endl;
+			//if (!connec) cout << "Get unconnected in chainreduction1" << endl;
 
-			if (s != 0 && s != 1 && y != 0 && y != 1) {
-				renumerate(G, s, 0);
-				renumerate(G, y, 1);
+			edge k;
+			if (!F2.C.empty()) {
+				if (s != 0 && s != 1 && y != 0 && y != 1) {
+					renumerate(G, s, 0);
+					renumerate(G, y, 1);
+				}
+				if (s == 0 && y != 1) renumerate(G, y, 1);
+				if (s == 1 && y != 0) renumerate(G, y, 0);
+				if (y == 0 && s != 1) renumerate(G, s, 1);
+				if (y == 1 && s != 0) renumerate(G, s, 0);
+				k = procedure(G, F2, connec); // Rsy
 			}
-			if (s == 0 && y != 1) renumerate(G, y, 1);
-			if (s == 1 && y != 0) renumerate(G, y, 0);
-			if (y == 0 && s != 1) renumerate(G, s, 1);
-			if (y == 1 && s != 0) renumerate(G, s, 0);
-			edge k = procedure(G, F, connec); // Rsy
 
-			visited = visited1;
-			G = G1;
+			edge w;
+			if (!F1.C.empty()) {
+				visited = visited1;
+				G = G1;
 
-			if (s != 0 && s != 1 && x != 0 && x != 1) {
-				renumerate(G, s, 0);
-				renumerate(G, x, 1);
+				if (s != 0 && s != 1 && x != 0 && x != 1) {
+					renumerate(G, s, 0);
+					renumerate(G, x, 1);
+				}
+				if (s == 0 && x != 1) renumerate(G, x, 1);
+				if (s == 1 && x != 0) renumerate(G, x, 0);
+				if (x == 0 && s != 1) renumerate(G, s, 1);
+				if (x == 1 && s != 0) renumerate(G, s, 0);
+				w = procedure(G, F1, connec); // Rsx
 			}
-			if (s == 0 && x != 1) renumerate(G, x, 1);
-			if (s == 1 && x != 0) renumerate(G, x, 0);
-			if (x == 0 && s != 1) renumerate(G, s, 1);
-			if (x == 1 && s != 0) renumerate(G, s, 0);
-			edge w = procedure(G, F, connec); // Rsx
 
 			G = G1;
 			int xy = x;
@@ -101,7 +107,7 @@ edge chainreduction1(vector<vector<edge>> &H, edge sum, vector<int> V, edge F, b
 
 				if (component1_size != 1 && component2_size != 1) {
 					decomp1++;
-					cout << "Decomposition chainredaction1 :" << component1_size << " & " << component2_size << endl;
+					//cout << "Decomposition chainredaction1 :" << component1_size << " & " << component2_size << endl;
 					if ((visited[x] && visited[y]) || (!visited[x] && !visited[y])) cout << "Eror in decomposition chainreductiom" << endl;
 					vector<vector<edge>> J(G1);
 
@@ -128,13 +134,13 @@ edge chainreduction1(vector<vector<edge>> &H, edge sum, vector<int> V, edge F, b
 						if (y == 1 && s != 0) renumerate(J, s, 0);
 					}
 
-					m = procedure(J, F, connec); // dont *F twice
+					m = procedure(J, F3*T, connec); // dont *F twice
 				}
-				else m = procedure(G, F, connected); // Rs,xy
+				else m = procedure(G, F3*T, connected); // Rs,xy
 			}
-			else m = procedure(G, F, connected); // Rs,xy
+			else m = procedure(G, F3*T, connected); // Rs,xy
 
-			sum = sum + (F2*k + F1*w + F3*T*m);
+			sum = sum + (k + w + m);
 		}
 		else {
 			vector<int> Ch(Chain);
@@ -184,7 +190,7 @@ edge chainreduction1(vector<vector<edge>> &H, edge sum, vector<int> V, edge F, b
 			int x = Ch.front(), y = Ch.back(); // doesn't matter x<=>y
 
 			bool connec = gconnected(G);
-			if (!connec) cout << "Get unconnected in chainreduction2" << endl;
+			//if (!connec) cout << "Get unconnected in chainreduction2" << endl;
 
 			if (x != 0 && x != 1 && y != 0 && y != 1) {
 				renumerate(G, x, 0);
@@ -194,11 +200,11 @@ edge chainreduction1(vector<vector<edge>> &H, edge sum, vector<int> V, edge F, b
 			if (x == 1 && y != 0) renumerate(G, y, 0);
 			if (y == 0 && x != 1) renumerate(G, x, 1);
 			if (y == 1 && x != 0) renumerate(G, x, 0);
-			edge n = procedure(G, F, connec); // Rxy
+			edge n = procedure(G, F2 - F3*T, connec); // Rxy
 
-			sum = sum + (F1 + F2*n - F3*T*n);
+			sum = sum + (F1 + n);
 		}
-		return chainreduction1(H, sum, V, F, connected);
+		return chainreduction1(H, sum, V, connected);
 	}
 	return sum;
 }

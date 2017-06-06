@@ -49,13 +49,6 @@ inline void deledge(vector<vector<edge>> &H, int q, int w)
 
 void contractedge(vector<vector<edge>> &H, int q, int w)
 {
-/*
-	if (q == 0 || q == 1) { // that do not delete pivote node, this case arise in chainreduction
-		int r = w;
-		w = q;
-		q = r;
-	}
-*/
 	for (int i = 0; i<H[q].size(); i++) if (H[q][i].ex && i != w) { // do not consider H[q][w]
 		if (H[w][i].ex && H[q][i].power == 1 && H[w][i].power == 1) { // power==1 is falg of simple edge
 			H[w][i].simple += H[q][i].simple + 1;
@@ -141,26 +134,26 @@ bool bridgereduction(vector<vector<edge>> &H)
 {
 	bridges++;
 	if (visited.size() != H.size()) cout << "Eror bridgereduction!" << endl;
-	cout << "Bridge reduction: ";
+	//cout << "Bridge reduction: ";
 
 	if (visited[0] && visited[1]) { // only one of this cases exist
 		for (int i = H.size() - 1; i >= 0; i--) if (!visited[i]) {  // when end is 0,0 make mistake if start from 0
-			cout << i + 1 << " ";
+			//cout << i + 1 << " ";
 			delnode(H, i);
 		}
-		cout << endl;
+		//cout << endl;
 	}
 
 	if (!visited[0] && !visited[1]) {
 		for (int i = H.size() - 1; i >= 0; i--) if (visited[i]) {
-			cout << i + 1 << " ";
+			//cout << i + 1 << " ";
 			delnode(H, i);
 		}
-		cout << endl;
+		//cout << endl;
 	}
 
 	if ((visited[0] && !visited[1]) || (!visited[0] && visited[1])) {
-		cout << "Return 0" << endl;
+		//cout << "Return 0" << endl;
 		return false;
 	}
 
@@ -421,6 +414,7 @@ edge procedure(vector<vector<edge>> &H, edge F, bool connected)
 		vector<vector<edge>> G(H);
 		for (int i = 0; i<q; i++) L = L*G[Ch[i]][Ch[i + 1]];
 		for (int i = q; i<Ch.size() - 1; i++) P = P*G[Ch[i]][Ch[i + 1]];
+		edge T = P*L;
 
 		for (int i = 1; i<Ch.size() - 1; i++) { // after this we get 2 nodes from chain, one of them can be pivote
 			delnode(G, Ch[i]);
@@ -431,16 +425,22 @@ edge procedure(vector<vector<edge>> &H, edge F, bool connected)
 		vector<vector<edge>> G1(G);
 		bool connec = gconnected(G);
 		vector<bool> visited1 (visited);
-		if (!connec) cout << "Get unconnected in chr1" << endl;
+		//if (!connec) cout << "Get unconnected in chr1" << endl;
 
-		(terminal) ? renumerate(G, y, t) : renumerate(G, y, 1);  // s=0||1, becouse we don't delete pivote node
-        // after delete: s - node out of chain always 0, so t=1
-		edge k = procedure(G, F, connec); // Rsy
+		edge k;
+		if (q != 0) {
+			(terminal) ? renumerate(G, y, t) : renumerate(G, y, 1);  // s=0||1, becouse we don't delete pivote node
+			// after delete: s - node out of chain always 0, so t=1
+			k = procedure(G, F*(P - T), connec); // Rsy
+		}
 
-		visited = visited1; // same size so all right
-		G = G1;
-		(terminal) ? renumerate(G, x, t) : renumerate(G, x, 1);
-		edge w = procedure(G, F, connec); // Rsx
+		edge w;
+		if (q != Ch.size() - 1) {
+			visited = visited1; // same size so all right
+			G = G1;
+			(terminal) ? renumerate(G, x, t) : renumerate(G, x, 1);
+			w = procedure(G, F*(L - T), connec); // Rsx
+		}
 
 		G = G1;
 		if (x == 0 || x == 1 || y == 0 || y == 1) // only 1 case can be
@@ -462,7 +462,7 @@ edge procedure(vector<vector<edge>> &H, edge F, bool connected)
 
 			if (component1_size != 1 && component2_size != 1) {
 				decomp2++;
-				cout << "Decomposition chr1:" << component1_size << " & " << component2_size << endl;
+				//cout << "Decomposition chr1:" << component1_size << " & " << component2_size << endl;
 				if ((visited[x] && visited[y]) || (!visited[x] && !visited[y])) cout << "Eror in decomposition chr" << endl;
 				vector<vector<edge>> J(G1);
 
@@ -472,13 +472,13 @@ edge procedure(vector<vector<edge>> &H, edge F, bool connected)
 				else
 					(terminal) ? renumerate(J, y, t) : renumerate(J, y, 1);
 
-				m = procedure(J, F, connec);
+				m = procedure(J, F*T, connec);
 			}
-			else m = procedure(G, F, connected); // Rs<x,y>, no renumerate becouse s,t always pivote nodes
+			else m = procedure(G, F*T, connected); // Rs<x,y>, no renumerate becouse s,t always pivote nodes
 		}
-		else m = procedure(G, F, connected); // Rs<x,y>, no renumerate becouse s,t always pivote nodes
+		else m = procedure(G, F*T, connected); // Rs<x,y>, no renumerate becouse s,t always pivote nodes
 
-		return P*k + L*w - P*L*(k + w - m);
+		return k + w + m;
 	}
 
 	if (count == 2) {
@@ -509,7 +509,7 @@ edge procedure(vector<vector<edge>> &H, edge F, bool connected)
 		int x = Ch.front(), y = Ch.back(); // doesn't matter x<=>y
 
 		bool connec = gconnected(G);
-		if (!connec) cout << "Get unconnected in chr2" << endl;
+		//if (!connec) cout << "Get unconnected in chr2" << endl;
 
 		if (x != 0 && x != 1 && y != 0 && y != 1) {
 			renumerate(G, x, 0);
@@ -519,13 +519,12 @@ edge procedure(vector<vector<edge>> &H, edge F, bool connected)
 		if (x == 1 && y != 0) renumerate(G, y, 0);
 		if (y == 0 && x != 1) renumerate(G, x, 1);
 		if (y == 1 && x != 0) renumerate(G, x, 0);
-		edge n = procedure(G, F, connec); // Rxy
+		edge n = procedure(G, F*(L - P*L), connec); // Rxy
 
-		return F*P + L*n - P*L*n; // F* becouse we don't make recursive call
+		return F*P + n; // F* becouse we don't make recursive call
 	}
 
 	edge W = fedge(H);
-	if ((W.node1 == 1 && W.node2 == 0) || (W.node1 == 0 && W.node2 == 1)) cout << "Eror in Allowing edge" << endl;
 	if (W.node1 == 1 || W.node1 == 0 ) cout << "Eror in Allowing edge" << endl;
 
 	vector<vector<edge>> H1(H);
@@ -550,7 +549,7 @@ edge procedure(vector<vector<edge>> &H, edge F, bool connected)
 
 	bool connec = gconnected(H2);
 	vector<bool> visited1(visited);
-	if (!connec) cout << "Get unconnected graph into the factoring" << endl;
+	//if (!connec) cout << "Get unconnected graph into the factoring" << endl;
 
 	if (!connec) { // W.node2 can be 0 or 1
 		int component1_size = 0;
@@ -559,7 +558,7 @@ edge procedure(vector<vector<edge>> &H, edge F, bool connected)
 
 		if (component1_size++ != 1 && component2_size != 1) {
 			decomp3++;
-			cout << "Decomposition :" << component1_size << " & " << component2_size << endl;
+			//cout << "Decomposition :" << component1_size << " & " << component2_size << endl;
 			vector<vector<edge>> J1(H2);
 			vector<vector<edge>> J2(H2);
 			edge F3 = Bin.front(); // create pseudo edge for computing
@@ -568,7 +567,7 @@ edge procedure(vector<vector<edge>> &H, edge F, bool connected)
 
 			if (W.node2 != 0 && W.node2 != 1 && ((visited[0] && !visited[1]) || (!visited[0] && visited[1]))) {
 				visited = visited1;
-				cout << "case 1" << endl;
+				//cout << "case 1" << endl;
 				if ((visited[W.node1] && visited[0]) || (!visited[W.node1] && !visited[0])) renumerate(J1, 1, W.node1);
 				else renumerate(J1, 1, W.node2);
 				edge k = procedure(J1, F3, connec);
@@ -582,14 +581,14 @@ edge procedure(vector<vector<edge>> &H, edge F, bool connected)
 			}
 			if (W.node2 != 0 && W.node2 != 1 && ((visited[0] && visited[1]) || (!visited[0] && !visited[1]))) {
 				visited = visited1;
-				cout << "case 2" << endl;
+				//cout << "case 2" << endl;
 				edge k = procedure(J1, F1, connec);
 
 				return k + m;
 			}
 			if (W.node2 == 0 || W.node2 == 1) { // if 0 and 1 in one component nothing renum
 				visited = visited1;
-				cout << "case 3" << endl;
+				//cout << "case 3" << endl;
 				if (W.node2 == 0 && ((visited[0] && !visited[1]) || (!visited[0] && visited[1]))) renumerate(J1, 0, W.node1); // becouse can't return 0
 				if (W.node2 == 1 && ((visited[0] && !visited[1]) || (!visited[0] && visited[1]))) renumerate(J1, 1, W.node1);
 				edge k = procedure(J1, F1, connec);

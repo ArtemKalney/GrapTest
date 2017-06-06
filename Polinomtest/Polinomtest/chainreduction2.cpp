@@ -3,20 +3,20 @@
 #include "globals.h"
 #include "Cclass.h"
 
-edge chainreduction2(vector<vector<edge>> &H, edge sum, vector<int> weight, edge F, bool connected)
+edge chainreduction2(vector<vector<edge>> &H, edge sum, vector<int> weight, bool connected)
 {
 	vector<int> V; // considered nodes
 	for (int i = 0; i<mask.size(); i++) if (!mask[i]) V.push_back(i);
-	vector<int> C = fchain(H, V);
+	vector<int> Chain = fchain(H, V);
 
-	if (!C.empty()) {
+	if (!Chain.empty()) {
 		chrs++;
-		for (int i = 0; i<C.size(); i++) if (!exis(V, C[i])) mask[C[i]] = false;
+		for (int i = 0; i<Chain.size(); i++) if (!exis(V, Chain[i])) mask[Chain[i]] = false;
 
-		if (!exis(C, 0)) {
+		if (!exis(Chain, 0)) {
 			edge T;
 			T.C.push_back(1);
-			vector<int> Ch = C;
+			vector<int> Ch = Chain;
 			vector<vector<edge>> G(H.size());
 			for (int i = 0; i<H.size(); i++) G[i] = H[i];
 			for (int i = 0; i<Ch.size() - 1; i++) T = T*G[Ch[i]][Ch[i + 1]];
@@ -50,14 +50,20 @@ edge chainreduction2(vector<vector<edge>> &H, edge sum, vector<int> weight, edge
 			vector<bool> visited1 = visited;
 			if (!connec) cout << "Get unconnected in chainreduction1 " << endl;
 
-			renumerate(G, y, 1);  // s - node out of chain always 0, so t=1
-			edge k = procedure(G, F, connec); // R1y
+			edge k;
+			if (!F2.C.empty()) {
+				renumerate(G, y, 1);  // s - node out of chain always 0, so t=1
+				k = procedure(G, F2, connec); // R1y
+			}
 
-			visited = visited1;
-			G.resize(G1.size());
-			for (int i = 0; i<G1.size(); i++) G[i] = G1[i];
-			renumerate(G, x, 1);
-			edge w = procedure(G, F, connec);// R1x
+			edge w;
+			if (!F1.C.empty()) {
+				visited = visited1;
+				G.resize(G1.size());
+				for (int i = 0; i < G1.size(); i++) G[i] = G1[i];
+				renumerate(G, x, 1);
+				w = procedure(G, F1, connec);// R1x
+			}
 
 			G.resize(G1.size());
 			for (int i = 0; i<G1.size(); i++) G[i] = G1[i];
@@ -84,18 +90,16 @@ edge chainreduction2(vector<vector<edge>> &H, edge sum, vector<int> weight, edge
 					if ((visited[0] && visited[x]) || (!visited[0] && !visited[x])) renumerate(J, x, 1); // why not
 					else renumerate(J, y, 1); // why not
 
-					if (component1_size != 1 && component2_size != 1) m = procedure(J, F, connec); // dont *F twice
+					m = procedure(J, F3*T, connec); // dont *F twice
 				}
-				else m = procedure(G, F, connected); // R1xy
+				else m = procedure(G, F3*T, connected); // R1xy
 			}
-			else m = procedure(G, F, connected); // R1xy
+			else m = procedure(G, F3*T, connected); // R1xy
 
-			sum = sum + (F2*k + F1*w + F3*T*m);
-
-			return chainreduction2(H, sum, weight, F, connected);
+			sum = sum + (k + w + m);
 		}
 		else {
-			vector<int> Ch = C;
+			vector<int> Ch = Chain;
 			vector<int>::iterator it, r;
 			for (it = Ch.begin(); it<Ch.end(); ++it) if (*it == 0) r = it;
 			int q = r - Ch.begin(); // place of pivote node s=0 into vector Ch 
@@ -148,12 +152,11 @@ edge chainreduction2(vector<vector<edge>> &H, edge sum, vector<int> weight, edge
 			if (x == 1 && y != 0) renumerate(G, y, 0);
 			if (y == 0 && x != 1) renumerate(G, x, 1);
 			if (y == 1 && x != 0) renumerate(G, x, 0);
-			edge n = procedure(G, F, connec); // Rxy
+			edge n = procedure(G, F2 - F3*T, connec); // Rxy
 
-			sum = sum + (F1 + F2*n - F3*T*n);
-
-			return chainreduction2(H, sum, weight, F, connected);
+			sum = sum + (F1 + n);
 		}
+		return chainreduction2(H, sum, weight, connected);
 	}
 	return sum;
 }
