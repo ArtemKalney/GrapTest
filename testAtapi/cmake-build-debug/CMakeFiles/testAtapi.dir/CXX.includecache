@@ -1,0 +1,40 @@
+#IncludeRegexLine: ^[ 	]*[#%][ 	]*(include|import)[ 	]*[<"]([^">]+)([">])
+
+#IncludeRegexScan: ^.*$
+
+#IncludeRegexComplain: ^$
+
+#IncludeRegexTransform: 
+
+C:/Users/admin/.CLion2017.2/my_projects/testAtapi/Cclass.cpp
+Cclass.h
+C:/Users/admin/.CLion2017.2/my_projects/testAtapi/Cclass.h
+
+C:/Users/admin/.CLion2017.2/my_projects/testAtapi/Cclass.h
+stdafx.h
+C:/Users/admin/.CLion2017.2/my_projects/testAtapi/stdafx.h
+products.h
+C:/Users/admin/.CLion2017.2/my_projects/testAtapi/products.h
+
+C:/Users/admin/.CLion2017.2/my_projects/testAtapi/main.cpp
+Cclass.h
+C:/Users/admin/.CLion2017.2/my_projects/testAtapi/Cclass.h
+
+C:/Users/admin/.CLion2017.2/my_projects/testAtapi/products.cpp
+products.h
+C:/Users/admin/.CLion2017.2/my_projects/testAtapi/products.h
+
+C:/Users/admin/.CLion2017.2/my_projects/testAtapi/products.h
+stdafx.h
+C:/Users/admin/.CLion2017.2/my_projects/testAtapi/stdafx.h
+
+C:/Users/admin/.CLion2017.2/my_projects/testAtapi/stdafx.h
+iostream
+-
+string
+-
+cstring
+-
+vector
+-
+
