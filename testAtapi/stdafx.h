@@ -2,10 +2,9 @@
 
 #include <iostream>
 #include <string>
-#include <cstring>
 #include <vector>
+#include <memory>
 
-using namespace std;
 
 //#define MAX_SUBCATEGORIES 4;
 //#define MAX_SUB_SUBCATEGORIES 2;

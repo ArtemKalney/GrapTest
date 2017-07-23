@@ -7,61 +7,60 @@
 class sub_subcategory
 {
     int id_sub_subcategory;
-    vector<product*> products;
+    std::vector<std::shared_ptr<product>> products;
 public:
-    sub_subcategory(int id)
-    {
-        id_sub_subcategory = id;
-    }
-    void add_new_product(product *item);
+    sub_subcategory(int id) :
+            id_sub_subcategory (id)
+    {}
+    void add_new_product(std::shared_ptr<product> item);
     void show();
 };
 
 class subcategory
 {
     int id_subcategory;
-    vector<programming*> programmings;
-    vector<cooking*> cookings;
-    vector<esoteric*> esoterics;
+    std::vector<std::shared_ptr<programming>> programmings;
+    std::vector<std::shared_ptr<cooking>> cookings;
+    std::vector<std::shared_ptr<esoteric>> esoterics;
 
-    vector<sub_subcategory*> sub_subcategories;
+    std::vector<std::shared_ptr<sub_subcategory>> sub_subcategories;
 public:
     subcategory(int id) {
         id_subcategory = id;
         if (id_subcategory > id_esoteric)
             for (int i = id_music; i <= id_software; i++) {
-                //cout << "created sub_subcategory with id " << i << endl;
-                sub_subcategory new_sub_subcategory(i);
-                sub_subcategories.push_back(&new_sub_subcategory);
+                //std::cout << "created sub_subcategory with id " << i << std::endl;
+                std::shared_ptr<sub_subcategory> new_sub_subcategory (new sub_subcategory(i));
+                sub_subcategories.push_back(new_sub_subcategory);
             }
     }
     template <class T>
-    void add_new_product(T *item, int type);
+    void add_new_product(std::shared_ptr<T> item, int type);
     void show();
 };
 
 class category
 {
-    string name;
-    vector<subcategory*> subcategories;
+    std::string name;
+    std::vector<std::shared_ptr<subcategory>> subcategories;
 public:
-    category(string str)
+    category(const std::string& str)
     {
         name = str;
         for(int i = id_programming; i <= id_dvd; i++)
         {
-            //cout<<"created subcategory with id "<<i<<endl;
-            subcategory new_subcategory(i);
-            subcategories.push_back(&new_subcategory);
+            //std::cout<<"created subcategory with id "<<i<<std::endl;
+            std::shared_ptr<subcategory> new_subcategory (new subcategory(i));
+            subcategories.push_back(new_subcategory);
         }
     }
     template <class T>
-    void add_new_product(T *item);
+    void add_new_product(std::shared_ptr<T> item);
     void show();
 };
 
 template <class T>
-void category :: add_new_product(T *item)
+void category :: add_new_product(std::shared_ptr<T> item)
 {
     int i = item->get_id_subcategory();
 
@@ -82,12 +81,12 @@ void category :: add_new_product(T *item)
         case(id_dvd):
             subcategories[id_dvd]->add_new_product(item, i);
             break;
-        default: cout << "no such subcategory";
+        default: std::cout << "no such subcategory";
     }
 }
 
 template <class T>
-void subcategory :: add_new_product(T *item, int type)
+void subcategory :: add_new_product(std::shared_ptr<T> item, int type)
 {
     if (type > id_esoteric) {
         int i = item->get_id_sub_subcategory();
@@ -102,7 +101,7 @@ void subcategory :: add_new_product(T *item, int type)
             case (id_software):
                 sub_subcategories[id_software]->add_new_product(item);
                 break;
-            default: cout << "no such sub_subcategory";
+            default: std::cout << "no such sub_subcategory";
         }
     }else {
         switch(type) {

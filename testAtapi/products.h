@@ -2,28 +2,27 @@
 
 #include "stdafx.h"
 
-enum subcategories {id_programming, id_cooking, id_esoteric, id_cd, id_dvd};
-enum sub_subcategories {id_music, id_video, id_software};
+enum  subcategories {id_programming, id_cooking, id_esoteric, id_cd, id_dvd};
+enum  sub_subcategories {id_music, id_video, id_software};
 
 // making classes
 class product
 {
 protected:
-    string name_subcategory;
-    string name_sub_subcategory;
+    std::string _name_subcategory;
+    std::string _name_sub_subcategory;
 
-    string name;
-    double price;
-    string barcode;
+    std::string _name;
+    double _price;
+    std::string _barcode;
 public:
-    product(string a, string b, string c, double d, string e)
-    {
-        name_subcategory = a;
-        name_sub_subcategory = b;
-        name = c;
-        price = d;
-        barcode = e;
-    }
+    product(const std::string& a, const std::string& b, const std::string& c, double d, const std::string& e) :
+            _name_subcategory(a),
+            _name_sub_subcategory(b),
+            _name(c),
+            _price(d),
+            _barcode(e)
+    {}
     int get_id_subcategory();
     int get_id_sub_subcategory();
     void show();
@@ -32,43 +31,46 @@ public:
 class books : public product
 {
 protected:
-    int number_of_pages;
+    int _number_of_pages;
 public:
-    books(string a, string b, string c, double d, string e, int f) : product(a, b, c, d, e)
-    {
-        number_of_pages = f;
-    }
+    books(const std::string& a, const std::string& b, const std::string& c, double d, const std::string& e, int f) :
+            product(a, b, c, d, e),
+            _number_of_pages(f)
+    {}
 };
 
 class programming : public books
 {
-    string language_of_programming;
+    std::string _language_of_programming;
 public:
-    programming(string a, string b, string c, double d, string e, int f, string h) : books(a, b, c, d, e, f)
-    {
-        language_of_programming = h;
-    }
+    programming(const std::string& a, const std::string& b, const std::string& c, const double d, const std::string& e,
+                int f, const std::string& h) :
+            books(a, b, c, d, e, f),
+            _language_of_programming(h)
+    {}
     void show();
 };
 
 class cooking : public books
 {
-    string main_ingradient;
+    std::string _main_ingradient;
 public:
-    cooking(string a, string b, string c, double d, string e, int f, string h) : books(a, b, c, d, e, f)
-    {
-        main_ingradient = h;
-    }
+    cooking(const std::string& a, const std::string& b, const std::string& c, double d, const std::string& e, int f,
+            const std::string& h) :
+            books(a, b, c, d, e, f),
+            _main_ingradient(h)
+    {}
     void show();
 };
 
 class esoteric : public books
 {
-    int min_age;
+    int _min_age;
 public:
-    esoteric(string a, string b, string c, double d, string e, int f, int h) : books(a, b, c, d, e, f)
-    {
-        min_age = h;
-    }
+    esoteric(const std::string& a, const std::string& b, const std::string& c, double d, const std::string& e, int f,
+             int h) :
+            books(a, b, c, d, e, f),
+            _min_age(h)
+    {}
     void show();
 };

@@ -2,15 +2,15 @@
 
 int product:: get_id_subcategory()
 {
-    if (name_subcategory == "programming")
+    if (_name_subcategory == "programming")
         return id_programming;
-    if (name_subcategory == "cooking")
+    if (_name_subcategory == "cooking")
         return id_cooking;
-    if (name_subcategory == "esoteric")
+    if (_name_subcategory == "esoteric")
         return id_esoteric;
-    if (name_subcategory == "cd")
+    if (_name_subcategory == "cd")
         return id_cd;
-    if (name_subcategory == "dvd")
+    if (_name_subcategory == "dvd")
         return id_dvd;
 
     return 404;
@@ -18,11 +18,11 @@ int product:: get_id_subcategory()
 
 int product:: get_id_sub_subcategory()
 {
-    if (name_sub_subcategory == "music")
+    if (_name_sub_subcategory == "music")
         return id_music;
-    if (name_sub_subcategory == "video")
+    if (_name_sub_subcategory == "video")
         return id_video;
-    if (name_sub_subcategory == "software")
+    if (_name_sub_subcategory == "software")
         return id_software;
 
     return 404;
@@ -30,22 +30,22 @@ int product:: get_id_sub_subcategory()
 
 void product:: show()
 {
-    cout<< "name: " << name << ", price: " << price << ", barcode: " << barcode << endl;
+    std::cout<< "name: " << _name << ", price: " << _price << ", barcode: " << _barcode << std::endl;
 }
 
 void programming:: show()
 {
-    cout<< "name: " << name << ", price: " << price << ", barcode: " << barcode << ", language_of_programming: "
-        << language_of_programming << endl;
+    std::cout<< "name: " << _name << ", price: " << _price << ", barcode: " << _barcode << ", language_of_programming: "
+        << _language_of_programming << std::endl;
 }
 
 void cooking:: show()
 {
-    cout<< "name: " << name << ", price: " << price << ", barcode: " << barcode
-        << ", main_ingradient: " << main_ingradient << endl;
+    std::cout<< "name: " << _name << ", price: " << _price << ", barcode: " << _barcode
+        << ", main_ingradient: " << _main_ingradient << std::endl;
 }
 
 void esoteric:: show()
 {
-    cout<< "name: " << name << ", price: " << price << ", barcode: " << barcode << ", min_age: " << min_age << endl;
+    std::cout<< "name: " << _name << ", price: " << _price << ", barcode: " << _barcode << ", min_age: " << _min_age << std::endl;
 }
