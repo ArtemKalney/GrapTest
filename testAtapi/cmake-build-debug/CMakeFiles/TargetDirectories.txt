@@ -1,3 +1,0 @@
-C:/Users/admin/.CLion2017.2/my_projects/testAtapi/cmake-build-debug/CMakeFiles/edit_cache.dir
-C:/Users/admin/.CLion2017.2/my_projects/testAtapi/cmake-build-debug/CMakeFiles/testAtapi.dir
-C:/Users/admin/.CLion2017.2/my_projects/testAtapi/cmake-build-debug/CMakeFiles/rebuild_cache.dir
