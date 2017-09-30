@@ -6,9 +6,9 @@ ofstream output;
 
 int num0 = 0, num2 = 0, num3 = 0, num4 = 0, num5 = 0, chr = 0, ch1 = 0, ch2 = 0, chrs = 0,
     decomp1 = 0, decomp2 = 0, decomp3 = 0, bridges = 0, pendunt = 0, factors = 0;
-vector<bool> visited;
-vector<vector<bool> > mask1;
-vector<bool> mask;
+vector<bool> visitedNodes;
+vector<vector<bool> > maskApc;
+vector<bool> maskMenc;
 vector<edge> Bin;
 
 void MakeAdjacencyMatrix(vector<vector<edge>> &H, vector<edge> &E)
@@ -92,97 +92,96 @@ int main() {
                 Bin[i].C[j] = Bin[i - 1].C[j - 1] + Bin[i - 1].C[j];
     }
 
+    vector<vector<edge>> initialGraph(n);
+    MakeAdjacencyMatrix(initialGraph, E);
 
-    vector<vector<edge> > S(n);
-    MakeAdjacencyMatrix(S, E);
-
-    if (!ConnectedGraph(S)) {
+    if (!ConnectedGraph(initialGraph)) {
         cout << "Unconnected graph on input!" << endl;
         return 0;
     }
 
     edge F = Bin.front(); // create pseudo edge for computing
     unsigned int startTime = clock();
+    double value = 0, p = 0.9, z = 0.1;
     edge sum;
 
     if (option == 1) {
-        mask1.resize(S.size());
-        for (int i = 0; i < mask1.size(); i++) {
-            mask1[i].resize(S[i].size());
-            for (int j = 0; j < mask1[i].size(); j++)
-                i != j ? mask1[i][j] = true : mask1[i][j] = false;
+        maskApc.resize(initialGraph.size());
+        for (int i = 0; i < maskApc.size(); i++) {
+            maskApc[i].resize(initialGraph[i].size());
+            for (int j = 0; j < maskApc[i].size(); j++)
+                i != j ? maskApc[i][j] = true : maskApc[i][j] = false;
         }
 
-        vector<int> V;
-        sum = ChainReduction1(S, sum, V, true);
+        vector<int> checkedNodes;
+        sum = ChainReduction1(initialGraph, sum, checkedNodes, true);
 
-        for (int i = 0; i < S.size(); i++)
-            for (int j = i + 1; j < S[i].size(); j++)
-                if (mask1[i][j]) {
-                    vector<vector<edge>> G(S);
+        for (int i = 0; i < initialGraph.size(); i++)
+            for (int j = i + 1; j < initialGraph[i].size(); j++)
+                if (maskApc[i][j]) {
+                    vector<vector<edge>> H(initialGraph);
                     if (i != 0 || j != 1) { // after this 0,1
                         if (i != 0 && j != 1) {
-                            Renumerate(G, i, 0);
-                            Renumerate(G, j, 1);
+                            Renumerate(H, i, 0);
+                            Renumerate(H, j, 1);
                         }
-                        if (i == 0 && j != 1) Renumerate(G, j, 1);
-                        if (i != 0 && j == 1) Renumerate(G, i, 0);
+                        if (i == 0 && j != 1) Renumerate(H, j, 1);
+                        if (i != 0 && j == 1) Renumerate(H, i, 0);
                     }
-                    sum = sum + PairwiseConnectivity(G, F, true); // G changed
+                    sum = sum + PairwiseConnectivity(H, F, true); // H changed
                 }
 
-        for (int i = 0; i < sum.C.size(); i++) sum.C[i] = sum.C[i] / Bin[S.size()].C[2];
+        for (int i = 0; i < sum.C.size(); i++) sum.C[i] = sum.C[i] / Bin[initialGraph.size()].C[2];
     }
 
     if (option == 2) {
-        mask.resize(S.size());
-        for (int i = 0; i < mask.size(); i++)
-            i == 0 ? mask[i] = false : mask[i] = true;
+        maskMenc.resize(initialGraph.size());
+        for (int i = 0; i < maskMenc.size(); i++)
+            i == 0 ? maskMenc[i] = false : maskMenc[i] = true;
 
-        vector<int> weight(S.size());
+        vector<int> weight(initialGraph.size());
         for (int i = 0; i < weight.size(); i++) weight[i] = 1;
 
-        sum = ChainReduction2(S, sum, weight, true);
+        sum = ChainReduction2(initialGraph, sum, weight, true);
 
-        for (int i = 0; i < S.size(); i++)
-            if (mask[i]) {
-                vector<vector<edge>> G(S);
-                if (i != 1) Renumerate(G, i, 1); // after this i=1
-                sum = sum + PairwiseConnectivity(G, F, true); // G changed
+        for (int i = 0; i < initialGraph.size(); i++)
+            if (maskMenc[i]) {
+                vector<vector<edge>> H(initialGraph);
+                if (i != 1) Renumerate(H, i, 1); // after this i=1
+                sum = sum + PairwiseConnectivity(H, F, true); // H changed
             }
 
         sum = sum + Bin.front();
     }
 
     if (option == 3) {
-        mask1.resize(S.size());
-        for (int i = 0; i < mask1.size(); i++) {
-            mask1[i].resize(S[i].size());
-            for (int j = 0; j < mask1[i].size(); j++)
-                i != j ? mask1[i][j] = true : mask1[i][j] = false;
+        maskApc.resize(initialGraph.size());
+        for (int i = 0; i < maskApc.size(); i++) {
+            maskApc[i].resize(initialGraph[i].size());
+            for (int j = 0; j < maskApc[i].size(); j++)
+                i != j ? maskApc[i][j] = true : maskApc[i][j] = false;
         }
 
-        for (int i = 0; i < S.size(); i++)
-            for (int j = i + 1; j < S[i].size(); j++)
-                if (mask1[i][j]) {
-                    vector<vector<edge> > G(S);
+        for (int i = 0; i < initialGraph.size(); i++)
+            for (int j = i + 1; j < initialGraph[i].size(); j++)
+                if (maskApc[i][j]) {
+                    vector<vector<edge>> H(initialGraph);
                     if (i != 0 || j != 1) { // after this 0,1
                         if (i != 0 && j != 1) {
-                            Renumerate(G, i, 0);
-                            Renumerate(G, j, 1);
+                            Renumerate(H, i, 0);
+                            Renumerate(H, j, 1);
                         }
-                        if (i == 0 && j != 1) Renumerate(G, j, 1);
-                        if (i != 0 && j == 1) Renumerate(G, i, 0);
+                        if (i == 0 && j != 1) Renumerate(H, j, 1);
+                        if (i != 0 && j == 1) Renumerate(H, i, 0);
                     }
 
-                    edge R = PairwiseConnectivity(G, F, true); // G changed
+                    edge R = PairwiseConnectivity(H, F, true); // H changed
 
                     output << "R" << i + 1 << "," << j + 1 << ":" << endl;
-                   /* for (int k = 0; k < R.C.size(); k++)
+                    for (int k = 0; k < R.C.size(); k++)
                         output << R.C[k] << " ";
                     output << endl << "power = " << R.power << ", simple = " << R.simple << endl;
-*/
-                    double value = 0, p = 0.9, z = 0.1;
+
                     for (int l = 0; l < R.power; l++)
                         value += R.C[l] * pow(p, R.power - l) * pow(z, l);
                     output << "Value at point " << p << ": " << setprecision(15) << value << endl;
@@ -202,7 +201,7 @@ int main() {
     cout << " chains reduced " << chr << endl;
     cout << " 1-st type " << ch1 << endl;
     cout << " 2-nd type " << ch2 << endl;
-    cout << " decompositions in chainreduction " << decomp1 << endl;
+    cout << " decompositions in ChainReduction " << decomp1 << endl;
     cout << " decompositions in chr " << decomp2 << endl;
     cout << " decompositions in factoring " << decomp3 << endl;
     cout << "Were ends of recursion : " << num0 + num2 + num3 + num4 + num5 << endl;
@@ -213,7 +212,6 @@ int main() {
     cout << " 5-dimension graphs " << num5 << endl;
     cout << "Solution:" << endl;
     sum.PrintEdge();
-    double value = 0, p = 0.9, z = 0.1;
     for (int i = 0; i < sum.power; i++)
         value += sum.C[i] * pow(p, sum.power - i) * pow(z, i);
     cout << "Value at point " << p << ": " << fixed << setprecision(15) << value << endl;

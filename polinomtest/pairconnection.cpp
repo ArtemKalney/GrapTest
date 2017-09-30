@@ -4,46 +4,46 @@
 
 vector<int> GetNodePowers(vector<vector<edge>> &H)
 {
-    vector <int> nodepower(H.size());
+    vector<int> nodePowers(H.size());
     int i = 0;
     while (i < H.size()) {
         for (int j = 0; j<H[i].size(); j++)
-            if (H[i][j].ex) nodepower[i]++;
+            if (H[i][j].ex) nodePowers[i]++;
         i++;
     }
 
-    return nodepower;
+    return nodePowers;
 }
 
-void DFS(vector<vector<edge>> &H, int q)
+void Dfs(vector<vector<edge>> &H, int q)
 {
-    visited[q] = true;
+    visitedNodes[q] = true;
     for (int i = 0; i<H[q].size(); i++)
-        if (H[q][i].ex && !visited[i]) DFS(H, i);
+        if (H[q][i].ex && !visitedNodes[i]) Dfs(H, i);
 }
 
 bool ConnectedGraph(vector<vector<edge>> &H)
 {
-    int count = 0;
-    visited.resize(H.size());
+    int nodesInComponent = 0;
+    visitedNodes.resize(H.size());
 
-    for (int i = 0; i<visited.size(); i++) visited[i] = false;
+    for (int i = 0; i<visitedNodes.size(); i++) visitedNodes[i] = false;
 
-    DFS(H, 0);
-    for (int i = 0; i<visited.size(); i++)
-        if (visited[i]) count++;
+    Dfs(H, 0);
+    for (int i = 0; i<visitedNodes.size(); i++)
+        if (visitedNodes[i]) nodesInComponent++;
 
-    return count == H.size();
+    return nodesInComponent == H.size();
 }
 
-inline void DeleteNode(vector<vector<edge>> &H, int q)
+void DeleteNode(vector<vector<edge>> &H, int q)
 {
     H.erase(H.begin() + q);
     for (int i = 0; i<H.size(); i++)
         H[i].erase(H[i].begin() + q);
 }
 
-inline void deledge(vector<vector<edge>> &H, int q, int w)
+void DeleteEdge(vector<vector<edge>> &H, int q, int w)
 {
     edge F;
     F.ex = false;
@@ -60,7 +60,7 @@ void ContractEdge(vector<vector<edge>> &H, int q, int w)
                 H[i][w].simple += H[q][i].simple + 1;
             }
 
-            if (H[w][i].ex && (H[q][i].power != 1 || H[w][i].power != 1)) { // arise in chainreduction
+            if (H[w][i].ex && (H[q][i].power != 1 || H[w][i].power != 1)) { // arise in ChainReduction
                 H[w][i] = H[q][i] + H[w][i] - H[q][i] * H[w][i];
                 H[i][w] = H[w][i]; // for symmetry and less computing
             }
@@ -83,15 +83,15 @@ void Renumerate(vector<vector<edge>> &H, int s, int t)
         for (int i = 0; i<H.size(); i++)
             if (i != s && i != t) swap(F[i], G[i]);
 
-        if (!visited.empty() && max(s, t) < visited.size()) {
-            bool r = visited[s];
-            visited[s] = visited[t];
-            visited[t] = r;
+        if (!visitedNodes.empty() && max(s, t) < visitedNodes.size()) {
+            bool r = visitedNodes[s];
+            visitedNodes[s] = visitedNodes[t];
+            visitedNodes[t] = r;
         }
 
         for (int i = 0; i<H.size(); i++) { //clear strings and columns for nodes s,t
-            if (H[t][i].ex) deledge(H, t, i); //take into account the symmetry
-            if (H[s][i].ex) deledge(H, s, i);
+            if (H[t][i].ex) DeleteEdge(H, t, i); //take into account the symmetry
+            if (H[s][i].ex) DeleteEdge(H, s, i);
         }
 
         for (int i = 0; i<H.size(); i++) { // filling
@@ -107,65 +107,64 @@ void Renumerate(vector<vector<edge>> &H, int s, int t)
     }
 }
 
-edge penduntreduction(vector<vector<edge>> &H, edge F, int q, bool find)
+void PenduntReduction(vector<vector<edge>> &H, edge &F, int q, bool find)
 {
     pendunt++;
-    vector<int> nodepower = GetNodePowers(H);
-    if (find) nodepower.erase(nodepower.begin() + q); // in penduntreduction we not consider pendunt node 0 || 1
+    vector<int> nodePowers = GetNodePowers(H);
+    if (find) nodePowers.erase(nodePowers.begin() + q); // in PenduntReduction we not consider pendunt node 0 || 1
 
-    vector <int>::iterator it, smallest = nodepower.end() - 1;
-    for (it = nodepower.begin(); it<nodepower.end(); ++it)
-        if (*it == 1) smallest = it;
-    int r = smallest - nodepower.begin(); // find pendunt node, can be 0,1
+    vector <int>::iterator it, iteratorOfPenduntNode = nodePowers.end() - 1;
+    for (it = nodePowers.begin(); it<nodePowers.end(); ++it)
+        if (*it == 1) iteratorOfPenduntNode = it;
+    int numberOfPenduntNode = iteratorOfPenduntNode - nodePowers.begin(); // find pendunt node, can be 0,1
 
-    if (*smallest == 1 && H.size() > 2) { //otherwise all will be deleted
-        for (int i = H[r].size() - 1; i >= 0; i--)
-            if (H[r][i].ex) {
+    if (*iteratorOfPenduntNode == 1 && H.size() > 2) { //otherwise all will be deleted
+        for (int i = H[numberOfPenduntNode].size() - 1; i >= 0; i--)
+            if (H[numberOfPenduntNode][i].ex) {
                 //find incident edge to pendunt node, can't be 0,1 || 1,0
-                if ((r == 1 && i == 0) || (r == 0 && i == 1)) { // that do not have loop
-                    q = r;
+                if ((numberOfPenduntNode == 1 && i == 0) || (numberOfPenduntNode == 0 && i == 1)) { // that do not have loop
+                    q = numberOfPenduntNode;
                     find = true;
                 }
 
-                if (r != 0 && r != 1) DeleteNode(H, r);
+                if (numberOfPenduntNode != 0 && numberOfPenduntNode != 1) DeleteNode(H, numberOfPenduntNode);
 
-                if ((r == 1 && i != 0) || (r == 0 && i != 1)) {
-                    F = F*H[r][i];
-                    DeleteNode(H, r);
+                if ((numberOfPenduntNode == 1 && i != 0) || (numberOfPenduntNode == 0 && i != 1)) {
+                    F = F*H[numberOfPenduntNode][i];
+                    DeleteNode(H, numberOfPenduntNode);
                     i--; // after delenode not forget about i
                     if (i != 1) Renumerate(H, i, 1); // always must be 1
                 }
                 break; // arise the eror if abort this
             }
-        return penduntreduction(H, F, q, find);
-    }
-    return F;
 
+        PenduntReduction(H, F, q, find);
+    }
 }
 
-bool bridgereduction(vector<vector<edge>> &H)
+bool BridgeReduction(vector<vector<edge>> &H)
 {
     bridges++;
-    if (visited.size() != H.size())
-        cout << "Eror bridgereduction!" << endl;
+    if (visitedNodes.size() != H.size())
+        cout << "Eror BridgeReduction!" << endl;
 
-    if (visited[0] && visited[1]) { // only one of this cases exist
+    if (visitedNodes[0] && visitedNodes[1]) { // only one of this cases exist
         for (int i = H.size() - 1; i >= 0; i--)
-            if (!visited[i]) DeleteNode(H, i);  // when end is 0,0 make mistake if start from 0
+            if (!visitedNodes[i]) DeleteNode(H, i);  // when end is 0,0 make mistake if start from 0
     }
 
-    if (!visited[0] && !visited[1]) {
+    if (!visitedNodes[0] && !visitedNodes[1]) {
         for (int i = H.size() - 1; i >= 0; i--)
-            if (visited[i]) DeleteNode(H, i);
+            if (visitedNodes[i]) DeleteNode(H, i);
     }
 
-    if ((visited[0] && !visited[1]) || (!visited[0] && visited[1]))
+    if ((visitedNodes[0] && !visitedNodes[1]) || (!visitedNodes[0] && visitedNodes[1]))
         return false;
 
     return true;
 }
 
-edge fedge(vector<vector<edge>> &H)
+edge GetAllowingEdge(vector<vector<edge>> &H)
 {
     edge F;
     vector<int> nodepower = GetNodePowers(H);
@@ -174,7 +173,7 @@ edge fedge(vector<vector<edge>> &H)
     for (it = nodepower.begin(); it<nodepower.end(); ++it)
         if (*it <= *smallest && (it - nodepower.begin() != 0) && (it - nodepower.begin() != 1))
             smallest = it;
-    //becouse after deledge we can get unconnected graph in case nodepower=1
+    //becouse after DeleteEdge we can get unconnected graph in case nodepower=1
     int r = smallest - nodepower.begin(); //can't be 0,1
 
     for (int i = H[r].size() - 1; i >= 0; i--)
@@ -198,16 +197,16 @@ bool ElementInside(vector<int> P, int x)
     return false;
 }
 
-vector<int> GetChain(vector<vector<edge>> &H, vector<int> &V)
+vector<int> GetChain(vector<vector<edge>> &H, vector<int> &checkedNodes)
 {
-    vector<int> nodepower = GetNodePowers(H);
+    vector<int> nodePowers = GetNodePowers(H);
     vector<int> P; // chain nodes vector
 
     bool find = false;
     int i = 0;
     while (!find && i<H.size()) {
         for (int j = 0; j<H[i].size(); j++) {
-            if (H[i][j].ex && !(ElementInside(V, i) && ElementInside(V, j)) && (nodepower[j] == 2 || nodepower[i] == 2)) {
+            if (H[i][j].ex && !(ElementInside(checkedNodes, i) && ElementInside(checkedNodes, j)) && (nodePowers[j] == 2 || nodePowers[i] == 2)) {
                 // find node power = 2 and add nodes of edge where is selected node
                 P.push_back(i);
                 P.push_back(j);
@@ -220,7 +219,7 @@ vector<int> GetChain(vector<vector<edge>> &H, vector<int> &V)
 
     if (!P.empty()) { // expand vector in both sides if it is not empty
         i = P.front();
-        while (nodepower[i] == 2 && i != P.back())
+        while (nodePowers[i] == 2 && i != P.back())
             // find node incident to left node of our chain and add it
             for (int j = 0; j<H[i].size(); j++)
                 if (H[i][j].ex && j != P[1]) {
@@ -228,8 +227,9 @@ vector<int> GetChain(vector<vector<edge>> &H, vector<int> &V)
                     i = j;
                     break;
                 }
+
         i = P.back();
-        while (nodepower[i] == 2 && i != P.front())
+        while (nodePowers[i] == 2 && i != P.front())
             for (int j = 0; j<H[i].size(); j++)
                 if (H[i][j].ex && j != P[P.size() - 2]) {
                     if (j != P.front()) P.push_back(j);
@@ -243,9 +243,10 @@ vector<int> GetChain(vector<vector<edge>> &H, vector<int> &V)
     return P;
 }
 
-vector<int> chainreduction(vector<vector<edge>> &H, vector<int> &Ch, vector<int> &V, bool find)
+vector<int> ChainReduction(vector<vector<edge>> &H, vector<int> &Ch, vector<int> &checkedNodes,
+                           bool chainWithTwoSpecialNodes)
 {
-    vector<int> P = GetChain(H, V);
+    vector<int> P = GetChain(H, checkedNodes);
     int countSelectedNodes = 0;
 
     if (!P.empty()) {
@@ -260,37 +261,38 @@ vector<int> chainreduction(vector<vector<edge>> &H, vector<int> &Ch, vector<int>
                 countSelectedNodes = 0; // reduct special chains
         }
 
-        if ((countSelectedNodes == 1 || countSelectedNodes == 2) && !find) {
+        if ((countSelectedNodes == 1 || countSelectedNodes == 2) && !chainWithTwoSpecialNodes) {
             if (countSelectedNodes == 2) { // have only chain with countSelectedNodes=2
-                find = true;
-                V = P;
+                chainWithTwoSpecialNodes = true;
+                checkedNodes = P;
             }
+
             if (countSelectedNodes == 1) {
                 if (!Ch.empty()) {
                     for (it = Ch.begin(); it<Ch.end() - 1; ++it)
                         if (*it == 0 || *it == 1) r = it;  // Ch.back()=countSelectedNodes
                     if (r == Ch.begin() || r == Ch.end() - 2)
-                        V.clear(); // next recursive call reduct Ch
+                        checkedNodes.clear(); // next recursive call reduct Ch
                 }
                 for (int j = 0; j<P.size(); j++)
-                    if (!ElementInside(V, P[j])) V.push_back(P[j]);
+                    if (!ElementInside(checkedNodes, P[j])) checkedNodes.push_back(P[j]);
             }
 
             P.push_back(countSelectedNodes);
             Ch = P;
 
-            return chainreduction(H, Ch, V, find);
+            return ChainReduction(H, Ch, checkedNodes, chainWithTwoSpecialNodes);
         }
         else
-            countSelectedNodes = 0; // to reduct chain(s) when we find countSelectedNodes=2
+            countSelectedNodes = 0; // to reduct chain(s) when we chainWithTwoSpecialNodes countSelectedNodes=2
 
         if (countSelectedNodes == 0) { // Replace chain by edge
             chr++;
-            edge newedge;
-            newedge.C.push_back(1);
+            edge newEdge;
+            newEdge.C.push_back(1);
 
             for (int j = 0; j<P.size() - 1; j++)
-                newedge = newedge*H[P[j]][P[j + 1]];
+                newEdge = newEdge*H[P[j]][P[j + 1]];
 
             for (int j = 1; j<P.size() - 1; j++) {
                 DeleteNode(H, P[j]); // delete only inner nodes of chain
@@ -298,45 +300,45 @@ vector<int> chainreduction(vector<vector<edge>> &H, vector<int> &Ch, vector<int>
                     if (P[j] < P[k]) P[k]--; // not forget about P
                 for (int k = 0; k<Ch.size(); k++)
                     if (P[j] < Ch[k]) Ch[k]--; // not forget about Ch
-                for (int k = 0; k<V.size(); k++)
-                    if (P[j] < V[k]) V[k]--; // not forget about V
+                for (int k = 0; k<checkedNodes.size(); k++)
+                    if (P[j] < checkedNodes[k]) checkedNodes[k]--; // not forget about checkedNodes
             }
 
             int x = P.front(), y = P.back();
 
-            if (H[x][y].ex) { // Becouse newedge.power != 1
-                H[x][y] = H[x][y] + newedge - H[x][y] * newedge;
+            if (H[x][y].ex) { // Becouse newEdge.power != 1
+                H[x][y] = H[x][y] + newEdge - H[x][y] * newEdge;
                 H[y][x] = H[x][y];
             }
             else {
-                H[x][y] = newedge;
-                H[y][x] = newedge;
+                H[x][y] = newEdge;
+                H[y][x] = newEdge;
             }
 
             if (!Ch.empty()) { // expand vector in both sides if it is not empty
                 Ch.pop_back();
-                vector<int> nodepower = GetNodePowers(H);
+                vector<int> nodePowers = GetNodePowers(H);
 
                 int i = Ch.front();
-                while (nodepower[i] == 2 && i != Ch.back())
-                    // find node incident to left node of our chain and add it
+                while (nodePowers[i] == 2 && i != Ch.back())
+                    // chainWithTwoSpecialNodes node incident to left node of our chain and add it
                     for (int j = 0; j<H[i].size(); j++)
                         if (H[i][j].ex && j != Ch[1]) {
                             if (j != Ch.back()) {
                                 Ch.insert(Ch.begin(), j);
-                                if (!ElementInside(V, j)) V.push_back(j);
+                                if (!ElementInside(checkedNodes, j)) checkedNodes.push_back(j);
                             }
                             i = j;
                             break;
                         }
 
                 i = Ch.back();
-                while (nodepower[i] == 2 && i != Ch.front())
+                while (nodePowers[i] == 2 && i != Ch.front())
                     for (int j = 0; j<H[i].size(); j++)
                         if (H[i][j].ex && j != Ch[Ch.size() - 2]) {
                             if (j != Ch.front()) {
                                 Ch.push_back(j);
-                                if (!ElementInside(V, j)) V.push_back(j);
+                                if (!ElementInside(checkedNodes, j)) checkedNodes.push_back(j);
                             }
                             i = j;
                             break;
@@ -349,14 +351,14 @@ vector<int> chainreduction(vector<vector<edge>> &H, vector<int> &Ch, vector<int>
                 Ch.push_back(countSelectedNodes);
             }
 
-            return chainreduction(H, Ch, V, find);
+            return ChainReduction(H, Ch, checkedNodes, chainWithTwoSpecialNodes);
         }
     }
 
     return Ch;
 }
 
-edge SimpleCase (vector<vector<edge>> &H, edge F)
+edge SimpleCase (const vector<vector<edge>> &H, const edge &F)
 {
     if (H.size() == 2) {
         num2++;
@@ -389,22 +391,23 @@ edge PairwiseConnectivity(vector<vector<edge>> &H, edge F, bool connected)
 {
     factors++;
     if (!connected) {
-        edge N;
-        if (!bridgereduction(H)) {
+        edge emptyEdge;
+        if (!BridgeReduction(H)) {
             num0++;
-            return N;
+            return emptyEdge;
         }
+
         connected = true;
     }
 
     if (H.size() < MAX_DIMENSIONAL)
         return SimpleCase(H,F);
 
-    F = penduntreduction(H, F, 0, false);
+    PenduntReduction(H, F, 0, false);
 
     int typeOfSpecialChain = 0;
-    vector<int> Chain, V;
-    Chain = chainreduction(H, Chain, V, false);
+    vector<int> Chain, checkedNodes;
+    Chain = ChainReduction(H, Chain, checkedNodes, false);
     if (!Chain.empty()) {
         typeOfSpecialChain = Chain.back();
         Chain.pop_back();
@@ -433,74 +436,78 @@ edge PairwiseConnectivity(vector<vector<edge>> &H, edge F, bool connected)
         edge P, L;
         P.C.push_back(1);
         L.C.push_back(1);
-        vector<vector<edge>> G(H);
+        vector<vector<edge>> graph(H);
         for (int i = 0; i<placeOfPivoteNodeT; i++)
-            L = L*G[Ch[i]][Ch[i + 1]];
+            L = L*graph[Ch[i]][Ch[i + 1]];
         for (int i = placeOfPivoteNodeT; i<Ch.size() - 1; i++)
-            P = P*G[Ch[i]][Ch[i + 1]];
+            P = P*graph[Ch[i]][Ch[i + 1]];
         edge T = P*L;
 
         for (int i = 1; i<Ch.size() - 1; i++) { // after this we get 2 nodes from chain, one of them can be pivote
-            DeleteNode(G, Ch[i]);
+            DeleteNode(graph, Ch[i]);
             for (int j = 0; j<Ch.size(); j++)
                 if (Ch[i] < Ch[j]) Ch[j]--; // not forget about Ch
         }
         int x = Ch.front(), y = Ch.back(); // matter x<=>y
 
-        vector<vector<edge>> G1(G);
-        bool connec = ConnectedGraph(G);
-        vector<bool> visited1 (visited);
+        vector<vector<edge>> graphWithDeletedChain(graph);
+        bool connectedGraph = ConnectedGraph(graph);
+        vector<bool> visitedNodesBeforeRenumerate(visitedNodes);
 
         edge k;
         if (placeOfPivoteNodeT != 0) {
-            (terminal) ? Renumerate(G, y, t) : Renumerate(G, y, 1);  // s=0||1, becouse we don't delete pivote node
+            (terminal) ? Renumerate(graph, y, t) : Renumerate(graph, y, 1);
+            // s=0||1, becouse we don't delete pivote node
             // after delete: s - node out of chain always 0, so t=1
-            k = PairwiseConnectivity(G, F * (P - T), connec); // Rsy
+            k = PairwiseConnectivity(graph, F * (P - T), connectedGraph); // Rsy
         }
 
         edge w;
         if (placeOfPivoteNodeT != Ch.size() - 1) {
-            visited = visited1; // same size so all right
-            G = G1;
-            (terminal) ? Renumerate(G, x, t) : Renumerate(G, x, 1);
-            w = PairwiseConnectivity(G, F * (L - T), connec); // Rsx
+            visitedNodes = visitedNodesBeforeRenumerate; // same size so all right
+            graph = graphWithDeletedChain;
+            (terminal) ? Renumerate(graph, x, t) : Renumerate(graph, x, 1);
+            w = PairwiseConnectivity(graph, F * (L - T), connectedGraph); // Rsx
         }
 
-        G = G1;
+        graph = graphWithDeletedChain;
         if (x == 0 || x == 1 || y == 0 || y == 1) // only 1 case can be
-            (x == 0 || x == 1) ? ContractEdge(G, y, x) : ContractEdge(G, x, y); // don't delete pivote node, get t
+            (x == 0 || x == 1) ? ContractEdge(graph, y, x) : ContractEdge(graph, x, y);
+            // don't delete pivote node, get t
         else {
             int xy = x;
             if (y < xy) xy--; // not forget about xy
-            ContractEdge(G, y, x);
-            Renumerate(G, xy, 1); // if terminal x or y is pivote
+            ContractEdge(graph, y, x);
+            Renumerate(graph, xy, 1); // if terminal x or y is pivote
         }
 
         edge m;
-        if (!connec) {
-            visited = visited1;
-            int component1_size = 0;
-            for (int i = 0; i < visited.size(); i++)
-                if (visited[i]) component1_size++;
-            int component2_size = visited.size() - component1_size;
+        if (!connectedGraph) {
+            visitedNodes = visitedNodesBeforeRenumerate;
+            int firstComponentSize = 0;
+            for (int i = 0; i < visitedNodes.size(); i++)
+                if (visitedNodes[i]) firstComponentSize++;
+            int secondComponentSize = visitedNodes.size() - firstComponentSize;
 
-            if (component1_size != 1 && component2_size != 1) {
+            if (firstComponentSize != 1 && secondComponentSize != 1) {
                 decomp2++;
-                if ((visited[x] && visited[y]) || (!visited[x] && !visited[y]))
+                if ((visitedNodes[x] && visitedNodes[y]) || (!visitedNodes[x] && !visitedNodes[y]))
                     cout << "Eror in decomposition chr" << endl;
 
-                vector<vector<edge>> J(G1);
+                graph = graphWithDeletedChain;
                 if (!terminal) s = 0; // else s = s
-                if ((visited[s] && visited[x]) || (!visited[s] && !visited[x]))
-                    (terminal) ? Renumerate(J, x, t) : Renumerate(J, x, 1);
+                if ((visitedNodes[s] && visitedNodes[x]) || (!visitedNodes[s] && !visitedNodes[x]))
+                    (terminal) ? Renumerate(graph, x, t) : Renumerate(graph, x, 1);
                 else
-                    (terminal) ? Renumerate(J, y, t) : Renumerate(J, y, 1);
+                    (terminal) ? Renumerate(graph, y, t) : Renumerate(graph, y, 1);
 
-                m = PairwiseConnectivity(J, F * T, connec);
+                m = PairwiseConnectivity(graph, F * T, connectedGraph);
             }
-            else m = PairwiseConnectivity(G, F * T, connected); // Rs<x,y>, no Renumerate becouse s,t always pivote nodes
+            else m = PairwiseConnectivity(graph, F * T, connected);
+            // Rs<x,y>, no Renumerate becouse s,t always pivote nodes
         }
-        else m = PairwiseConnectivity(G, F * T, connected); // Rs<x,y>, no Renumerate becouse s,t always pivote nodes
+        else m = PairwiseConnectivity(graph, F * T, connected);
+        // Rs<x,y>, no Renumerate becouse s,t always pivote nodes
 
         return k + w + m;
     }
@@ -527,43 +534,46 @@ edge PairwiseConnectivity(vector<vector<edge>> &H, edge F, bool connected)
         edge P, L;
         P.C.push_back(1);
         L.C.push_back(1);
-        vector<vector<edge>> G(H);
+        vector<vector<edge>> graph(H);
+
         for (int i = 0; i<placeOfPivoteNodeS; i++)
-            L = L*G[Ch[i]][Ch[i + 1]];
+            L = L*graph[Ch[i]][Ch[i + 1]];
         for (int i = placeOfPivoteNodeS; i<placeOfPivoteNodeT; i++)
-            P = P*G[Ch[i]][Ch[i + 1]];
+            P = P*graph[Ch[i]][Ch[i + 1]];
         for (int i = placeOfPivoteNodeT; i<Ch.size() - 1; i++)
-            L = L*G[Ch[i]][Ch[i + 1]];
+            L = L*graph[Ch[i]][Ch[i + 1]];
         for (int i = 1; i<Ch.size() - 1; i++) {
-            DeleteNode(G, Ch[i]);
+            DeleteNode(graph, Ch[i]);
             for (int j = 0; j<Ch.size(); j++)
                 if (Ch[i] < Ch[j]) Ch[j]--; // not forget about Ch
         }
         int x = Ch.front(), y = Ch.back(); // doesn't matter x<=>y
 
-        bool connec = ConnectedGraph(G);
+        bool connectedGraph = ConnectedGraph(graph);
 
         if (x != 0 && x != 1 && y != 0 && y != 1) {
-            Renumerate(G, x, 0);
-            Renumerate(G, y, 1);
+            Renumerate(graph, x, 0);
+            Renumerate(graph, y, 1);
         }
-        if (x == 0 && y != 1) Renumerate(G, y, 1);
-        if (x == 1 && y != 0) Renumerate(G, y, 0);
-        if (y == 0 && x != 1) Renumerate(G, x, 1);
-        if (y == 1 && x != 0) Renumerate(G, x, 0);
-        edge n = PairwiseConnectivity(G, F * (L - P * L), connec); // Rxy
+        if (x == 0 && y != 1) Renumerate(graph, y, 1);
+        if (x == 1 && y != 0) Renumerate(graph, y, 0);
+        if (y == 0 && x != 1) Renumerate(graph, x, 1);
+        if (y == 1 && x != 0) Renumerate(graph, x, 0);
+        edge n = PairwiseConnectivity(graph, F * (L - P * L), connectedGraph); // Rxy
 
         return F*P + n; // F* becouse we don't make recursive call
     }
 
-    edge W = fedge(H);
-    if (W.node1 == 1 || W.node1 == 0 ) cout << "Eror in Allowing edge" << endl;
+    edge allowingEdge = GetAllowingEdge(H);
 
-    vector<vector<edge>> H1(H);
-    vector<vector<edge>> H2(H);
+    if (allowingEdge.node1 == 1 || allowingEdge.node1 == 0 )
+        cout << "Eror in Allowing edge" << endl;
+
+    vector<vector<edge>> graphWithContractedEdge(H);
+    vector<vector<edge>> graphWithDeletedEdge(H);
 
     edge F1, F2;
-    if (W.simple == 0 && W.power == 1) {
+    if (allowingEdge.simple == 0 && allowingEdge.power == 1) {
         F1 = F;
         F1.power++;
         F2 = F;
@@ -572,69 +582,80 @@ edge PairwiseConnectivity(vector<vector<edge>> &H, edge F, bool connected)
         F2.C.pop_back();
     }
     else {
-        F1 = F*W;
-        F2 = F*~W;
+        F1 = F*allowingEdge;
+        F2 = F*~allowingEdge;
     }
 
-    ContractEdge(H1, W.node1, W.node2);
-    deledge(H2, W.node1, W.node2);
+    ContractEdge(graphWithContractedEdge, allowingEdge.node1, allowingEdge.node2);
+    DeleteEdge(graphWithDeletedEdge, allowingEdge.node1, allowingEdge.node2);
 
-    bool connec = ConnectedGraph(H2);
-    vector<bool> visited1(visited);
+    bool connectedGraph = ConnectedGraph(graphWithDeletedEdge);
+    vector<bool> visitedNodesBeforeRenumerate(visitedNodes);
 
-    if (!connec) { // W.node2 can be 0 or 1
-        int component1_size = 0;
+    if (!connectedGraph) { // allowingEdge.node2 can be 0 or 1
+        int firstComponentSize = 0;
 
-        for (int i = 0; i < visited.size(); i++)
-            if (visited[i]) component1_size++;
+        for (int i = 0; i < visitedNodes.size(); i++)
+            if (visitedNodes[i]) firstComponentSize++;
 
-        int component2_size = visited.size() - component1_size;
+        int secondComponentSize = visitedNodes.size() - firstComponentSize;
 
-        if (component1_size != 1 && component2_size != 1) {
+        if (firstComponentSize != 1 && secondComponentSize != 1) {
             decomp3++;
-            vector<vector<edge>> J1(H2);
-            vector<vector<edge>> J2(H2);
+            vector<vector<edge>> G1(graphWithDeletedEdge);
+            vector<vector<edge>> G2(graphWithDeletedEdge);
             edge F3 = Bin.front(); // create pseudo edge for computing
+            edge m = PairwiseConnectivity(graphWithDeletedEdge, F2, connectedGraph); // use visitedNodes
 
-            edge m = PairwiseConnectivity(H2, F2, connec); // use visited
-
-            if (W.node2 != 0 && W.node2 != 1 && ((visited[0] && !visited[1]) || (!visited[0] && visited[1]))) {
-                visited = visited1;
-                if ((visited[W.node1] && visited[0]) || (!visited[W.node1] && !visited[0]))
-                    Renumerate(J1, 1, W.node1);
+            if (allowingEdge.node2 != 0 && allowingEdge.node2 != 1 && ((visitedNodes[0] && !visitedNodes[1]) ||
+                    (!visitedNodes[0] && visitedNodes[1]))) {
+                visitedNodes = visitedNodesBeforeRenumerate;
+                if ((visitedNodes[allowingEdge.node1] && visitedNodes[0]) || (!visitedNodes[allowingEdge.node1] &&
+                        !visitedNodes[0]))
+                    Renumerate(G1, 1, allowingEdge.node1);
                 else
-                    Renumerate(J1, 1, W.node2);
-                edge k = PairwiseConnectivity(J1, F3, connec);
+                    Renumerate(G1, 1, allowingEdge.node2);
 
-                visited = visited1;
-                if ((visited[W.node1] && visited[1]) || (!visited[W.node1] && !visited[1]))
-                    Renumerate(J2, 0, W.node1);
+                edge k = PairwiseConnectivity(G1, F3, connectedGraph);
+
+                visitedNodes = visitedNodesBeforeRenumerate;
+                if ((visitedNodes[allowingEdge.node1] && visitedNodes[1]) || (!visitedNodes[allowingEdge.node1] &&
+                        !visitedNodes[1]))
+                    Renumerate(G2, 0, allowingEdge.node1);
                 else
-                    Renumerate(J2, 0, W.node2);
-                edge w = PairwiseConnectivity(J2, F3, connec);
+                    Renumerate(G2, 0, allowingEdge.node2);
+
+                edge w = PairwiseConnectivity(G2, F3, connectedGraph);
 
                 return F1*k*w + m; // dont *F twice
             }
 
-            if (W.node2 != 0 && W.node2 != 1 && ((visited[0] && visited[1]) || (!visited[0] && !visited[1]))) {
-                visited = visited1;
-                edge k = PairwiseConnectivity(J1, F1, connec);
+            if (allowingEdge.node2 != 0 && allowingEdge.node2 != 1 && ((visitedNodes[0] && visitedNodes[1]) ||
+                    (!visitedNodes[0] && !visitedNodes[1]))) {
+                visitedNodes = visitedNodesBeforeRenumerate;
+
+                edge k = PairwiseConnectivity(G1, F1, connectedGraph);
 
                 return k + m;
             }
 
-            if (W.node2 == 0 || W.node2 == 1) { // if 0 and 1 in one component nothing renum
-                visited = visited1;
-                if (W.node2 == 0 && ((visited[0] && !visited[1]) || (!visited[0] && visited[1])))
-                    Renumerate(J1, 0, W.node1); // becouse can't return 0
-                if (W.node2 == 1 && ((visited[0] && !visited[1]) || (!visited[0] && visited[1])))
-                    Renumerate(J1, 1, W.node1);
-                edge k = PairwiseConnectivity(J1, F1, connec);
+            if (allowingEdge.node2 == 0 || allowingEdge.node2 == 1) { // if 0 and 1 in one component nothing renum
+                visitedNodes = visitedNodesBeforeRenumerate;
+                if (allowingEdge.node2 == 0 && ((visitedNodes[0] && !visitedNodes[1]) || (!visitedNodes[0] &&
+                        visitedNodes[1])))
+                    Renumerate(G1, 0, allowingEdge.node1); // becouse can't return 0
+                if (allowingEdge.node2 == 1 && ((visitedNodes[0] && !visitedNodes[1]) || (!visitedNodes[0] &&
+                        visitedNodes[1])))
+                    Renumerate(G1, 1, allowingEdge.node1);
+
+                edge k = PairwiseConnectivity(G1, F1, connectedGraph);
 
                 return k + m;
             }
         }
-        else return PairwiseConnectivity(H1, F1, connected) + PairwiseConnectivity(H2, F2, connec);
+        else return PairwiseConnectivity(graphWithContractedEdge, F1, connected) +
+                    PairwiseConnectivity(graphWithDeletedEdge, F2, connectedGraph);
     }
-    else return PairwiseConnectivity(H1, F1, connected) + PairwiseConnectivity(H2, F2, connec);
+    else return PairwiseConnectivity(graphWithContractedEdge, F1, connected) +
+                PairwiseConnectivity(graphWithDeletedEdge, F2, connectedGraph);
 }

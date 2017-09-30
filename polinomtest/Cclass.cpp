@@ -21,7 +21,7 @@ edge operator *(edge x, edge y)
         F.C.resize(x.C.size());
         F.power = 0;
         F.simple = 0;
-        F.ex = true; // need for chainreduction
+        F.ex = true; // need for ChainReduction
 
         if (x.simple > 0 && x.power != 1)
             cout << "Eror in Operator *" << endl; // coudn't be becouse we contract them
@@ -66,7 +66,7 @@ edge operator +(edge x, edge y)
 {
     edge F;
     if (!x.C.empty() && !y.C.empty()) { // for edges not zero attendance
-        if (x.C.size() == 1 && y.C.size() != 1) { // need for chainreduction
+        if (x.C.size() == 1 && y.C.size() != 1) { // need for ChainReduction
             x.C.resize(y.C.size());
             x.power = 0;
             x.simple = 0;
@@ -83,7 +83,7 @@ edge operator +(edge x, edge y)
 
         F.C.resize(x.C.size());
         F.simple = 0;
-        F.ex = true; // need for chainreduction
+        F.ex = true; // need for ChainReduction
 
         if (x.simple > 0 && x.power != 1)
             cout << "Eror in Operator +" << endl;
@@ -123,7 +123,7 @@ edge operator -(edge x, edge y)
 {
     edge F;
     if (!x.C.empty() && !y.C.empty()) { // for edges not zero attendance
-        if (x.C.size() == 1 && y.C.size() != 1) { // need for chainreduction
+        if (x.C.size() == 1 && y.C.size() != 1) { // need for ChainReduction
             x.C.resize(y.C.size());
             x.power = 0;
             x.simple = 0;
@@ -207,7 +207,7 @@ edge operator ~(edge x)
     return F;
 }
 
-edge operator *(int x, edge y) // need for chainreduction
+edge operator *(int x, edge y) // need for ChainReduction
 {
     edge F;
     if (!y.C.empty()) { // for edges not zero attendance

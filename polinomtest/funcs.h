@@ -9,6 +9,6 @@ vector<int> GetNodePowers(vector<vector<edge>> &H);
 void DeleteNode(vector<vector<edge>> &H, int q);
 void ContractEdge(vector<vector<edge>> &H, int q, int w);
 bool ElementInside(vector<int> P, int x);
-vector<int> GetChain(vector<vector<edge>> &H, vector<int> &V);
-edge ChainReduction1(vector<vector<edge>> &H, edge sum, vector<int> V, bool connected);
+vector<int> GetChain(vector<vector<edge>> &H, vector<int> &checkedNodes);
+edge ChainReduction1(vector<vector<edge>> &H, edge sum, vector<int> checkedNodes, bool connected);
 edge ChainReduction2(vector<vector<edge>> &H, edge sum, vector<int> weight, bool connected);
