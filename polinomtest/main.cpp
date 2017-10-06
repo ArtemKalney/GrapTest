@@ -15,7 +15,6 @@ void MakeAdjacencyMatrix(vector<vector<edge>> &H, vector<edge> &E)
 {
 	for (int i = 0; i<H.size(); i++)
         H[i].resize(H.size());
-	//initialize all strings, so as array is associative, not fill by nulls, or it is not global
 	for (int i = 0; i<H.size(); i++)
         for (int j = 0; j<H[i].size(); j++) {
 		H[i][j].ex = false;
@@ -38,25 +37,28 @@ int main() {
     int n = 0, m = 0;
     vector<edge> E;
     input.getline(str, 50);
+    cout << "Input graph : " << str << endl;
     int buf, count = 0;
     input >> buf;
     n = buf;
     input >> buf;
     m = buf;
 
+    // Read all edges from output.txt
     while (count != m) {
         bool simpleEdge = false;
-        edge q; // filling data for new edge
+        edge q;
         q.simple = 0;
         q.ex = true;
         q.power = 1;
         q.C.push_back(1);
-        q.C.resize(m + 1); // numerate start from 0
+        q.C.resize(m + 1);
         input >> buf;
         q.node1 = buf - 1;
         input >> buf;
         q.node2 = buf - 1;
-        for (int i = 0; i < E.size(); i++) // work with multi edges
+        // If edge was recorded, add to it simple
+        for (int i = 0; i < E.size(); i++)
             if ((E[i].node1 == q.node1 && E[i].node2 == q.node2) || (E[i].node1 == q.node2 && E[i].node2 == q.node1)) {
                 E[i].simple++;
                 simpleEdge = true;
@@ -65,9 +67,10 @@ int main() {
         count++;
     }
 
+    // Input should end by $$$
     input >> str;
     if (strcmp(str, "$$$") != 0) {
-        cout << "Incorrect entry" << endl; // 0 = ; 1 < ; -1 >
+        cout << "Incorrect entry" << endl;
         return 0;
     }
 
@@ -81,7 +84,8 @@ int main() {
         return 0;
     }
 
-    Bin.resize(m + 1); // max power is m-1
+    // In advance, calculate units of degree from 0 to m
+    Bin.resize(m + 1);
     for (int i = 0; i < Bin.size(); i++) {
         Bin[i].C.resize(m + 1);
         Bin[i].power = i;
@@ -92,19 +96,23 @@ int main() {
                 Bin[i].C[j] = Bin[i - 1].C[j - 1] + Bin[i - 1].C[j];
     }
 
+    // Create an adjacency matrix
     vector<vector<edge>> initialGraph(n);
     MakeAdjacencyMatrix(initialGraph, E);
 
+    // In the beginning we consider only connected graphs
     if (!ConnectedGraph(initialGraph)) {
         cout << "Unconnected graph on input!" << endl;
         return 0;
     }
 
-    edge F = Bin.front(); // create pseudo edge for computing
+    // Create a pseudo-edge F, which we multiply by the end of the calculations
+    edge F = Bin.front();
     unsigned int startTime = clock();
     double value = 0, p = 0.9, z = 0.1;
     edge sum;
 
+    // Computing APC
     if (option == 1) {
         maskApc.resize(initialGraph.size());
         for (int i = 0; i < maskApc.size(); i++) {
@@ -120,7 +128,9 @@ int main() {
             for (int j = i + 1; j < initialGraph[i].size(); j++)
                 if (maskApc[i][j]) {
                     vector<vector<edge>> H(initialGraph);
-                    if (i != 0 || j != 1) { // after this 0,1
+                    // When calculating the pairwise connection, the selected vertices have numbers 0,1
+                    // in the adjacency matrix
+                    if (i != 0 || j != 1) {
                         if (i != 0 && j != 1) {
                             Renumerate(H, i, 0);
                             Renumerate(H, j, 1);
@@ -131,9 +141,11 @@ int main() {
                     sum = sum + PairwiseConnectivity(H, F, true); // H changed
                 }
 
-        for (int i = 0; i < sum.C.size(); i++) sum.C[i] = sum.C[i] / Bin[initialGraph.size()].C[2];
+        for (int i = 0; i < sum.C.size(); i++)
+            sum.C[i] = sum.C[i] / Bin[initialGraph.size()].C[2];
     }
 
+    // Computing MENC
     if (option == 2) {
         maskMenc.resize(initialGraph.size());
         for (int i = 0; i < maskMenc.size(); i++)
@@ -147,13 +159,16 @@ int main() {
         for (int i = 0; i < initialGraph.size(); i++)
             if (maskMenc[i]) {
                 vector<vector<edge>> H(initialGraph);
-                if (i != 1) Renumerate(H, i, 1); // after this i=1
-                sum = sum + PairwiseConnectivity(H, F, true); // H changed
+                // When calculating the pairwise connection, the selected vertices have numbers 0,1
+                // in the adjacency matrix
+                if (i != 1) Renumerate(H, i, 1);
+                sum = sum + PairwiseConnectivity(H, F, true);
             }
 
         sum = sum + Bin.front();
     }
 
+    // Computing pairwise connectivities
     if (option == 3) {
         maskApc.resize(initialGraph.size());
         for (int i = 0; i < maskApc.size(); i++) {
@@ -166,7 +181,9 @@ int main() {
             for (int j = i + 1; j < initialGraph[i].size(); j++)
                 if (maskApc[i][j]) {
                     vector<vector<edge>> H(initialGraph);
-                    if (i != 0 || j != 1) { // after this 0,1
+                    // When calculating the pairwise connection, the selected vertices have numbers 0,1
+                    // in the adjacency matrix
+                    if (i != 0 || j != 1) {
                         if (i != 0 && j != 1) {
                             Renumerate(H, i, 0);
                             Renumerate(H, j, 1);
@@ -175,16 +192,13 @@ int main() {
                         if (i != 0 && j == 1) Renumerate(H, i, 0);
                     }
 
-                    edge R = PairwiseConnectivity(H, F, true); // H changed
+                    edge R = PairwiseConnectivity(H, F, true);
 
-                    output << "R" << i + 1 << "," << j + 1 << ":" << endl;
+                    if(R.power < m)
+                        R = R*Bin[m - R.power];
                     for (int k = 0; k < R.C.size(); k++)
-                        output << R.C[k] << " ";
-                    output << endl << "power = " << R.power << ", simple = " << R.simple << endl;
-
-                    for (int l = 0; l < R.power; l++)
-                        value += R.C[l] * pow(p, R.power - l) * pow(z, l);
-                    output << "Value at point " << p << ": " << setprecision(15) << value << endl;
+                        output << setprecision(15) << R.C[k] << " ";
+                    output << endl;
                 }
 
         return 0;
@@ -197,28 +211,30 @@ int main() {
     cout << "Reductions : " << endl;
     cout << " reduced chains initially " << chrs << endl;
     cout << " bridge reductions " << bridges << endl;
-    cout << " pendunt reducutions " << pendunt << endl;
+    cout << " pendunt reductions " << pendunt << endl;
     cout << " chains reduced " << chr << endl;
-    cout << " 1-st type " << ch1 << endl;
-    cout << " 2-nd type " << ch2 << endl;
+    cout << "  1-st type " << ch1 << endl;
+    cout << "  2-nd type " << ch2 << endl;
     cout << " decompositions in ChainReduction " << decomp1 << endl;
-    cout << " decompositions in chr " << decomp2 << endl;
+    cout << " decompositions in special chains " << decomp2 << endl;
     cout << " decompositions in factoring " << decomp3 << endl;
     cout << "Were ends of recursion : " << num0 + num2 + num3 + num4 + num5 << endl;
     cout << " unconnected graphs " << num0 << endl;
-    cout << " 2-dimension graphs " << num2 << endl;
-    cout << " 3-dimension graphs " << num3 << endl;
-    cout << " 4-dimension graphs " << num4 << endl;
-    cout << " 5-dimension graphs " << num5 << endl;
+    cout << " 2-nodes graphs " << num2 << endl;
+    cout << " 3-nodes graphs " << num3 << endl;
+    cout << " 4-nodes graphs " << num4 << endl;
+    cout << " 5-nodes graphs " << num5 << endl;
     cout << "Solution:" << endl;
+    if(sum.power < m)
+        sum = sum*Bin[m - sum.power];
     sum.PrintEdge();
     for (int i = 0; i < sum.power; i++)
         value += sum.C[i] * pow(p, sum.power - i) * pow(z, i);
-    cout << "Value at point " << p << ": " << fixed << setprecision(15) << value << endl;
+    cout << "Value at point " << p << ": " << setprecision(15) << value << endl;
 
     for (int i = 0; i < sum.C.size(); i++)
-        output << sum.C[i] << " ";
-    output << endl << "power = " << sum.power << ", simple = " << sum.simple << endl;
+        output << setprecision(15) << sum.C[i] << " ";
+    output << endl;
 
     input.close();
     output.close();

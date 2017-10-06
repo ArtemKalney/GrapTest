@@ -3,36 +3,44 @@
 #include "globals.h"
 
 void edge::PrintEdge() {
-    if (ex == 1) { // can be 204
+    if (ex == 1) {
         for (int i = 0; i < C.size(); i++)
-            cout << C[i] << " ";
-        cout << endl << "power = " << power << ", simple = " << simple << endl;
+            cout << setprecision(15) << C[i] << " ";
+        cout << endl;
     }
     else
         cout << "empty edge" << endl;
 }
 
+/*
+ * The following rules for calculations:
+ * 0 <=> edge.C.empty() = true
+ * 1 <=> edge.C.size() = 1
+ */
+
 edge operator *(edge x, edge y)
 {
     edge F;
-    if (!x.C.empty() && !y.C.empty()) { // for edges not zero attendance
-        if (x.C.size() == 1) return y;  // * on 1;
+    if (!x.C.empty() && !y.C.empty()) {
+        if (x.C.size() == 1) return y;
         if (y.C.size() == 1) return x;
         F.C.resize(x.C.size());
         F.power = 0;
         F.simple = 0;
-        F.ex = true; // need for ChainReduction
+        F.ex = true;
 
         if (x.simple > 0 && x.power != 1)
-            cout << "Eror in Operator *" << endl; // coudn't be becouse we contract them
+            cout << "Eror in Operator *" << endl;
         if (y.simple > 0 && y.power != 1)
             cout << "Eror in Operator *" << endl;
 
-        if (x.simple > 0) { // paralel reduction
+        // Parallel reduction for both edges x, y
+        if (x.simple > 0) {
             x.power += x.simple;
             x = Bin[x.power];
             x.C[x.power] = 0;
         }
+
         if (y.simple > 0) {
             y.power += y.simple;
             y = Bin[y.power];
@@ -44,7 +52,8 @@ edge operator *(edge x, edge y)
             for (int i = 0; i<x.C.size(); i++)
                 for (int j = 0; j<y.C.size(); j++) {
                     if (x.C[i] != 0 && y.C[j] != 0) {
-                        if (i + j >= F.C.size()) throw "Eror - vector is out of size";
+                        if (i + j >= F.C.size())
+                            throw "Eror - vector is out of size";
                         F.C[i + j] += x.C[i] * y.C[j];
                     }
                 }
@@ -65,8 +74,8 @@ edge operator *(edge x, edge y)
 edge operator +(edge x, edge y)
 {
     edge F;
-    if (!x.C.empty() && !y.C.empty()) { // for edges not zero attendance
-        if (x.C.size() == 1 && y.C.size() != 1) { // need for ChainReduction
+    if (!x.C.empty() && !y.C.empty()) {
+        if (x.C.size() == 1 && y.C.size() != 1) {
             x.C.resize(y.C.size());
             x.power = 0;
             x.simple = 0;
@@ -83,14 +92,15 @@ edge operator +(edge x, edge y)
 
         F.C.resize(x.C.size());
         F.simple = 0;
-        F.ex = true; // need for ChainReduction
+        F.ex = true;
 
         if (x.simple > 0 && x.power != 1)
             cout << "Eror in Operator +" << endl;
         if (y.simple > 0 && y.power != 1)
             cout << "Eror in Operator +" << endl;
 
-        if (x.simple > 0) { // paralel reduction
+        // Parallel reduction for both edges x, y
+        if (x.simple > 0) {
             x.power += x.simple;
             x = Bin[x.power];
             x.C[x.power] = 0;
@@ -102,6 +112,7 @@ edge operator +(edge x, edge y)
             y.C[y.power] = 0;
         }
 
+        // Multiply by a unit of the required degree, so that the degrees x and y coincide
         if (x.power != y.power) {
             edge I = Bin[abs(x.power - y.power)];
             if (x.power < y.power) x = x*I;
@@ -122,8 +133,8 @@ edge operator +(edge x, edge y)
 edge operator -(edge x, edge y)
 {
     edge F;
-    if (!x.C.empty() && !y.C.empty()) { // for edges not zero attendance
-        if (x.C.size() == 1 && y.C.size() != 1) { // need for ChainReduction
+    if (!x.C.empty() && !y.C.empty()) {
+        if (x.C.size() == 1 && y.C.size() != 1) {
             x.C.resize(y.C.size());
             x.power = 0;
             x.simple = 0;
@@ -147,7 +158,8 @@ edge operator -(edge x, edge y)
         if (y.simple > 0 && y.power != 1)
             cout << "Eror in Operator -" << endl;
 
-        if (x.simple > 0) { // paralel reduction
+        // Parallel reduction for both edges x, y
+        if (x.simple > 0) {
             x.power += x.simple;
             x = Bin[x.power];
             x.C[x.power] = 0;
@@ -159,6 +171,7 @@ edge operator -(edge x, edge y)
             y.C[y.power] = 0;
         }
 
+        // Multiply by a unit of the required degree, so that the degrees x and y coincide
         if (x.power != y.power) {
             edge I = Bin[abs(x.power - y.power)];
             if (x.power < y.power) x = x*I;
@@ -173,7 +186,7 @@ edge operator -(edge x, edge y)
     if (!x.C.empty() && y.C.empty()) F = x;
     if (x.C.empty() && !y.C.empty()) {
         F = y;
-        for (int i = 0; i<F.C.size(); i++) F.C[i] = -F.C[i]; // make no differents
+        for (int i = 0; i<F.C.size(); i++) F.C[i] = -F.C[i];
     }
 
     return F;
@@ -182,7 +195,7 @@ edge operator -(edge x, edge y)
 edge operator ~(edge x)
 {
     edge F;
-    if (!x.C.empty()) { // for edges not zero attendance
+    if (!x.C.empty()) {
         if (x.C.size() == 1) return F;
         F.C.resize(x.C.size());
         F.simple = 0;
@@ -191,12 +204,14 @@ edge operator ~(edge x)
         if (x.simple > 0 && x.power != 1)
             cout << "Eror in Operator ~" << endl;
 
-        if (x.simple > 0) { // paralel reduction
+        // Parallel reduction for the edge x
+        if (x.simple > 0) {
             x.power += x.simple;
             x = Bin[x.power];
             x.C[x.power] = 0;
         }
 
+        // Subtract from unity the same degree as x
         F.power = x.power;
         edge I = Bin[F.power];
         for (int i = 0; i<F.C.size(); i++)
@@ -207,10 +222,10 @@ edge operator ~(edge x)
     return F;
 }
 
-edge operator *(int x, edge y) // need for ChainReduction
+edge operator *(int x, edge y)
 {
     edge F;
-    if (!y.C.empty()) { // for edges not zero attendance
+    if (!y.C.empty()) {
         F = y;
         for (int i = 0; i<F.C.size(); i++)
             F.C[i] = x*F.C[i];
@@ -222,7 +237,7 @@ edge operator *(int x, edge y) // need for ChainReduction
 edge operator *(edge x, int y)
 {
     edge F;
-    if (!x.C.empty()) { // for edges not zero attendance
+    if (!x.C.empty()) {
         F = x;
         for (int i = 0; i<F.C.size(); i++)
             F.C[i] = y*F.C[i];

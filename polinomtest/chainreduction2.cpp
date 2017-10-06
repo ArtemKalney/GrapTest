@@ -4,7 +4,7 @@
 
 edge ChainReduction2(vector<vector<edge>> &H, edge sum, vector<int> weight, bool connected)
 {
-    vector<int> checkedNodes; // considered nodes
+    vector<int> checkedNodes;
     for (int i = 0; i<maskMenc.size(); i++)
         if (!maskMenc[i]) checkedNodes.push_back(i);
     vector<int> Chain = GetChain(H, checkedNodes);
@@ -27,15 +27,15 @@ edge ChainReduction2(vector<vector<edge>> &H, edge sum, vector<int> weight, bool
             edge F1, F2;
             int F3 = 0;
             for (int i = 0; i<Ch.size() - 1; i++)
-                if (!ElementInside(checkedNodes, Ch[i])) { // i=Ch.size() - 1 doesn't make anything
-                    edge L; // save power,simple, but lost P.C
+                if (!ElementInside(checkedNodes, Ch[i])) {
+                    edge L;
                     L.C.push_back(1);
                     for (int j = 0; j<i; j++)
                         L = L*graph[Ch[j]][Ch[j + 1]];
-                    F1 = F1 + weight[Ch[i]] * (L - T); // here arise size=1 - edge
+                    F1 = F1 + weight[Ch[i]] * (L - T);
                 }
             for (int i = 1; i<Ch.size(); i++)
-                if (!ElementInside(checkedNodes, Ch[i])) { // i=0 doesn't make anything
+                if (!ElementInside(checkedNodes, Ch[i])) {
                     edge P;
                     P.C.push_back(1);
                     for (int j = i; j<Ch.size() - 1; j++)
@@ -47,25 +47,28 @@ edge ChainReduction2(vector<vector<edge>> &H, edge sum, vector<int> weight, bool
                 if (!ElementInside(checkedNodes, Ch[i]))
                     F3 += weight[Ch[i]];
 
-            for (int i = 1; i<Ch.size() - 1; i++) { // after this we get 2 nodes from chain, one of them can be pivote
-                DeleteNode(graph, Ch[i]);
+            // Remove the chain
+            for (int i = 1; i<Ch.size() - 1; i++) {
+                RemoveNode(graph, Ch[i]);
+                // After removing the node, the numbering in the adjacency matrix changes
                 for (int j = 0; j<Ch.size(); j++)
-                    if (Ch[i] < Ch[j]) Ch[j]--; // not forget about Ch
+                    if (Ch[i] < Ch[j]) Ch[j]--;
             }
-            int x = Ch.front(), y = Ch.back(); // matter x<=>y
+            int x = Ch.front(), y = Ch.back();
 
-            vector<vector<edge>> graphWithDeletedChain(graph.size());
-            for (int i = 0; i<graph.size(); i++) graphWithDeletedChain[i] = graph[i]; // after reduction graph changed
+            vector<vector<edge>> graphWithDeletedChain(graph);
             bool connectedGraph = ConnectedGraph(graph);
             vector<bool> visitedNodesBeforeRenumerate = visitedNodes;
 
             edge k;
+            // Do not consider the term multiplied by 0
             if (!F2.C.empty()) {
-                Renumerate(graph, y, 1);  // s - node out of chain always 0, so t=1
+                Renumerate(graph, y, 1);
                 k = PairwiseConnectivity(graph, F2, connectedGraph); // R1y
             }
 
             edge w;
+            // Do not consider the term multiplied by 0
             if (!F1.C.empty()) {
                 visitedNodes = visitedNodesBeforeRenumerate;
                 graph.resize(graphWithDeletedChain.size());
@@ -76,10 +79,11 @@ edge ChainReduction2(vector<vector<edge>> &H, edge sum, vector<int> weight, bool
 
             graph = graphWithDeletedChain;
             int xy = x;
+            // when contracting, remove the node and renumber the numbering
             if (y < xy) xy--; // not forget
-            ContractEdge(graph, y, x); // x or y can't be s
+            ContractEdge(graph, y, x);
 
-            if (xy != 1) Renumerate(graph, xy, 1); // 0 can not be in Ch
+            if (xy != 1) Renumerate(graph, xy, 1);
 
             edge m;
             if (!connectedGraph) {
@@ -89,15 +93,16 @@ edge ChainReduction2(vector<vector<edge>> &H, edge sum, vector<int> weight, bool
                     if (visitedNodes[i]) firstComponentSize++;
                 int secondComponentSize = visitedNodes.size() - firstComponentSize;
 
+                // Decomposition, do not consider cases where 1 node
                 if (firstComponentSize != 1 && secondComponentSize != 1) {
                     decomp1++;
                     graph = graphWithDeletedChain;
                     if ((visitedNodes[0] && visitedNodes[x]) || (!visitedNodes[0] && !visitedNodes[x]))
-                        Renumerate(graph, x, 1); // why not
+                        Renumerate(graph, x, 1);
                     else
-                        Renumerate(graph, y, 1); // why not
+                        Renumerate(graph, y, 1);
 
-                    m = PairwiseConnectivity(graph, F3 * T, connectedGraph); // dont *F twice
+                    m = PairwiseConnectivity(graph, F3 * T, connectedGraph);
                 }
                 else m = PairwiseConnectivity(graph, F3 * T, connected); // R1xy
             }
@@ -110,7 +115,7 @@ edge ChainReduction2(vector<vector<edge>> &H, edge sum, vector<int> weight, bool
             vector<int>::iterator it, iteratorOfPivoteNode;
             for (it = Ch.begin(); it<Ch.end(); ++it)
                 if (*it == 0) iteratorOfPivoteNode = it;
-            int placeOfPivoteNodeS = iteratorOfPivoteNode - Ch.begin(); // place of pivote node s=0 into vector Ch
+            int placeOfPivoteNodeS = iteratorOfPivoteNode - Ch.begin();
 
             edge T;
             T.C.push_back(1);
@@ -123,7 +128,7 @@ edge ChainReduction2(vector<vector<edge>> &H, edge sum, vector<int> weight, bool
             int F3 = 0;
             for (int i = 0; i<Ch.size(); i++)
                 if (i != placeOfPivoteNodeS && !ElementInside(checkedNodes, Ch[i])) {
-                    edge P; // save power,simple, but lost P.C
+                    edge P;
                     P.C.push_back(1);
                     if (i < placeOfPivoteNodeS)
                         for (int j = i; j<placeOfPivoteNodeS; j++)
@@ -159,14 +164,14 @@ edge ChainReduction2(vector<vector<edge>> &H, edge sum, vector<int> weight, bool
                     F3 += weight[Ch[i]];
 
             for (int i = 1; i<Ch.size() - 1; i++) {
-                DeleteNode(graph, Ch[i]);
+                RemoveNode(graph, Ch[i]);
                 for (int j = 0; j<Ch.size(); j++)
-                    if (Ch[i] < Ch[j]) Ch[j]--; // not forget about Ch
+                    if (Ch[i] < Ch[j]) Ch[j]--;
             }
 
             bool connectedGraph = ConnectedGraph(graph);
 
-            int x = Ch.front(), y = Ch.back(); // doesn't matter x<=>y
+            int x = Ch.front(), y = Ch.back();
 
             if (x != 0 && x != 1 && y != 0 && y != 1) {
                 Renumerate(graph, x, 0);
