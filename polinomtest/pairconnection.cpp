@@ -112,13 +112,13 @@ void Renumerate(vector<vector<edge>> &H, int s, int t)
     }
 }
 
-void PenduntReduction(vector<vector<edge>> &H, edge &F, int selectedNode, bool invalidCase)
+void PenduntReduction(vector<vector<edge>> &H, edge &F, int pivotNode, bool invalidCase)
 {
     pendunt++;
     vector<int> nodePowers = GetNodePowers(H);
-    // prohibit the reduction of the selected node
+    // prohibit the reduction of the pivot node
     if (invalidCase)
-        nodePowers.erase(nodePowers.begin() + selectedNode);
+        nodePowers.erase(nodePowers.begin() + pivotNode);
 
     vector <int>::iterator it, iteratorOfPenduntNode = nodePowers.end() - 1;
     for (it = nodePowers.begin(); it<nodePowers.end(); ++it)
@@ -132,7 +132,7 @@ void PenduntReduction(vector<vector<edge>> &H, edge &F, int selectedNode, bool i
             if (H[numberOfPenduntNode][i].ex) {
                 // Invalid case
                 if ((numberOfPenduntNode == 1 && i == 0) || (numberOfPenduntNode == 0 && i == 1)) {
-                    selectedNode = numberOfPenduntNode;
+                    pivotNode = numberOfPenduntNode;
                     invalidCase = true;
                 }
 
@@ -149,12 +149,12 @@ void PenduntReduction(vector<vector<edge>> &H, edge &F, int selectedNode, bool i
                 break;
             }
 
-        PenduntReduction(H, F, selectedNode, invalidCase);
+        PenduntReduction(H, F, pivotNode, invalidCase);
     }
 }
 
-// Removes the connectivity component, where both selected nodes do not lie and returns true,
-//if the selected nodes in different components, then returns false
+// Removes the connectivity component, where both pivot nodes do not lie and returns true,
+//if the pivot nodes in different components, then returns false
 bool BridgeReduction(vector<vector<edge>> &H)
 {
     bridges++;
@@ -261,43 +261,43 @@ vector<int> GetChain(vector<vector<edge>> &H, vector<int> &checkedNodes)
 }
 
 // Reduces chains and returns special chain if it finds,
-// the number of selected nodes in a special chain is placed at the end of the vector
+// the number of pivot nodes in a special chain is placed at the end of the vector
 vector<int> ChainReduction(vector<vector<edge>> &H, vector<int> &specialChain, vector<int> &checkedNodes,
                            bool chainWithTwoSpecialNodes)
 {
     vector<int> chain = GetChain(H, checkedNodes);
-    int countPivoteNodes = 0;
+    int countPivotNodes = 0;
 
     if (!chain.empty()) {
         for (int i = 0; i<chain.size(); i++)
-            if (chain[i] == 0 || chain[i] == 1) countPivoteNodes++;
+            if (chain[i] == 0 || chain[i] == 1) countPivotNodes++;
 
-        // If the selected vertex with the edge of the chain reduce it
-        vector<int>::iterator it, iteratorOfPivoteNode = chain.begin();
-        if (countPivoteNodes == 1) {
+        // If the pivot node with the edge of the chain reduce it
+        vector<int>::iterator it, iteratorOfPivotNode = chain.begin();
+        if (countPivotNodes == 1) {
             for (it = chain.begin(); it<chain.end(); ++it)
-                if (*it == 0 || *it == 1) iteratorOfPivoteNode = it;
+                if (*it == 0 || *it == 1) iteratorOfPivotNode = it;
 
-            if ((iteratorOfPivoteNode == chain.begin() || iteratorOfPivoteNode == chain.end() - 1) &&
+            if ((iteratorOfPivotNode == chain.begin() || iteratorOfPivotNode == chain.end() - 1) &&
                     !specialChain.empty())
-                countPivoteNodes = 0;
+                countPivotNodes = 0;
         }
 
-        if ((countPivoteNodes == 1 || countPivoteNodes == 2) && !chainWithTwoSpecialNodes) {
+        if ((countPivotNodes == 1 || countPivotNodes == 2) && !chainWithTwoSpecialNodes) {
             // Return only this chain, the rest is reduced
-            if (countPivoteNodes == 2) {
+            if (countPivotNodes == 2) {
                 chainWithTwoSpecialNodes = true;
                 checkedNodes = chain;
             }
 
-            if (countPivoteNodes == 1) {
-                // If we find a new chain with 1 selected node, then we reduce the old chain,
-                // where the selected node with the edge
+            if (countPivotNodes == 1) {
+                // If we find a new chain with 1 pivot node, then we reduce the old chain,
+                // where the pivot node with the edge
                 if (!specialChain.empty()) {
                     for (it = specialChain.begin(); it<specialChain.end() - 1; ++it)
-                        if (*it == 0 || *it == 1) iteratorOfPivoteNode = it;
+                        if (*it == 0 || *it == 1) iteratorOfPivotNode = it;
 
-                    if (iteratorOfPivoteNode == specialChain.begin() || iteratorOfPivoteNode == specialChain.end() - 2)
+                    if (iteratorOfPivotNode == specialChain.begin() || iteratorOfPivotNode == specialChain.end() - 2)
                         checkedNodes.clear();
                 }
 
@@ -305,16 +305,16 @@ vector<int> ChainReduction(vector<vector<edge>> &H, vector<int> &specialChain, v
                     if (!ElementInside(checkedNodes, chain[j])) checkedNodes.push_back(chain[j]);
             }
 
-            chain.push_back(countPivoteNodes);
+            chain.push_back(countPivotNodes);
             specialChain = chain;
 
             return ChainReduction(H, specialChain, checkedNodes, chainWithTwoSpecialNodes);
         }
         else
-            countPivoteNodes = 0;
+            countPivotNodes = 0;
 
         // Chain replacement by edge
-        if (countPivoteNodes == 0) {
+        if (countPivotNodes == 0) {
             chr++;
             edge newEdge;
             newEdge.C.push_back(1);
@@ -374,11 +374,11 @@ vector<int> ChainReduction(vector<vector<edge>> &H, vector<int> &specialChain, v
                             break;
                         }
 
-                countPivoteNodes = 0;
+                countPivotNodes = 0;
                 for (int i = 0; i<specialChain.size(); i++)
-                    if (specialChain[i] == 0 || specialChain[i] == 1) countPivoteNodes++;
+                    if (specialChain[i] == 0 || specialChain[i] == 1) countPivotNodes++;
 
-                specialChain.push_back(countPivoteNodes);
+                specialChain.push_back(countPivotNodes);
             }
 
             return ChainReduction(H, specialChain, checkedNodes, chainWithTwoSpecialNodes);
@@ -453,24 +453,24 @@ edge PairwiseConnectivity(vector<vector<edge>> &H, edge F, bool connected)
         int s, t;
         bool terminalCase = false;
         vector<int> Ch(Chain);
-        vector<int>::iterator it, iteratorOfPivoteNode;
+        vector<int>::iterator it, iteratorOfPivotNode;
 
         for (it = Ch.begin(); it < Ch.end(); ++it)
-            if (*it == 0 || *it == 1) iteratorOfPivoteNode = it;
+            if (*it == 0 || *it == 1) iteratorOfPivotNode = it;
 
-        int placeOfPivoteNodeT = iteratorOfPivoteNode - Ch.begin();
-        if (iteratorOfPivoteNode == Ch.begin() || iteratorOfPivoteNode == Ch.end() - 1)
+        int placeOfPivotNodeT = iteratorOfPivotNode - Ch.begin();
+        if (iteratorOfPivotNode == Ch.begin() || iteratorOfPivotNode == Ch.end() - 1)
             terminalCase = true;
-        t = *iteratorOfPivoteNode;
+        t = *iteratorOfPivotNode;
         t == 0 ? s = 1 : s = 0;
 
         edge P, L;
         P.C.push_back(1);
         L.C.push_back(1);
         vector<vector<edge>> graph(H);
-        for (int i = 0; i<placeOfPivoteNodeT; i++)
+        for (int i = 0; i<placeOfPivotNodeT; i++)
             L = L*graph[Ch[i]][Ch[i + 1]];
-        for (int i = placeOfPivoteNodeT; i<Ch.size() - 1; i++)
+        for (int i = placeOfPivotNodeT; i<Ch.size() - 1; i++)
             P = P*graph[Ch[i]][Ch[i + 1]];
         edge T = P*L;
 
@@ -489,14 +489,14 @@ edge PairwiseConnectivity(vector<vector<edge>> &H, edge F, bool connected)
 
         edge k;
         // Do not consider the term multiplied by 0
-        if (placeOfPivoteNodeT != 0) {
+        if (placeOfPivotNodeT != 0) {
             (terminalCase) ? Renumerate(graph, y, t) : Renumerate(graph, y, 1);
             k = PairwiseConnectivity(graph, F * (P - T), connectedGraph); // Rsy
         }
 
         edge w;
         // Do not consider the term multiplied by 0
-        if (placeOfPivoteNodeT != Ch.size() - 1) {
+        if (placeOfPivotNodeT != Ch.size() - 1) {
             visitedNodes = visitedNodesBeforeRenumerate;
             graph = graphWithDeletedChain;
             (terminalCase) ? Renumerate(graph, x, t) : Renumerate(graph, x, 1);
@@ -547,20 +547,20 @@ edge PairwiseConnectivity(vector<vector<edge>> &H, edge F, bool connected)
     if (typeOfSpecialChain == 2) {
         ch2++;
         vector<int> Ch(Chain);
-        vector<int>::iterator it, iteratorOfPivoteNode;
+        vector<int>::iterator it, iteratorOfPivotNode;
 
         for (it = Ch.begin(); it<Ch.end(); ++it)
-            if (*it == 0) iteratorOfPivoteNode = it;
-        int placeOfPivoteNodeS = iteratorOfPivoteNode - Ch.begin();
+            if (*it == 0) iteratorOfPivotNode = it;
+        int placeOfPivotNodeS = iteratorOfPivotNode - Ch.begin();
 
         for (it = Ch.begin(); it<Ch.end(); ++it)
-            if (*it == 1) iteratorOfPivoteNode = it;
-        int placeOfPivoteNodeT = iteratorOfPivoteNode - Ch.begin();
+            if (*it == 1) iteratorOfPivotNode = it;
+        int placeOfPivotNodeT = iteratorOfPivotNode - Ch.begin();
 
-        if (placeOfPivoteNodeS > placeOfPivoteNodeT) {
-            int u = placeOfPivoteNodeS;
-            placeOfPivoteNodeS = placeOfPivoteNodeT;
-            placeOfPivoteNodeT = u;
+        if (placeOfPivotNodeS > placeOfPivotNodeT) {
+            int u = placeOfPivotNodeS;
+            placeOfPivotNodeS = placeOfPivotNodeT;
+            placeOfPivotNodeT = u;
         }
 
         edge P, L;
@@ -568,11 +568,11 @@ edge PairwiseConnectivity(vector<vector<edge>> &H, edge F, bool connected)
         L.C.push_back(1);
         vector<vector<edge>> graph(H);
 
-        for (int i = 0; i<placeOfPivoteNodeS; i++)
+        for (int i = 0; i<placeOfPivotNodeS; i++)
             L = L*graph[Ch[i]][Ch[i + 1]];
-        for (int i = placeOfPivoteNodeS; i<placeOfPivoteNodeT; i++)
+        for (int i = placeOfPivotNodeS; i<placeOfPivotNodeT; i++)
             P = P*graph[Ch[i]][Ch[i + 1]];
-        for (int i = placeOfPivoteNodeT; i<Ch.size() - 1; i++)
+        for (int i = placeOfPivotNodeT; i<Ch.size() - 1; i++)
             L = L*graph[Ch[i]][Ch[i + 1]];
 
         for (int i = 1; i<Ch.size() - 1; i++) {

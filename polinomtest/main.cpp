@@ -30,6 +30,7 @@ int main() {
 
     if (!input.is_open()) {
         cout << "File can not be opened!\n";
+        system("pause>>void");
         return 0;
     }
 
@@ -71,6 +72,7 @@ int main() {
     input >> str;
     if (strcmp(str, "$$$") != 0) {
         cout << "Incorrect entry" << endl;
+        system("pause>>void");
         return 0;
     }
 
@@ -81,6 +83,7 @@ int main() {
     cin >> option;
     if (option != 1 && option != 2 && option != 3) {
         cout << "Wrong number" << endl;
+        system("pause>>void");
         return 0;
     }
 
@@ -128,7 +131,7 @@ int main() {
             for (int j = i + 1; j < initialGraph[i].size(); j++)
                 if (maskApc[i][j]) {
                     vector<vector<edge>> H(initialGraph);
-                    // When calculating the pairwise connection, the selected vertices have numbers 0,1
+                    // When calculating the pairwise connection, the pivot nodes have numbers 0,1
                     // in the adjacency matrix
                     if (i != 0 || j != 1) {
                         if (i != 0 && j != 1) {
@@ -159,7 +162,7 @@ int main() {
         for (int i = 0; i < initialGraph.size(); i++)
             if (maskMenc[i]) {
                 vector<vector<edge>> H(initialGraph);
-                // When calculating the pairwise connection, the selected vertices have numbers 0,1
+                // When calculating the pairwise connection, the pivot nodes have numbers 0,1
                 // in the adjacency matrix
                 if (i != 1) Renumerate(H, i, 1);
                 sum = sum + PairwiseConnectivity(H, F, true);
@@ -181,7 +184,7 @@ int main() {
             for (int j = i + 1; j < initialGraph[i].size(); j++)
                 if (maskApc[i][j]) {
                     vector<vector<edge>> H(initialGraph);
-                    // When calculating the pairwise connection, the selected vertices have numbers 0,1
+                    // When calculating the pairwise connection, the pivot nodes have numbers 0,1
                     // in the adjacency matrix
                     if (i != 0 || j != 1) {
                         if (i != 0 && j != 1) {

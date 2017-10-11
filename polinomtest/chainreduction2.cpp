@@ -112,10 +112,10 @@ edge ChainReduction2(vector<vector<edge>> &H, edge sum, vector<int> weight, bool
         }
         else {
             vector<int> Ch = Chain;
-            vector<int>::iterator it, iteratorOfPivoteNode;
+            vector<int>::iterator it, iteratorOfPivotNode;
             for (it = Ch.begin(); it<Ch.end(); ++it)
-                if (*it == 0) iteratorOfPivoteNode = it;
-            int placeOfPivoteNodeS = iteratorOfPivoteNode - Ch.begin();
+                if (*it == 0) iteratorOfPivotNode = it;
+            int placeOfPivotNodeS = iteratorOfPivotNode - Ch.begin();
 
             edge T;
             T.C.push_back(1);
@@ -127,30 +127,30 @@ edge ChainReduction2(vector<vector<edge>> &H, edge sum, vector<int> weight, bool
             edge F1, F2;
             int F3 = 0;
             for (int i = 0; i<Ch.size(); i++)
-                if (i != placeOfPivoteNodeS && !ElementInside(checkedNodes, Ch[i])) {
+                if (i != placeOfPivotNodeS && !ElementInside(checkedNodes, Ch[i])) {
                     edge P;
                     P.C.push_back(1);
-                    if (i < placeOfPivoteNodeS)
-                        for (int j = i; j<placeOfPivoteNodeS; j++)
+                    if (i < placeOfPivotNodeS)
+                        for (int j = i; j<placeOfPivotNodeS; j++)
                             P = P*graph[Ch[j]][Ch[j + 1]];
                     else
-                        for (int j = placeOfPivoteNodeS; j<i; j++) P = P*graph[Ch[j]][Ch[j + 1]];
+                        for (int j = placeOfPivotNodeS; j<i; j++) P = P*graph[Ch[j]][Ch[j + 1]];
 
                     F1 = F1 + weight[Ch[i]] * P;
                 }
 
             for (int i = 0; i<Ch.size(); i++)
-                if (i != placeOfPivoteNodeS && !ElementInside(checkedNodes, Ch[i])) {
+                if (i != placeOfPivotNodeS && !ElementInside(checkedNodes, Ch[i])) {
                     edge L;
                     L.C.push_back(1);
-                    if (i < placeOfPivoteNodeS) {
+                    if (i < placeOfPivotNodeS) {
                         for (int j = 0; j < i; j++)
                             L = L*graph[Ch[j]][Ch[j + 1]];
-                        for (int j = placeOfPivoteNodeS; j<Ch.size() - 1; j++)
+                        for (int j = placeOfPivotNodeS; j<Ch.size() - 1; j++)
                             L = L*graph[Ch[j]][Ch[j + 1]];
                     }
                     else {
-                        for (int j = 0; j < placeOfPivoteNodeS; j++
+                        for (int j = 0; j < placeOfPivotNodeS; j++
                                 ) L = L*graph[Ch[j]][Ch[j + 1]];
                         for (int j = i; j<Ch.size() - 1; j++)
                             L = L*graph[Ch[j]][Ch[j + 1]];

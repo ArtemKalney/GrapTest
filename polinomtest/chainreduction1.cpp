@@ -164,9 +164,9 @@ edge ChainReduction1(vector<vector<edge>> &H, edge sum, vector<int> checkedNodes
             }
             else {
                 vector<int> Ch(Chain);
-                vector<int>::iterator it, iteratorOfPivoteNode;
-                for (it = Ch.begin(); it<Ch.end(); ++it) if (*it == i) iteratorOfPivoteNode = it;
-                int placeOfPivoteNodeS = iteratorOfPivoteNode - Ch.begin();
+                vector<int>::iterator it, iteratorOfPivotNode;
+                for (it = Ch.begin(); it<Ch.end(); ++it) if (*it == i) iteratorOfPivotNode = it;
+                int placeOfPivotNodeS = iteratorOfPivotNode - Ch.begin();
 
                 edge T;
                 T.C.push_back(1);
@@ -180,11 +180,11 @@ edge ChainReduction1(vector<vector<edge>> &H, edge sum, vector<int> checkedNodes
                     if (Ch[j] > i && maskApc[i][Ch[j]]) {
                         edge P;
                         P.C.push_back(1);
-                        if (j < placeOfPivoteNodeS)
-                            for (int k = j; k<placeOfPivoteNodeS; k++)
+                        if (j < placeOfPivotNodeS)
+                            for (int k = j; k<placeOfPivotNodeS; k++)
                                 P = P*G[Ch[k]][Ch[k + 1]];
                         else
-                            for (int k = placeOfPivoteNodeS; k<j; k++)
+                            for (int k = placeOfPivotNodeS; k<j; k++)
                                 P = P*G[Ch[k]][Ch[k + 1]];
                         F1 = F1 + P;
                     }
@@ -193,14 +193,14 @@ edge ChainReduction1(vector<vector<edge>> &H, edge sum, vector<int> checkedNodes
                     if (Ch[j] > i && maskApc[i][Ch[j]]) {
                         edge L;
                         L.C.push_back(1);
-                        if (j < placeOfPivoteNodeS) {
+                        if (j < placeOfPivotNodeS) {
                             for (int k = 0; k<j; k++)
                                 L = L*G[Ch[k]][Ch[k + 1]];
-                            for (int k = placeOfPivoteNodeS; k<Ch.size() - 1; k++)
+                            for (int k = placeOfPivotNodeS; k<Ch.size() - 1; k++)
                                 L = L*G[Ch[k]][Ch[k + 1]];
                         }
                         else {
-                            for (int k = 0; k<placeOfPivoteNodeS; k++)
+                            for (int k = 0; k<placeOfPivotNodeS; k++)
                                 L = L*G[Ch[k]][Ch[k + 1]];
                             for (int k = j; k<Ch.size() - 1; k++)
                                 L = L*G[Ch[k]][Ch[k + 1]];
