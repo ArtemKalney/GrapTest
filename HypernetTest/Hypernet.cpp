@@ -264,8 +264,6 @@ std::vector<int> H::GetChain()
         while (nodePowers[i] == 2 && i != chain.back() && canExpandLeft) {
             for (int j = 0; j < this->GetFN()[i].size(); j++) {
                 if (this->GetFN()[i][j].IsExisting()) {
-                    auto expandedCahin = chain;
-                    expandedCahin.push_back(j);
                     bool pivoteNodesInChain = Branche::EqualNodes(i, j, 0, 1);
                     if (pivoteNodesInChain) {
                         canExpandLeft = false;
@@ -286,8 +284,6 @@ std::vector<int> H::GetChain()
         while (nodePowers[i] == 2 && i != chain.front() && canExpandRight) {
             for (int j = 0; j < this->GetFN()[i].size(); j++) {
                 if (this->GetFN()[i][j].IsExisting()) {
-                    auto expandedCahin = chain;
-                    expandedCahin.push_back(j);
                     bool pivoteNodesInChain = Branche::EqualNodes(i, j, 0, 1);
                     if (pivoteNodesInChain) {
                         canExpandRight = false;

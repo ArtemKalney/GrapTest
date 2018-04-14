@@ -68,11 +68,7 @@ bool BridgeReduction(H& H)
         }
     }
 
-    if ((visitedNodes[0] && !visitedNodes[1]) || (!visitedNodes[0] && visitedNodes[1])) {
-        return false;
-    } else {
-        return true;
-    }
+    return (visitedNodes[0] && !visitedNodes[1]) || (!visitedNodes[0] && visitedNodes[1]);
 }
 
 void PenduntReduction(H &H, Branche &pseudoBranch, int pivotNode, bool invalidCase)
@@ -90,7 +86,7 @@ void PenduntReduction(H &H, Branche &pseudoBranch, int pivotNode, bool invalidCa
     if (*iteratorOfPenduntNode == 1 && H.GetFN().size() > 2) {
         pendunt++;
         // We find an incident edge of a pendant node
-        for (int i = H.GetFN()[numberOfPenduntNode].size() - 1; i >= 0; i--)
+        for (int i = H.GetFN()[numberOfPenduntNode].size() - 1; i >= 0; i--) {
             if (H.GetFN()[numberOfPenduntNode][i].IsExisting()) {
                 // Invalid case
                 if ((numberOfPenduntNode == 1 && i == 0) || (numberOfPenduntNode == 0 && i == 1)) {
@@ -114,6 +110,7 @@ void PenduntReduction(H &H, Branche &pseudoBranch, int pivotNode, bool invalidCa
                     break;
                 }
             }
+        }
 
         PenduntReduction(H, pseudoBranch, pivotNode, invalidCase);
     }
@@ -128,9 +125,11 @@ Branche GetAllowingBranch(H& H)
     for (int i = 0; i < FN.size(); i++) {
         for (int j = 0; j < FN[i].size(); j++) {
             if (i < j && FN[i][j].IsExisting() && !FN[i][j].GetIsReliable()) {
-                auto saturation = H.GetBranchSaturation(FN[i][j], i, j);
+                int saturation = H.GetBranchSaturation(FN[i][j], i, j);
                 if (maxSaturation < saturation) {
                     allowingBranch = FN[i][j];
+                    allowingBranch.SetFirstNode(i);
+                    allowingBranch.SetSecondNode(j);
                     maxSaturation = saturation;
                 }
             }
@@ -151,7 +150,7 @@ Branche SimpleCase (const std::vector<std::vector<Branche>>& FN, const Branche& 
 Branche PairwiseConnectivity(H& H, Branche& pseudoBranch, bool connected) {
     factors++;
     if (!connected) {
-        if (!BridgeReduction(H)) {
+        if (BridgeReduction(H)) {
             unconnected++;
             return Branche::GetZero();
         }
@@ -170,6 +169,9 @@ Branche PairwiseConnectivity(H& H, Branche& pseudoBranch, bool connected) {
     }
 
     Branche allowingBranch = GetAllowingBranch(H);
+    if (Branche::IsUnacceptableBranche(allowingBranch)) {
+        throw "SimplePairwiseConnectivity: strange allowingBranch";
+    }
 
     Branche pseudoBranch1, pseudoBranch2;
     if (allowingBranch.IsSimpleBranch()) {
@@ -188,7 +190,7 @@ Branche PairwiseConnectivity(H& H, Branche& pseudoBranch, bool connected) {
     HwithReliableBranch.MakeReliableBranch(allowingBranch);
     HwithRemovedBranch.RemoveBranch(allowingBranch);
     // case don't delete nodes and renumerate nodes then, no need to change visitedNodes
-    bool isHremovedBranchFNconnected = HwithRemovedBranch.IsFNconnected();
+    bool isFNconnected = HwithRemovedBranch.IsFNconnected();
 
     if (!HwithRemovedBranch.IsSNconnected()) {
         unconnected++;
@@ -202,76 +204,68 @@ Branche PairwiseConnectivity(H& H, Branche& pseudoBranch, bool connected) {
         if (HwithReliableBranch.hasReliablePath()) {
             reliable++;
             return pseudoBranch1*Branche::GetUnity() + PairwiseConnectivity(HwithRemovedBranch, pseudoBranch2,
-                                                              isHremovedBranchFNconnected);
+                                                              isFNconnected);
         } else {
             return PairwiseConnectivity(HwithReliableBranch, pseudoBranch1, true) +
-                    PairwiseConnectivity(HwithRemovedBranch, pseudoBranch2, isHremovedBranchFNconnected);
+                    PairwiseConnectivity(HwithRemovedBranch, pseudoBranch2, isFNconnected);
+        }
+    }
+}
+// debug
+bool IsAllBranchesReliable(H& H) {
+    auto FN = H.GetFN();
+    for (int i = 0; i < FN.size(); i++) {
+        for (int j = 0; j < FN[i].size(); j++) {
+            auto item = FN[i][j];
+            if (i < j && item.IsExisting() && !item.GetIsReliable()) {
+                return false;
+            }
         }
     }
 
-    //vector<bool> visitedNodesBeforeRenumerate(visitedNodes);
-    /*if (!connectedGraph) {
-        int firstComponentSize = 0;
+    return true;
+}
 
-        for (int i = 0; i < visitedNodes.size(); i++)
-            if (visitedNodes[i]) firstComponentSize++;
-        int secondComponentSize = visitedNodes.size() - firstComponentSize;
+Branche SimplePairwiseConnectivity(H& H, Branche& pseudoBranch) {
+    if (H.GetFN().size() < MAX_DIMENSIONAL) {
+        return SimpleCase(H.GetFN(), pseudoBranch);
+    }
 
-        // Decomposition, do not consider cases where 1 node
-        if (firstComponentSize != 1 && secondComponentSize != 1) {
-            decomp3++;
-            vector<vector<edge>> G1(graphWithDeletedEdge);
-            vector<vector<edge>> G2(graphWithDeletedEdge);
-            edge F3 = Bin.front();
-            edge m = PairwiseConnectivity(graphWithDeletedEdge, F2, connectedGraph);
+    Branche allowingBranch = GetAllowingBranch(H);
+    if (Branche::IsUnacceptableBranche(allowingBranch)) {
+        throw "SimplePairwiseConnectivity: strange allowingBranch";
+    }
 
-            if (allowingEdge.node2 != 0 && allowingEdge.node2 != 1 && ((visitedNodes[0] && !visitedNodes[1]) ||
-                                                                       (!visitedNodes[0] && visitedNodes[1]))) {
-                visitedNodes = visitedNodesBeforeRenumerate;
-                if ((visitedNodes[allowingEdge.node1] && visitedNodes[0]) || (!visitedNodes[allowingEdge.node1] &&
-                                                                              !visitedNodes[0]))
-                    Renumerate(G1, 1, allowingEdge.node1);
-                else
-                    Renumerate(G1, 1, allowingEdge.node2);
+    Branche pseudoBranch1, pseudoBranch2;
+    if (allowingBranch.IsSimpleBranch()) {
+        pseudoBranch1 = pseudoBranch;
+        pseudoBranch1.SetPower(pseudoBranch1.GetPower() + 1);
+        pseudoBranch2 = pseudoBranch;
+        pseudoBranch2.SetPower(pseudoBranch2.GetPower() + 1);
+        pseudoBranch2.GetC().insert(pseudoBranch2.GetC().begin(), 0);
+        pseudoBranch2.GetC().pop_back();
+    } else {
+        pseudoBranch1 = pseudoBranch * allowingBranch;
+        pseudoBranch2 = pseudoBranch * ~allowingBranch;
+    }
 
-                edge k = PairwiseConnectivity(G1, F3, connectedGraph);
+    auto HwithReliableBranch = H, HwithRemovedBranch = H;
+    HwithReliableBranch.MakeReliableBranch(allowingBranch);
+    HwithRemovedBranch.RemoveBranch(allowingBranch);
 
-                visitedNodes = visitedNodesBeforeRenumerate;
-                if ((visitedNodes[allowingEdge.node1] && visitedNodes[1]) || (!visitedNodes[allowingEdge.node1] &&
-                                                                              !visitedNodes[1]))
-                    Renumerate(G2, 0, allowingEdge.node1);
-                else
-                    Renumerate(G2, 0, allowingEdge.node2);
-
-                edge w = PairwiseConnectivity(G2, F3, connectedGraph);
-
-                return F1*k*w + m;
-            }
-
-            if (allowingEdge.node2 != 0 && allowingEdge.node2 != 1 && ((visitedNodes[0] && visitedNodes[1]) ||
-                                                                       (!visitedNodes[0] && !visitedNodes[1]))) {
-                visitedNodes = visitedNodesBeforeRenumerate;
-
-                edge k = PairwiseConnectivity(G1, F1, connectedGraph);
-
-                return k + m;
-            }
-
-            if (allowingEdge.node2 == 0 || allowingEdge.node2 == 1) {
-                visitedNodes = visitedNodesBeforeRenumerate;
-                if (allowingEdge.node2 == 0 && ((visitedNodes[0] && !visitedNodes[1]) || (!visitedNodes[0] &&
-                                                                                          visitedNodes[1])))
-                    Renumerate(G1, 0, allowingEdge.node1);
-                if (allowingEdge.node2 == 1 && ((visitedNodes[0] && !visitedNodes[1]) || (!visitedNodes[0] &&
-                                                                                          visitedNodes[1])))
-                    Renumerate(G1, 1, allowingEdge.node1);
-
-                edge k = PairwiseConnectivity(G1, F1, connectedGraph);
-
-                return k + m;
-            }
+    bool isReliable = IsAllBranchesReliable(HwithReliableBranch);
+    if (!HwithRemovedBranch.IsSNconnected()) {
+        if (isReliable) {
+            return pseudoBranch1*Branche::GetUnity();
+        } else {
+            return SimplePairwiseConnectivity(HwithReliableBranch, pseudoBranch1);
         }
-        else return PairwiseConnectivity(graphWithContractedEdge, F1, connected) +
-                    PairwiseConnectivity(graphWithDeletedEdge, F2, connectedGraph);
-    }*/
+    } else {
+        if (isReliable) {
+            return pseudoBranch1*Branche::GetUnity() + SimplePairwiseConnectivity(HwithRemovedBranch, pseudoBranch2);
+        } else {
+            return SimplePairwiseConnectivity(HwithReliableBranch, pseudoBranch1) +
+                    SimplePairwiseConnectivity(HwithRemovedBranch, pseudoBranch2);
+        }
+    }
 }

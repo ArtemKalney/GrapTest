@@ -4,8 +4,7 @@
 std::ifstream input("input.txt");
 std::ofstream output;
 
-int reliable = 0, unconnected = 0, num2 = 0, chr = 0,
-        decomp1 = 0, decomp2 = 0, decomp3 = 0, bridges = 0, pendunt = 0, factors = 0;
+int reliable = 0, unconnected = 0, num2 = 0, chr = 0, bridges = 0, pendunt = 0, factors = 0, n = 0, m = 0, k = 0;
 std::vector<Branche> Bin;
 
 std::vector<std::vector<Branche>> GetAdjacencyMatrix(std::vector<Branche>& BranchList, const int& n) {
@@ -71,7 +70,7 @@ int main() {
     char str[50];
     input.getline(str, 50);
     std::cout << "Input graph : " << str << std::endl;
-    int buf, n = 0, m = 0, k = 0;
+    int buf;
     input >> buf;
     n = buf;
     input >> buf;
@@ -120,9 +119,9 @@ int main() {
         return 0;
     }
 
-   /* std::cout << "Press 1 to get APC polynomial" << std::endl;
-    std::cout << "Press 2 to get MENC polynomial" << std::endl;
-    std::cout << "Press 3 to get pairwise connectivities" << std::endl;*/
+    /* std::cout << "Press 1 to get APC polynomial" << std::endl;
+     std::cout << "Press 2 to get MENC polynomial" << std::endl;
+     std::cout << "Press 3 to get pairwise connectivities" << std::endl;*/
     int option = 3;
     /*std::cin >> option;
     if (option != 1 && option != 2 && option != 3) {
@@ -157,7 +156,7 @@ int main() {
     Branche pseudoEdge = Branche::GetBranch(n, 0);
     unsigned int startTime = clock();
     double value = 0, p = 0.9, z = 0.1;
-    Branche sum;
+    Branche sum, simpleSum;
 
     try {
         // Computing pairwise connectivities
@@ -192,7 +191,10 @@ int main() {
                             output << setprecision(15) << R.C[k] << " ";
                         output << endl;
                     }*/
+            H testHypernet = initialHypernet;
             sum = PairwiseConnectivity(initialHypernet, pseudoEdge, true);
+            // debug
+            simpleSum = SimplePairwiseConnectivity(testHypernet, pseudoEdge);
         }
 
 /*
@@ -260,33 +262,45 @@ int main() {
     unsigned int endTime = clock();
     int searchTime = endTime - startTime;
     std::cout << "Time of programm " << searchTime << " msec" << std::endl;
-    std::cout << "Call prosedure " << factors <<  std::endl;
-    std::cout << "Reductions : " <<  std::endl;
-    std::cout << " bridge reductions " << bridges <<  std::endl;
-    std::cout << " pendunt reductions " << pendunt <<  std::endl;
-    std::cout << " chains reduced " << chr <<  std::endl;
-    /*std::cout << " decompositions in ChainReduction " << decomp1 <<  std::endl;
-    std::cout << " decompositions in special chains " << decomp2 <<  std::endl;
-    std::cout << " decompositions in factoring " << decomp3 <<  std::endl;*/
-    std::cout << "Were ends of recursion : " << reliable + unconnected + num2 <<  std::endl;
-    std::cout << " reliable graphs " << reliable <<  std::endl;
-    std::cout << " unconnected graphs " << unconnected <<  std::endl;
-    std::cout << " 2-nodes graphs " << num2 <<  std::endl;
-    std::cout << "Solution:" <<  std::endl;
-    if(sum.GetPower() < m) {
-        sum = sum * Bin[m - sum.GetPower()];
-    }
-    sum.PrintBranche();
-    for (int i = 0; i < sum.GetPower(); i++) {
-        value += sum.GetC()[i] * pow(p, sum.GetPower() - i) * pow(z, i);
-    }
-    std::cout << "Value at point " << p << ": " <<  std::setprecision(15) << value <<  std::endl;
+    std::cout << "Call prosedure " << factors << std::endl;
+    std::cout << "Reductions : " << std::endl;
+    std::cout << " bridge reductions " << bridges << std::endl;
+    std::cout << " pendunt reductions " << pendunt << std::endl;
+    std::cout << " chains reduced " << chr << std::endl;
+    std::cout << "Were ends of recursion : " << reliable + unconnected + num2 << std::endl;
+    std::cout << " reliable graphs " << reliable << std::endl;
+    std::cout << " unconnected graphs " << unconnected << std::endl;
+    std::cout << " 2-nodes graphs " << num2 << std::endl;
+    std::cout << "Solution:" << std::endl;
+    if (sum.IsExisting()) {
+        if (sum.GetPower() < m) {
+            sum = sum * Bin[m - sum.GetPower()];
+        }
+        sum.PrintBranche();
+        for (int i = 0; i < sum.GetPower(); i++) {
+            value += sum.GetC()[i] * pow(p, sum.GetPower() - i) * pow(z, i);
+        }
+        std::cout << "Value at point " << p << ": " << std::setprecision(15) << value << std::endl;
 
-    output << "Solution:" << std::endl;
-    for (auto &item : sum.GetC()) {
-        output << std::setprecision(15) << item << " ";
+        output << "Solution:" << std::endl;
+        for (auto &item : sum.GetC()) {
+            output << std::setprecision(15) << item << " ";
+        }
+        output << std::endl;
+    } else {
+        std::cout << "no sum :(" << std::endl;
     }
-    output << std::endl;
+    // debug
+    if (simpleSum.IsExisting()) {
+        if (simpleSum.GetPower() < m) {
+            simpleSum = simpleSum * Bin[m - simpleSum.GetPower()];
+        }
+        output << "Real Solution:" << std::endl;
+        for (auto &item : simpleSum.GetC()) {
+            output << std::setprecision(15) << item << " ";
+        }
+        output << std::endl;
+    }
 
     input.close();
     output.close();

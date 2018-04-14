@@ -103,6 +103,14 @@ void Branche::ParallelReduction(Branche& branche) {
     branche.GetC()[newPower] = 0;
 }
 
+bool Branche::IsUnacceptableBranche(Branche& branche) {
+    int firstNode = branche.GetFirstNode(), secondNode = branche.GetSecondNode();
+
+    bool isFirstNodeUnacceptable = firstNode < 0 || firstNode > n,
+            isSecondNodeUnacceptable = secondNode < 0 || secondNode > n;
+    return isFirstNodeUnacceptable || isSecondNodeUnacceptable;
+}
+
 /* * The following rules for calculations:
  * 0 <=> edge.C.empty() = true
  * 1 <=> edge.C.size() = 1*/

@@ -6,57 +6,57 @@
 
 #IncludeRegexTransform: 
 
-E:/Projects/Clion/HyperNetTest/Branch.cpp
+E:/Projects/Clion/HypernetTest/Branch.cpp
 stdafx.h
-E:/Projects/Clion/HyperNetTest/stdafx.h
+E:/Projects/Clion/HypernetTest/stdafx.h
 Branch.h
-E:/Projects/Clion/HyperNetTest/Branch.h
+E:/Projects/Clion/HypernetTest/Branch.h
 globals.h
-E:/Projects/Clion/HyperNetTest/globals.h
+E:/Projects/Clion/HypernetTest/globals.h
 
-E:/Projects/Clion/HyperNetTest/Branch.h
+E:/Projects/Clion/HypernetTest/Branch.h
 stdafx.h
-E:/Projects/Clion/HyperNetTest/stdafx.h
+E:/Projects/Clion/HypernetTest/stdafx.h
 
-E:/Projects/Clion/HyperNetTest/Hypernet.cpp
+E:/Projects/Clion/HypernetTest/Hypernet.cpp
 Hypernet.h
-E:/Projects/Clion/HyperNetTest/Hypernet.h
+E:/Projects/Clion/HypernetTest/Hypernet.h
 globals.h
-E:/Projects/Clion/HyperNetTest/globals.h
+E:/Projects/Clion/HypernetTest/globals.h
 
-E:/Projects/Clion/HyperNetTest/Hypernet.h
+E:/Projects/Clion/HypernetTest/Hypernet.h
 stdafx.h
-E:/Projects/Clion/HyperNetTest/stdafx.h
+E:/Projects/Clion/HypernetTest/stdafx.h
 Branch.h
-E:/Projects/Clion/HyperNetTest/Branch.h
+E:/Projects/Clion/HypernetTest/Branch.h
 
-E:/Projects/Clion/HyperNetTest/funcs.h
+E:/Projects/Clion/HypernetTest/funcs.h
 Branch.h
-E:/Projects/Clion/HyperNetTest/Branch.h
+E:/Projects/Clion/HypernetTest/Branch.h
 Hypernet.h
-E:/Projects/Clion/HyperNetTest/Hypernet.h
+E:/Projects/Clion/HypernetTest/Hypernet.h
 
-E:/Projects/Clion/HyperNetTest/globals.h
+E:/Projects/Clion/HypernetTest/globals.h
 Branch.h
-E:/Projects/Clion/HyperNetTest/Branch.h
+E:/Projects/Clion/HypernetTest/Branch.h
 Hypernet.h
-E:/Projects/Clion/HyperNetTest/Hypernet.h
+E:/Projects/Clion/HypernetTest/Hypernet.h
 
-E:/Projects/Clion/HyperNetTest/main.cpp
+E:/Projects/Clion/HypernetTest/main.cpp
 funcs.h
-E:/Projects/Clion/HyperNetTest/funcs.h
+E:/Projects/Clion/HypernetTest/funcs.h
 globals.h
-E:/Projects/Clion/HyperNetTest/globals.h
+E:/Projects/Clion/HypernetTest/globals.h
 
-E:/Projects/Clion/HyperNetTest/pairconnection.cpp
+E:/Projects/Clion/HypernetTest/pairconnection.cpp
 stdafx.h
-E:/Projects/Clion/HyperNetTest/stdafx.h
+E:/Projects/Clion/HypernetTest/stdafx.h
 funcs.h
-E:/Projects/Clion/HyperNetTest/funcs.h
+E:/Projects/Clion/HypernetTest/funcs.h
 globals.h
-E:/Projects/Clion/HyperNetTest/globals.h
+E:/Projects/Clion/HypernetTest/globals.h
 
-E:/Projects/Clion/HyperNetTest/stdafx.h
+E:/Projects/Clion/HypernetTest/stdafx.h
 stdio.h
 -
 tchar.h

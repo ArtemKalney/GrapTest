@@ -13,15 +13,6 @@ private:
     bool _isReliable;
 public:
     Branche() {}
-    //copy
-    Branche(const Branche& branch) :
-            _C(branch._C),
-            _power(branch._power),
-            _firstNode(branch._firstNode),
-            _secondNode(branch._secondNode),
-            _simple(branch._simple),
-            _isReliable(branch._isReliable)
-    {}
 
     Branche(std::vector<double> C, const int& power, const int& firstNode, const int& secondNode, const int& simple,
             bool isReliable) :
@@ -31,6 +22,15 @@ public:
             _secondNode(secondNode),
             _simple(simple),
             _isReliable(isReliable)
+    {}
+    //copy
+    Branche(const Branche& branch) :
+            _C(branch._C),
+            _power(branch._power),
+            _firstNode(branch._firstNode),
+            _secondNode(branch._secondNode),
+            _simple(branch._simple),
+            _isReliable(branch._isReliable)
     {}
 
     void SetC(const std::vector<double>& C)
@@ -83,7 +83,7 @@ public:
         return _simple;
     }
 
-    void SetIsReliable(const bool & isReliable)
+    void SetIsReliable(bool isReliable)
     {
         _isReliable = isReliable;
     }
@@ -105,6 +105,7 @@ public:
     static bool EqualNodes (const int& firstBranchNode, const int& secondBranchNode, const int& firstNode,
                             const int& secondNode);
     static void ParallelReduction(Branche& branche);
+    static bool IsUnacceptableBranche(Branche& branche);
 
     bool IsExisting() const;
     bool IsUnity();
