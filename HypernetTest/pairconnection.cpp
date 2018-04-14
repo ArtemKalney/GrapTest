@@ -196,7 +196,8 @@ Branche PairwiseConnectivity(H& H, Branche& pseudoBranch, bool connected) {
         unconnected++;
         if (HwithReliableBranch.hasReliablePath()) {
             reliable++;
-            return pseudoBranch1*Branche::GetUnity();
+            auto unity = Branche::GetUnity();
+            return pseudoBranch1*unity;
         } else {
             return PairwiseConnectivity(HwithReliableBranch, pseudoBranch1, true);
         }
@@ -212,21 +213,8 @@ Branche PairwiseConnectivity(H& H, Branche& pseudoBranch, bool connected) {
     }
 }
 // debug
-bool IsAllBranchesReliable(H& H) {
-    auto FN = H.GetFN();
-    for (int i = 0; i < FN.size(); i++) {
-        for (int j = 0; j < FN[i].size(); j++) {
-            auto item = FN[i][j];
-            if (i < j && item.IsExisting() && !item.GetIsReliable()) {
-                return false;
-            }
-        }
-    }
-
-    return true;
-}
-
 Branche SimplePairwiseConnectivity(H& H, Branche& pseudoBranch) {
+    factors++;
     if (H.GetFN().size() < MAX_DIMENSIONAL) {
         return SimpleCase(H.GetFN(), pseudoBranch);
     }
@@ -253,15 +241,17 @@ Branche SimplePairwiseConnectivity(H& H, Branche& pseudoBranch) {
     HwithReliableBranch.MakeReliableBranch(allowingBranch);
     HwithRemovedBranch.RemoveBranch(allowingBranch);
 
-    bool isReliable = IsAllBranchesReliable(HwithReliableBranch);
     if (!HwithRemovedBranch.IsSNconnected()) {
-        if (isReliable) {
+        unconnected++;
+        if (HwithReliableBranch.hasReliablePath()) {
+            reliable++;
             return pseudoBranch1*Branche::GetUnity();
         } else {
             return SimplePairwiseConnectivity(HwithReliableBranch, pseudoBranch1);
         }
     } else {
-        if (isReliable) {
+        if (HwithReliableBranch.hasReliablePath()) {
+            reliable++;
             return pseudoBranch1*Branche::GetUnity() + SimplePairwiseConnectivity(HwithRemovedBranch, pseudoBranch2);
         } else {
             return SimplePairwiseConnectivity(HwithReliableBranch, pseudoBranch1) +

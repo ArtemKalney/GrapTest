@@ -23,29 +23,29 @@ void Branche::PrintBranche() {
     }
 }
 
-Branche Branche::GetBranch (const int& n, const int& firstNode, const int& secondNode, const int& power) {
-    std::vector<double> vec(n);
+Branche Branche::GetBranch (const int& vectorSize, const int& firstNode, const int& secondNode, const int& power) {
+    std::vector<double> vec(vectorSize);
     vec.front() = 1;
     auto newBranche = Branche(vec, power, firstNode, secondNode, 0, false);
     return newBranche;
 }
 
-Branche Branche::GetBranch (const int& n, const int& power) {
-    std::vector<double> vec(n);
+Branche Branche::GetBranch (const int& vectorSize, const int& power) {
+    std::vector<double> vec(vectorSize);
     vec.front() = 1;
     auto newBranche = Branche(vec, power, 0, 0, 0, false);
     return newBranche;
 }
 
-Branche Branche::GetSimpleBranch (const int& n, const int& firstNode, const int& secondNode) {
-    std::vector<double> vec(n);
+Branche Branche::GetSimpleBranch (const int& vectorSize, const int& firstNode, const int& secondNode) {
+    std::vector<double> vec(vectorSize);
     vec.front() = 1;
     auto newBranche = Branche(vec, 1, firstNode, secondNode, 0, false);
     return newBranche;
 }
 
-Branche Branche::GetSimpleBranch(const int& n) {
-    std::vector<double> vec(n);
+Branche Branche::GetSimpleBranch(const int& vectorSize) {
+    std::vector<double> vec(vectorSize);
     vec.front() = 1;
     auto newBranche = Branche(vec, 1, 0, 0, 0, false);
     return newBranche;
@@ -64,8 +64,8 @@ Branche Branche::GetUnity () {
     return newBranche;
 }
 
-void Branche::ResizeBranch (Branche& branche, const int& n) {
-    branche.GetC().resize(n);
+void Branche::ResizeBranch (Branche& branche) {
+    branche.GetC().resize(m);
 }
 
 bool Branche::IsSimpleBranch() {
@@ -125,7 +125,7 @@ Branche operator *(Branche firstBranch, Branche secondBranch)
         if (secondBranch.IsUnity()) {
             return firstBranch;
         }
-        Branche::ResizeBranch(result, firstBranch.GetC().size());
+        Branche::ResizeBranch(result);
 
         if (firstBranch.GetSimple() > 0 && firstBranch.GetPower() != 1) {
             throw "Branche operator *: strange branch";
@@ -171,7 +171,7 @@ Branche operator +(Branche firstBranch, Branche secondBranch)
         if (firstBranch.IsUnity() && secondBranch.IsUnity()) {
             throw "Branche operator +: unity + unity";
         }
-        Branche::ResizeBranch(result, firstBranch.GetC().size());
+        Branche::ResizeBranch(result);
 
         if (firstBranch.GetSimple() > 0 && firstBranch.GetPower() != 1) {
             throw "Branche operator +: strange branch";
@@ -223,7 +223,7 @@ Branche operator -(Branche firstBranch, Branche secondBranch)
         if (secondBranch.IsUnity()) {
             secondBranch = Branche::GetBranch(firstBranch.GetC().size(), 0);
         }
-        Branche::ResizeBranch(result, firstBranch.GetC().size());
+        Branche::ResizeBranch(result);
 
         if (firstBranch.IsUnity() && secondBranch.IsUnity()) {
             throw "Branche operator -: unity - unity";
@@ -275,7 +275,7 @@ Branche operator ~(Branche branche)
         if (branche.IsUnity()) {
             return result;
         }
-        Branche::ResizeBranch(result, branche.GetC().size());
+        Branche::ResizeBranch(result);
 
         if (branche.GetSimple() > 0 && branche.GetPower() != 1)
             throw "Branche operator ~: strange branch";

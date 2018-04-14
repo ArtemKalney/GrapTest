@@ -93,13 +93,13 @@ public:
         return _isReliable;
     }
 
-    static Branche GetBranch (const int& n, const int& firstNode, const int& secondNode, const int& power);
-    static Branche GetBranch (const int& n, const int& power);
-    static Branche GetSimpleBranch (const int& n, const int& firstNode, const int& secondNode);
-    static Branche GetSimpleBranch (const int& n);
+    static Branche GetBranch (const int& vectorSize, const int& firstNode, const int& secondNode, const int& power);
+    static Branche GetBranch (const int& vectorSize, const int& power);
+    static Branche GetSimpleBranch (const int& vectorSize, const int& firstNode, const int& secondNode);
+    static Branche GetSimpleBranch (const int& vectorSize);
     static Branche GetZero ();
     static Branche GetUnity ();
-    static void ResizeBranch (Branche& branche, const int& n);
+    static void ResizeBranch (Branche& branche);
     static bool EqualNodes (const Branche& firstBranche, const Branche& secondBranche);
     static bool EqualNodes (const Branche& branche, const int& firstNode, const int& secondNode);
     static bool EqualNodes (const int& firstBranchNode, const int& secondBranchNode, const int& firstNode,
@@ -117,5 +117,3 @@ Branche operator *(Branche firstBranch, Branche secondBranch);
 Branche operator +(Branche firstBranch, Branche secondBranch);
 Branche operator -(Branche firstBranch, Branche secondBranch);
 Branche operator ~(Branche branche);
-Branche operator *(int number, Branche branche);
-Branche operator *(Branche branche, int number);

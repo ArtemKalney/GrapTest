@@ -86,7 +86,7 @@ int main() {
         int firstNode = buf - 1;
         input >> buf;
         int secondNode = buf - 1;
-        auto newEdge = Branche::GetSimpleBranch(n, firstNode, secondNode);
+        auto newEdge = Branche::GetSimpleBranch(m, firstNode, secondNode);
         // If edge was recorded, add to it simple
         for (auto &edge : BranchList) {
             if (Branche::EqualNodes(edge, newEdge)) {
@@ -192,7 +192,7 @@ int main() {
                         output << endl;
                     }*/
             H testHypernet = initialHypernet;
-            sum = PairwiseConnectivity(initialHypernet, pseudoEdge, true);
+            /*sum = PairwiseConnectivity(initialHypernet, pseudoEdge, true);*/
             // debug
             simpleSum = SimplePairwiseConnectivity(testHypernet, pseudoEdge);
         }
