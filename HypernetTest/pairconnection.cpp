@@ -86,30 +86,30 @@ bool BridgeReduction(H& H)
     }
 }
 
-void PenduntReduction(H& H, Branche& pseudoBranch)
+void PenduntReduction(H& H, Branche& pseudoBranch, std::vector<int>& forbiddenNodes)
 {
     auto nodePowers = H.GetNodePowers();
     auto FN = H.GetFN();
 
     int penduntNode = FN.size();
     for (int i = 0; i < nodePowers.size(); i++) {
-        if (nodePowers[i] == 1 && i != 0 && i != 1) {
+        bool isForbidden = std::find(forbiddenNodes.begin(), forbiddenNodes.end(), i) != forbiddenNodes.end();
+        if (nodePowers[i] == 1 && i != 0 && i != 1 && !isForbidden) {
             penduntNode = i;
         }
     }
 
     if (nodePowers[penduntNode] == 1 && FN.size() > 2) {
-        // We find an incident edge of a pendant node
-        for (int i = FN[penduntNode].size() - 1; i >= 0; i--) {
-            /*Branche branch = FN[penduntNode][i];*/
-            if (FN[penduntNode][i].IsExisting()) {
-                pendunt++;
-                H.RemoveNode(penduntNode);
-                break;
-            }
+        pendunt++;
+        auto HwithRemovedNode = H;
+        HwithRemovedNode.RemoveNode(penduntNode);
+        if (HwithRemovedNode.IsSNconnected()) {
+            H.RemoveNode(penduntNode);
+        } else {
+            forbiddenNodes.push_back(penduntNode);
         }
 
-        PenduntReduction(H, pseudoBranch);
+        PenduntReduction(H, pseudoBranch, forbiddenNodes);
     }
 }
 
@@ -159,7 +159,8 @@ Branche PairwiseConnectivity(H& H, Branche& pseudoBranch) {
         return SimpleCase(H.GetFN(), pseudoBranch);
     }
 
-    PenduntReduction(H, pseudoBranch);
+    std::vector<int> forbiddenNodes;
+    PenduntReduction(H, pseudoBranch, forbiddenNodes);
     /*ChainReduction(H);*/
     if (H.GetFN().size() < MAX_DIMENSIONAL) {
         return SimpleCase(H.GetFN(), pseudoBranch);
@@ -217,6 +218,16 @@ Branche PairwiseConnectivity(H& H, Branche& pseudoBranch) {
 void GenCombinations(const H& H, const std::vector<Branche>& branchList, Branche& sum, std::vector<int>& brancheMask,
                      int& curPos){
     if (m == curPos) {
+        /*int count = 0;
+        for (auto &item : brancheMask) {
+            if (item == 1) {
+                count++;
+            }
+        }
+        if (count == 1){
+            throw "GenCombinations: what we need";
+        }*/
+
         auto hypernet = H;
         for (int i = 0; i < brancheMask.size(); i++) {
             Branche branche = branchList[i];
@@ -230,10 +241,8 @@ void GenCombinations(const H& H, const std::vector<Branche>& branchList, Branche
         if (hypernet.IsSNconnected()) {
             reliable++;
             Branche result = Branche::GetBranch(0);
-            int count = 0;
             for (auto &item : brancheMask) {
                 if (item == 1) {
-                    count++;
                     result.SetPower(result.GetPower() + 1);
                 } else if (item == 0) {
                     result.SetPower(result.GetPower() + 1);
@@ -242,13 +251,9 @@ void GenCombinations(const H& H, const std::vector<Branche>& branchList, Branche
                 }
             }
 
-            /*if (count == 1){
-                throw "GenCombinations: what we need";
-            }*/
             if (result.GetPower() != m) {
                 throw "GenCombinations: strange result power";
             }
-
             sum = sum + result;
         } else {
             unconnected++;

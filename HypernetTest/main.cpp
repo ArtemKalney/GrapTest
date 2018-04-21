@@ -136,21 +136,23 @@ int main() {
     try {
         // Computing pairwise connectivities
         if (option == 3) {
-           /* H H = initialHypernet;
-            H.RenumerateNodes(1, 8);
-            sum = sum + SimplePairwiseConnectivity(H, pseudoEdge);*/
+            H H = initialHypernet;
+            H.RenumerateNodes(1, 0);
+            H.RenumerateNodes(2, 1);
+            sum = sum + PairwiseConnectivity(H, pseudoEdge);
             //debug
-            H customHypernet = H(H::GetAdjacencyMatrix(BranchList), F);
-            //customHypernet.RenumerateNodesForGen(1, 4);
+           /* H customHypernet = H(H::GetAdjacencyMatrix(BranchList), F);
+            customHypernet.RenumerateNodesForGen(1, 0);
+            customHypernet.RenumerateNodesForGen(2, 1);
             std::vector<int> brancheMask(m);
             int startPos = 0;
-            GenCombinations(customHypernet, customHypernet.GetBranchList(), sum, brancheMask, startPos);
+            GenCombinations(customHypernet, customHypernet.GetBranchList(), sum, brancheMask, startPos);*/
         }
         // Computing APC
         if (option == 1) {
             for (int i = 0; i < n; i++) {
                 for (int j = i + 1; j < n; j++) {
-                    /*auto H = initialHypernet;
+                    auto H = initialHypernet;
                     //When calculating the pairwise connection, the pivot nodes have numbers 0,1 in the adjacency matrix
                     if (i != 0 || j != 1) {
                         if (i != 0 && j != 1) {
@@ -164,9 +166,9 @@ int main() {
                             H.RenumerateNodes(i, 0);
                         }
                     }
-                    sum = sum + PairwiseConnectivity(H, pseudoEdge);*/
+                    sum = sum + PairwiseConnectivity(H, pseudoEdge);
                     //debug
-                    H customHypernet = H(H::GetAdjacencyMatrix(BranchList), F);
+                   /* H customHypernet = H(H::GetAdjacencyMatrix(BranchList), F);
                     if (i != 0 || j != 1) {
                         if (i != 0 && j != 1) {
                             customHypernet.RenumerateNodesForGen(i, 0);
@@ -181,7 +183,7 @@ int main() {
                     }
                     std::vector<int> brancheMask(m);
                     int startPos = 0;
-                    GenCombinations(customHypernet, customHypernet.GetBranchList(), sum, brancheMask, startPos);
+                    GenCombinations(customHypernet, customHypernet.GetBranchList(), sum, brancheMask, startPos);*/
 
                     std::cout << "+R" << i + 1 << j + 1 << std::endl;
                 }
@@ -196,20 +198,20 @@ int main() {
         // Computing MENC
         if (option == 2) {
             for (int i = 1; i < n; i++) {
-                /*auto H = initialHypernet;
+                auto H = initialHypernet;
                 // When calculating the pairwise connection, the pivot nodes have numbers 0,1 in the adjacency matrix
                 if (i != 1) {
                     H.RenumerateNodes(i, 1);
                 }
-                sum = sum + PairwiseConnectivity(H, pseudoEdge);*/
+                sum = sum + PairwiseConnectivity(H, pseudoEdge);
                 //debug
-                H customHypernet = H(H::GetAdjacencyMatrix(BranchList), F);
+                /*H customHypernet = H(H::GetAdjacencyMatrix(BranchList), F);
                 if (i != 1) {
                     customHypernet.RenumerateNodesForGen(i, 1);
                 }
                 std::vector<int> brancheMask(m);
                 int startPos = 0;
-                GenCombinations(customHypernet, customHypernet.GetBranchList(), sum, brancheMask, startPos);
+                GenCombinations(customHypernet, customHypernet.GetBranchList(), sum, brancheMask, startPos);*/
 
                 std::cout << "+R1" << i + 1 << std::endl;
             }

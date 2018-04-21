@@ -288,13 +288,17 @@ void H::RenumerateNodesForGen(const int& node1, const int& node2) {
                 int firstNode = branche.GetFirstNode(), secondNode = branche.GetSecondNode();
                 if (firstNode == node1) {
                     this->GetFN()[i][j].SetFirstNode(node2);
+                    this->GetFN()[j][i].SetFirstNode(node2);
                 } else if (firstNode == node2) {
                     this->GetFN()[i][j].SetFirstNode(node1);
+                    this->GetFN()[j][i].SetFirstNode(node1);
                 }
                 if (secondNode == node1) {
                     this->GetFN()[i][j].SetSecondNode(node2);
+                    this->GetFN()[j][i].SetSecondNode(node2);
                 } else if (secondNode == node2) {
                     this->GetFN()[i][j].SetSecondNode(node1);
+                    this->GetFN()[j][i].SetSecondNode(node1);
                 }
             }
         }
