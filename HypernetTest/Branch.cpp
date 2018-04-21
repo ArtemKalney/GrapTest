@@ -2,31 +2,17 @@
 #include "Branch.h"
 #include "globals.h"
 
-bool Branche::IsExisting() const {
-    return !_C.empty();
-}
-
-bool Branche::IsUnity() {
-    return _C.size() == 1;
-}
-
-void Branche::PrintBranche() {
-    if (this->IsExisting()) {
-        std::cout << "Branche:" << std::endl;
-        for (auto &item : this->_C) {
-            std::cout << item << " ";
-        }
-        std::cout << std::endl << "power=" << this->_power << ",simple=" << this->_simple << std::endl;
-    }
-    else {
-        std::cout << "empty edge" << std::endl;
-    }
-}
-
-Branche Branche::GetBranch (const int& vectorSize, const int& firstNode, const int& secondNode, const int& power) {
-    std::vector<double> vec(vectorSize);
+Branche Branche::GetBranch (const int& firstNode, const int& secondNode, const int& power) {
+    std::vector<double> vec(m);
     vec.front() = 1;
     auto newBranche = Branche(vec, power, firstNode, secondNode, 0, false);
+    return newBranche;
+}
+
+Branche Branche::GetBranch (const int& power) {
+    std::vector<double> vec(m);
+    vec.front() = 1;
+    auto newBranche = Branche(vec, power, 0, 0, 0, false);
     return newBranche;
 }
 
@@ -37,23 +23,23 @@ Branche Branche::GetBranch (const int& vectorSize, const int& power) {
     return newBranche;
 }
 
-Branche Branche::GetSimpleBranch (const int& vectorSize, const int& firstNode, const int& secondNode) {
-    std::vector<double> vec(vectorSize);
+Branche Branche::GetSimpleBranch (const int& firstNode, const int& secondNode) {
+    std::vector<double> vec(m);
     vec.front() = 1;
     auto newBranche = Branche(vec, 1, firstNode, secondNode, 0, false);
     return newBranche;
 }
 
-Branche Branche::GetSimpleBranch(const int& vectorSize) {
-    std::vector<double> vec(vectorSize);
+Branche Branche::GetSimpleBranch() {
+    std::vector<double> vec(m);
     vec.front() = 1;
     auto newBranche = Branche(vec, 1, 0, 0, 0, false);
     return newBranche;
 }
 
 Branche Branche::GetZero () {
-    std::vector<double> Zero;
-    auto newBranche = Branche(Zero, 0, 0, 0, 0, false);
+    std::vector<double> vec;
+    auto newBranche = Branche(vec, 0, 0, 0, 0, false);
     return newBranche;
 }
 
@@ -62,14 +48,6 @@ Branche Branche::GetUnity () {
     vec.push_back(1);
     auto newBranche = Branche(vec , 0, 0, 0, 0, false);
     return newBranche;
-}
-
-void Branche::ResizeBranch (Branche& branche) {
-    branche.GetC().resize(m);
-}
-
-bool Branche::IsSimpleBranch() {
-    return this->_power == 1 && this->_simple == 0;
 }
 
 bool Branche::EqualNodes(const Branche& firstBranche, const Branche& secondBranche) {
@@ -111,10 +89,33 @@ bool Branche::IsUnacceptableBranche(Branche& branche) {
     return isFirstNodeUnacceptable || isSecondNodeUnacceptable;
 }
 
+bool Branche::IsExisting() const {
+    return !_C.empty();
+}
+
+bool Branche::IsUnity() {
+    return _C.size() == 1 && _C.front() == 1;
+}
+
+void Branche::PrintBranche() {
+    if (this->IsExisting()) {
+        std::cout << "Branche:" << std::endl;
+        for (auto &item : this->_C) {
+            std::cout << item << " ";
+        }
+        std::cout << std::endl << "power=" << this->_power << ",simple=" << this->_simple << std::endl;
+    }
+    else {
+        std::cout << "empty edge" << std::endl;
+    }
+}
+
+bool Branche::IsSimpleBranch() {
+    return this->_power == 1 && this->_simple == 0;
+}
 /* * The following rules for calculations:
  * 0 <=> edge.C.empty() = true
  * 1 <=> edge.C.size() = 1*/
-
 Branche operator *(Branche firstBranch, Branche secondBranch)
 {
     Branche result;
@@ -125,7 +126,6 @@ Branche operator *(Branche firstBranch, Branche secondBranch)
         if (secondBranch.IsUnity()) {
             return firstBranch;
         }
-        Branche::ResizeBranch(result);
 
         if (firstBranch.GetSimple() > 0 && firstBranch.GetPower() != 1) {
             throw "Branche operator *: strange branch";
@@ -134,6 +134,7 @@ Branche operator *(Branche firstBranch, Branche secondBranch)
             throw "Branche operator *: strange branch";
         }
 
+        result.GetC().resize(firstBranch.GetC().size());
         // Parallel reduction for both edges x, y
         if (firstBranch.GetSimple() > 0) {
             Branche::ParallelReduction(firstBranch);
@@ -162,17 +163,9 @@ Branche operator +(Branche firstBranch, Branche secondBranch)
 {
     Branche result;
     if (firstBranch.IsExisting() && secondBranch.IsExisting()) {
-        if (firstBranch.IsUnity()) {
-            firstBranch = Branche::GetBranch(secondBranch.GetC().size(), 0);
-        }
-        if (secondBranch.IsUnity()) {
-            secondBranch = Branche::GetBranch(firstBranch.GetC().size(), 0);
-        }
         if (firstBranch.IsUnity() && secondBranch.IsUnity()) {
             throw "Branche operator +: unity + unity";
         }
-        Branche::ResizeBranch(result);
-
         if (firstBranch.GetSimple() > 0 && firstBranch.GetPower() != 1) {
             throw "Branche operator +: strange branch";
         }
@@ -180,6 +173,7 @@ Branche operator +(Branche firstBranch, Branche secondBranch)
             throw "Branche operator +: strange branch";
         }
 
+        result.GetC().resize(firstBranch.GetC().size());
         // Parallel reduction for both edges x, y
         if (firstBranch.GetSimple() > 0) {
             Branche::ParallelReduction(firstBranch);
@@ -187,19 +181,16 @@ Branche operator +(Branche firstBranch, Branche secondBranch)
         if (secondBranch.GetSimple() > 0) {
             Branche::ParallelReduction(secondBranch);
         }
-
         // Multiply by a unit of the required degree, so that the degrees x and y coincide
         if (firstBranch.GetPower() != secondBranch.GetPower()) {
             Branche I = Bin[abs(firstBranch.GetPower() - secondBranch.GetPower())];
             if (firstBranch.GetPower() < secondBranch.GetPower()) {
                 firstBranch = firstBranch * I;
-            }
-            if (secondBranch.GetPower() < firstBranch.GetPower()) {
+            } else {
                 secondBranch = secondBranch * I;
             }
         }
 
-        /*result.power = firstBranch.power;*/
         result.SetPower(firstBranch.GetPower());
         for (int i = 0; i<result.GetC().size(); i++) {
             result.GetC()[i] = firstBranch.GetC()[i] + secondBranch.GetC()[i];
@@ -217,14 +208,6 @@ Branche operator -(Branche firstBranch, Branche secondBranch)
 {
     Branche result;
     if (firstBranch.IsExisting() && secondBranch.IsExisting()) {
-        if (firstBranch.IsUnity()) {
-            firstBranch = Branche::GetBranch(secondBranch.GetC().size(), 0);
-        }
-        if (secondBranch.IsUnity()) {
-            secondBranch = Branche::GetBranch(firstBranch.GetC().size(), 0);
-        }
-        Branche::ResizeBranch(result);
-
         if (firstBranch.IsUnity() && secondBranch.IsUnity()) {
             throw "Branche operator -: unity - unity";
         }
@@ -235,6 +218,7 @@ Branche operator -(Branche firstBranch, Branche secondBranch)
             throw "Branche operator -: strange branch";
         }
 
+        result.GetC().resize(firstBranch.GetC().size());
         // Parallel reduction for both edges x, y
         if (firstBranch.GetSimple() > 0) {
             Branche::ParallelReduction(firstBranch);
@@ -242,7 +226,6 @@ Branche operator -(Branche firstBranch, Branche secondBranch)
         if (secondBranch.GetSimple() > 0) {
             Branche::ParallelReduction(secondBranch);
         }
-
         // Multiply by a unit of the required degree, so that the degrees x and y coincide
         if (firstBranch.GetPower() != secondBranch.GetPower()) {
             Branche I = Bin[abs(firstBranch.GetPower() - secondBranch.GetPower())];
@@ -254,7 +237,6 @@ Branche operator -(Branche firstBranch, Branche secondBranch)
             }
         }
 
-        /*result.power = firstBranch.power;*/
         result.SetPower(firstBranch.GetPower());
         for (int i = 0; i<result.GetC().size(); i++) {
             result.GetC()[i] = firstBranch.GetC()[i] - secondBranch.GetC()[i];
@@ -275,16 +257,14 @@ Branche operator ~(Branche branche)
         if (branche.IsUnity()) {
             return result;
         }
-        Branche::ResizeBranch(result);
+        result.GetC().resize(branche.GetC().size());
 
         if (branche.GetSimple() > 0 && branche.GetPower() != 1)
             throw "Branche operator ~: strange branch";
-
         // Parallel reduction for the edge x
         if (branche.GetSimple() > 0) {
             Branche::ParallelReduction(branche);
         }
-
         // Subtract from unity the same degree as x
         result.SetPower(branche.GetPower());
         Branche I = Bin[result.GetPower()];

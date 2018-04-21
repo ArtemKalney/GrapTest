@@ -26,8 +26,8 @@
       <file leaf-file-name="main.cpp" pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/main.cpp">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="3298">
-              <caret line="194" column="78" lean-forward="false" selection-start-line="194" selection-start-column="78" selection-end-line="194" selection-end-column="78" />
+            <state relative-caret-position="-272">
+              <caret line="200" column="29" lean-forward="true" selection-start-line="200" selection-start-column="29" selection-end-line="200" selection-end-column="29" />
               <folding>
                 <element signature="e#0#18#0" expanded="true" />
               </folding>
@@ -38,9 +38,11 @@
       <file leaf-file-name="pairconnection.cpp" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/pairconnection.cpp">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="171">
-              <caret line="199" column="0" lean-forward="false" selection-start-line="199" selection-start-column="0" selection-end-line="199" selection-end-column="0" />
-              <folding />
+            <state relative-caret-position="170">
+              <caret line="92" column="0" lean-forward="false" selection-start-line="92" selection-start-column="0" selection-end-line="92" selection-end-column="0" />
+              <folding>
+                <element signature="e#0#19#0" expanded="true" />
+              </folding>
             </state>
           </provider>
         </entry>
@@ -48,8 +50,8 @@
       <file leaf-file-name="Hypernet.h" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/Hypernet.h">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="459">
-              <caret line="28" column="6" lean-forward="false" selection-start-line="28" selection-start-column="6" selection-end-line="28" selection-end-column="6" />
+            <state relative-caret-position="629">
+              <caret line="49" column="32" lean-forward="false" selection-start-line="49" selection-start-column="32" selection-end-line="49" selection-end-column="32" />
               <folding />
             </state>
           </provider>
@@ -58,8 +60,8 @@
       <file leaf-file-name="Hypernet.cpp" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/Hypernet.cpp">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="544">
-              <caret line="259" column="31" lean-forward="false" selection-start-line="259" selection-start-column="31" selection-end-line="259" selection-end-column="31" />
+            <state relative-caret-position="397">
+              <caret line="182" column="34" lean-forward="false" selection-start-line="182" selection-start-column="34" selection-end-line="182" selection-end-column="34" />
               <folding />
             </state>
           </provider>
@@ -68,8 +70,8 @@
       <file leaf-file-name="Branch.h" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/Branch.h">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="663">
-              <caret line="100" column="31" lean-forward="false" selection-start-line="100" selection-start-column="31" selection-end-line="100" selection-end-column="31" />
+            <state relative-caret-position="527">
+              <caret line="101" column="31" lean-forward="false" selection-start-line="101" selection-start-column="31" selection-end-line="101" selection-end-column="31" />
               <folding />
             </state>
           </provider>
@@ -78,22 +80,10 @@
       <file leaf-file-name="Branch.cpp" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/Branch.cpp">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="-3854">
-              <caret line="26" column="40" lean-forward="true" selection-start-line="26" selection-start-column="40" selection-end-line="26" selection-end-column="40" />
+            <state relative-caret-position="2074">
+              <caret line="122" column="0" lean-forward="false" selection-start-line="122" selection-start-column="0" selection-end-line="122" selection-end-column="0" />
               <folding>
                 <element signature="e#0#19#0" expanded="true" />
-              </folding>
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file leaf-file-name="funcs.h" pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/funcs.h">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="102">
-              <caret line="6" column="8" lean-forward="false" selection-start-line="6" selection-start-column="8" selection-end-line="6" selection-end-column="8" />
-              <folding>
-                <element signature="e#14#33#0" expanded="true" />
               </folding>
             </state>
           </provider>
@@ -104,6 +94,16 @@
           <provider selected="true" editor-type-id="text-editor">
             <state relative-caret-position="136">
               <caret line="8" column="80" lean-forward="false" selection-start-line="8" selection-start-column="80" selection-end-line="8" selection-end-column="80" />
+              <folding />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="funcs.h" pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/funcs.h">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="153">
+              <caret line="9" column="62" lean-forward="false" selection-start-line="9" selection-start-column="62" selection-end-line="9" selection-end-column="62" />
               <folding>
                 <element signature="e#14#33#0" expanded="true" />
               </folding>
@@ -115,27 +115,6 @@
   </component>
   <component name="FindInProjectRecents">
     <findStrings>
-      <find>count</find>
-      <find>SetSimple</find>
-      <find>const</find>
-      <find>G</find>
-      <find>Edge</find>
-      <find>++</find>
-      <find>GetAllowingEdge</find>
-      <find>pseudoEdge</find>
-      <find>allowingEdge</find>
-      <find>visitedNodesBeforeRenumerate</find>
-      <find>RemoveEmptyBranches</find>
-      <find>factors</find>
-      <find>resize</find>
-      <find>FN</find>
-      <find>RemoveNode</find>
-      <find>GetIsReliable</find>
-      <find>GetSimpleBranch</find>
-      <find>H</find>
-      <find>GetBranch</find>
-      <find>error</find>
-      <find>EqualNodes</find>
       <find>initalHypernet</find>
       <find>F:</find>
       <find>Dfs</find>
@@ -145,6 +124,27 @@
       <find>initialHypernet</find>
       <find>MakeReliableBranch</find>
       <find>throw</find>
+      <find>RemoveEmptyBranches</find>
+      <find>FN[numberOfPenduntNode][i]</find>
+      <find>factors</find>
+      <find>simpleSum</find>
+      <find>branche</find>
+      <find>H.GetFN()</find>
+      <find>vec</find>
+      <find>i &lt; j</find>
+      <find>pseu</find>
+      <find>BranchList</find>
+      <find>this-&gt;GetFN()[i][j].GetFirstNode()</find>
+      <find>this-&gt;GetFN()[i][j].GetSecondNode()</find>
+      <find>this-&gt;GetFN()[i][j]</find>
+      <find>int&amp;</find>
+      <find>branchList</find>
+      <find>GetBranchList</find>
+      <find>branch</find>
+      <find>this-&gt;GetFN()</find>
+      <find>RemoveBranch</find>
+      <find>IsUnity</find>
+      <find>ResizeBranch</find>
     </findStrings>
   </component>
   <component name="IdeDocumentHistory">
@@ -152,14 +152,14 @@
       <list>
         <option value="$PROJECT_DIR$/Cclass.cpp" />
         <option value="$PROJECT_DIR$/Cclass.h" />
-        <option value="$PROJECT_DIR$/Hypernet.cpp" />
-        <option value="$PROJECT_DIR$/funcs.h" />
-        <option value="$PROJECT_DIR$/Hypernet.h" />
         <option value="$PROJECT_DIR$/globals.h" />
         <option value="$PROJECT_DIR$/stdafx.h" />
+        <option value="$PROJECT_DIR$/funcs.h" />
+        <option value="$PROJECT_DIR$/Hypernet.cpp" />
+        <option value="$PROJECT_DIR$/Hypernet.h" />
         <option value="$PROJECT_DIR$/pairconnection.cpp" />
-        <option value="$PROJECT_DIR$/Branch.cpp" />
         <option value="$PROJECT_DIR$/Branch.h" />
+        <option value="$PROJECT_DIR$/Branch.cpp" />
         <option value="$PROJECT_DIR$/main.cpp" />
       </list>
     </option>
@@ -196,7 +196,7 @@
         <subPane>
           <expand>
             <path>
-              <item name="HyperNetTest" type="dad4c3:CidrFilesViewHelper$MyProjectTreeStructure$1" />
+              <item name="HypernetTest" type="dad4c3:CidrFilesViewHelper$MyProjectTreeStructure$1" />
               <item name="HypernetTest" type="462c0819:PsiDirectoryNode" />
             </path>
           </expand>
@@ -265,11 +265,21 @@
       <workItem from="1523717084789" duration="102000" />
       <workItem from="1523717469819" duration="27000" />
       <workItem from="1523718472520" duration="3452000" />
+      <workItem from="1523784529282" duration="280000" />
+      <workItem from="1523791616645" duration="9372000" />
+      <workItem from="1523801260356" duration="344000" />
+      <workItem from="1523969854032" duration="6828000" />
+      <workItem from="1524055525414" duration="6749000" />
+      <workItem from="1524140602776" duration="9648000" />
+      <workItem from="1524223227425" duration="161000" />
+      <workItem from="1524223693390" duration="12264000" />
+      <workItem from="1524236751188" duration="785000" />
+      <workItem from="1524290936740" duration="17061000" />
     </task>
     <servers />
   </component>
   <component name="TimeTrackingManager">
-    <option name="totallyTimeSpent" value="95900000" />
+    <option name="totallyTimeSpent" value="159392000" />
   </component>
   <component name="ToolWindowManager">
     <frame x="-8" y="-8" width="1936" height="1056" extended-state="6" />
@@ -303,12 +313,15 @@
   </component>
   <component name="XDebuggerManager">
     <breakpoint-manager>
-      <option name="time" value="228" />
+      <option name="time" value="507" />
     </breakpoint-manager>
     <watches-manager>
       <configuration name="CMakeRunConfiguration">
         <watch expression="networkWithRemovedBranch" />
         <watch expression="H" />
+        <watch expression="brancheMask" />
+        <watch expression="brancheMask" />
+        <watch expression="firstBranch._C" />
       </configuration>
     </watches-manager>
   </component>
@@ -353,9 +366,7 @@
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="63">
           <caret line="3" column="0" lean-forward="false" selection-start-line="3" selection-start-column="0" selection-end-line="3" selection-end-column="21" />
-          <folding>
-            <element signature="e#14#33#0" expanded="true" />
-          </folding>
+          <folding />
         </state>
       </provider>
     </entry>
@@ -389,9 +400,7 @@
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="273">
           <caret line="13" column="0" lean-forward="false" selection-start-line="13" selection-start-column="0" selection-end-line="13" selection-end-column="0" />
-          <folding>
-            <element signature="e#14#33#0" expanded="true" />
-          </folding>
+          <folding />
         </state>
       </provider>
     </entry>
@@ -437,9 +446,7 @@
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="105">
           <caret line="5" column="0" lean-forward="false" selection-start-line="5" selection-start-column="0" selection-end-line="5" selection-end-column="0" />
-          <folding>
-            <element signature="e#14#33#0" expanded="true" />
-          </folding>
+          <folding />
         </state>
       </provider>
     </entry>
@@ -492,9 +499,7 @@
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="85">
           <caret line="5" column="0" lean-forward="false" selection-start-line="5" selection-start-column="0" selection-end-line="5" selection-end-column="0" />
-          <folding>
-            <element signature="e#14#33#0" expanded="true" />
-          </folding>
+          <folding />
         </state>
       </provider>
     </entry>
@@ -547,9 +552,7 @@
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="85">
           <caret line="5" column="0" lean-forward="false" selection-start-line="5" selection-start-column="0" selection-end-line="5" selection-end-column="0" />
-          <folding>
-            <element signature="e#14#33#0" expanded="true" />
-          </folding>
+          <folding />
         </state>
       </provider>
     </entry>
@@ -602,9 +605,7 @@
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="84">
           <caret line="4" column="21" lean-forward="true" selection-start-line="4" selection-start-column="21" selection-end-line="4" selection-end-column="21" />
-          <folding>
-            <element signature="e#14#33#0" expanded="true" />
-          </folding>
+          <folding />
         </state>
       </provider>
     </entry>
@@ -644,6 +645,15 @@
     </entry>
     <entry file="file://C:/Program Files/mingw-w64/mingw64/lib/gcc/x86_64-w64-mingw32/7.2.0/include/c++/bits/stl_vector.h" />
     <entry file="file://C:/Program Files/mingw-w64/mingw64/lib/gcc/x86_64-w64-mingw32/7.2.0/include/c++/vector" />
+    <entry file="file://$PROJECT_DIR$/Cclass.cpp" />
+    <entry file="file://$PROJECT_DIR$/Cclass.h" />
+    <entry file="file://$PROJECT_DIR$/stdafx.h">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="204">
+          <caret line="12" column="17" lean-forward="false" selection-start-line="12" selection-start-column="17" selection-end-line="12" selection-end-column="17" />
+        </state>
+      </provider>
+    </entry>
     <entry file="file://E:/MingGW/mingw64/lib/gcc/x86_64-w64-mingw32/7.2.0/include/c++/ext/new_allocator.h">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="181">
@@ -651,79 +661,69 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/Cclass.cpp" />
-    <entry file="file://$PROJECT_DIR$/Cclass.h" />
+    <entry file="file://E:/MingGW/mingw64/lib/gcc/x86_64-w64-mingw32/7.2.0/include/c++/bits/stl_vector.h">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="181">
+          <caret line="797" column="0" lean-forward="false" selection-start-line="797" selection-start-column="0" selection-end-line="797" selection-end-column="0" />
+        </state>
+      </provider>
+    </entry>
     <entry file="file://$PROJECT_DIR$/globals.h">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="136">
           <caret line="8" column="80" lean-forward="false" selection-start-line="8" selection-start-column="80" selection-end-line="8" selection-end-column="80" />
-          <folding>
-            <element signature="e#14#33#0" expanded="true" />
-          </folding>
+          <folding />
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/funcs.h">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="102">
-          <caret line="6" column="8" lean-forward="false" selection-start-line="6" selection-start-column="8" selection-end-line="6" selection-end-column="8" />
+        <state relative-caret-position="153">
+          <caret line="9" column="62" lean-forward="false" selection-start-line="9" selection-start-column="62" selection-end-line="9" selection-end-column="62" />
           <folding>
             <element signature="e#14#33#0" expanded="true" />
           </folding>
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/stdafx.h">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="187">
-          <caret line="11" column="16" lean-forward="false" selection-start-line="11" selection-start-column="16" selection-end-line="11" selection-end-column="16" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://E:/MingGW/mingw64/lib/gcc/x86_64-w64-mingw32/7.2.0/include/c++/bits/stl_vector.h">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="181">
-          <caret line="759" column="0" lean-forward="false" selection-start-line="759" selection-start-column="0" selection-end-line="759" selection-end-column="0" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/Hypernet.h">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="459">
-          <caret line="28" column="6" lean-forward="false" selection-start-line="28" selection-start-column="6" selection-end-line="28" selection-end-column="6" />
+        <state relative-caret-position="629">
+          <caret line="49" column="32" lean-forward="false" selection-start-line="49" selection-start-column="32" selection-end-line="49" selection-end-column="32" />
           <folding />
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/Hypernet.cpp">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="544">
-          <caret line="259" column="31" lean-forward="false" selection-start-line="259" selection-start-column="31" selection-end-line="259" selection-end-column="31" />
+        <state relative-caret-position="397">
+          <caret line="182" column="34" lean-forward="false" selection-start-line="182" selection-start-column="34" selection-end-line="182" selection-end-column="34" />
           <folding />
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/pairconnection.cpp">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="171">
-          <caret line="199" column="0" lean-forward="false" selection-start-line="199" selection-start-column="0" selection-end-line="199" selection-end-column="0" />
-          <folding />
+        <state relative-caret-position="170">
+          <caret line="92" column="0" lean-forward="false" selection-start-line="92" selection-start-column="0" selection-end-line="92" selection-end-column="0" />
+          <folding>
+            <element signature="e#0#19#0" expanded="true" />
+          </folding>
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/Branch.h">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="663">
-          <caret line="100" column="31" lean-forward="false" selection-start-line="100" selection-start-column="31" selection-end-line="100" selection-end-column="31" />
+        <state relative-caret-position="527">
+          <caret line="101" column="31" lean-forward="false" selection-start-line="101" selection-start-column="31" selection-end-line="101" selection-end-column="31" />
           <folding />
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/Branch.cpp">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="-3854">
-          <caret line="26" column="40" lean-forward="true" selection-start-line="26" selection-start-column="40" selection-end-line="26" selection-end-column="40" />
+        <state relative-caret-position="2074">
+          <caret line="122" column="0" lean-forward="false" selection-start-line="122" selection-start-column="0" selection-end-line="122" selection-end-column="0" />
           <folding>
             <element signature="e#0#19#0" expanded="true" />
           </folding>
@@ -732,8 +732,8 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/main.cpp">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="3298">
-          <caret line="194" column="78" lean-forward="false" selection-start-line="194" selection-start-column="78" selection-end-line="194" selection-end-column="78" />
+        <state relative-caret-position="-272">
+          <caret line="200" column="29" lean-forward="true" selection-start-line="200" selection-start-column="29" selection-end-line="200" selection-end-column="29" />
           <folding>
             <element signature="e#0#18#0" expanded="true" />
           </folding>

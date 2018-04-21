@@ -46,73 +46,70 @@ void ChainReduction(H& H)
 //if the pivot nodes in different components, then returns false
 bool BridgeReduction(H& H)
 {
-    bridges++;
-    auto visitedNodes = H.GetVisitedNodes();
-    if (visitedNodes.size() != H.GetFN().size()) {
-        throw "BridgeReduction: sizes not match";
-    }
+    auto FN = H.GetFN();
+    std::vector<bool> visitedNodes(FN.size(), false);
 
-    if (visitedNodes[0] && visitedNodes[1]) {
-        for (int i = H.GetFN().size() - 1; i >= 0; i--) {
-            if (!visitedNodes[i]) {
-                H.RemoveNode(i);
-            }
+    H::DFS(0, visitedNodes, FN);
+
+    int nodesInComponent = 0;
+    for (auto item : visitedNodes) {
+        if (item) {
+            nodesInComponent++;
         }
     }
 
-    if (!visitedNodes[0] && !visitedNodes[1]) {
-        for (int i = H.GetFN().size() - 1; i >= 0; i--) {
-            if (visitedNodes[i]) {
-                H.RemoveNode(i);
-            }
+    if (nodesInComponent != FN.size()) {
+        bridges++;
+        if (visitedNodes.size() != FN.size()) {
+            throw "BridgeReduction: sizes not match";
         }
-    }
 
-    return (visitedNodes[0] && !visitedNodes[1]) || (!visitedNodes[0] && visitedNodes[1]);
-}
-
-void PenduntReduction(H &H, Branche &pseudoBranch, int pivotNode, bool invalidCase)
-{
-    std::vector<int> nodePowers = H.GetNodePowers();
-    // prohibit the reduction of the pivot node
-    if (invalidCase) {
-        nodePowers.erase(nodePowers.begin() + pivotNode);
-    }
-
-    std::vector<int>::const_iterator iteratorOfPenduntNode = std::min_element(nodePowers.begin(), nodePowers.end());
-    // We get the number of the pendant node in the adjacency matrix
-    int numberOfPenduntNode = iteratorOfPenduntNode - nodePowers.begin();
-
-    if (*iteratorOfPenduntNode == 1 && H.GetFN().size() > 2) {
-        pendunt++;
-        // We find an incident edge of a pendant node
-        for (int i = H.GetFN()[numberOfPenduntNode].size() - 1; i >= 0; i--) {
-            if (H.GetFN()[numberOfPenduntNode][i].IsExisting()) {
-                // Invalid case
-                if ((numberOfPenduntNode == 1 && i == 0) || (numberOfPenduntNode == 0 && i == 1)) {
-                    pivotNode = numberOfPenduntNode;
-                    invalidCase = true;
-                } else {
-                    if (numberOfPenduntNode != 0 && numberOfPenduntNode != 1) {
-                        H.RemoveNode(numberOfPenduntNode);
-                    } else {
-                        if (!H.GetFN()[numberOfPenduntNode][i].GetIsReliable()) {
-                            pseudoBranch = pseudoBranch * H.GetFN()[numberOfPenduntNode][i];
-                        }
-                        H.RemoveNode(numberOfPenduntNode);
-                        // After removing the node, the numbering in the adjacency matrix changes
-                        i--;
-                        // The incident node is assigned with number 1
-                        if (i != 1) {
-                            H.RenumerateNodes(i, 1);
-                        }
-                    }
-                    break;
+        if (visitedNodes[0] && visitedNodes[1]) {
+            for (int i = FN.size() - 1; i >= 0; i--) {
+                if (!visitedNodes[i]) {
+                    H.RemoveNode(i);
                 }
             }
         }
 
-        PenduntReduction(H, pseudoBranch, pivotNode, invalidCase);
+        if (!visitedNodes[0] && !visitedNodes[1]) {
+            for (int i = FN.size() - 1; i >= 0; i--) {
+                if (visitedNodes[i]) {
+                    H.RemoveNode(i);
+                }
+            }
+        }
+
+        return (visitedNodes[0] && !visitedNodes[1]) || (!visitedNodes[0] && visitedNodes[1]);
+    } else {
+        return false;
+    }
+}
+
+void PenduntReduction(H& H, Branche& pseudoBranch)
+{
+    auto nodePowers = H.GetNodePowers();
+    auto FN = H.GetFN();
+
+    int penduntNode = FN.size();
+    for (int i = 0; i < nodePowers.size(); i++) {
+        if (nodePowers[i] == 1 && i != 0 && i != 1) {
+            penduntNode = i;
+        }
+    }
+
+    if (nodePowers[penduntNode] == 1 && FN.size() > 2) {
+        // We find an incident edge of a pendant node
+        for (int i = FN[penduntNode].size() - 1; i >= 0; i--) {
+            /*Branche branch = FN[penduntNode][i];*/
+            if (FN[penduntNode][i].IsExisting()) {
+                pendunt++;
+                H.RemoveNode(penduntNode);
+                break;
+            }
+        }
+
+        PenduntReduction(H, pseudoBranch);
     }
 }
 
@@ -143,31 +140,39 @@ Branche SimpleCase (const std::vector<std::vector<Branche>>& FN, const Branche& 
 {
     if (FN.size() == 2) {
         num2++;
-        return pseudoBranch*FN[0][1];
+        Branche branch = FN[0][1];
+        if (branch.GetIsReliable()) {
+            return pseudoBranch;
+        } else {
+            return pseudoBranch * FN[0][1];
+        }
     }
 }
 
-Branche PairwiseConnectivity(H& H, Branche& pseudoBranch, bool connected) {
+Branche PairwiseConnectivity(H& H, Branche& pseudoBranch) {
     factors++;
-    if (!connected) {
-        if (BridgeReduction(H)) {
-            unconnected++;
-            return Branche::GetZero();
-        }
-        connected = true;
-    }
 
+    if (BridgeReduction(H)) {
+        return Branche::GetZero();
+    }
     if (H.GetFN().size() < MAX_DIMENSIONAL) {
         return SimpleCase(H.GetFN(), pseudoBranch);
     }
 
-    PenduntReduction(H, pseudoBranch, 0, false);
+    PenduntReduction(H, pseudoBranch);
     /*ChainReduction(H);*/
-
     if (H.GetFN().size() < MAX_DIMENSIONAL) {
         return SimpleCase(H.GetFN(), pseudoBranch);
     }
 
+    if (BridgeReduction(H)) {
+        return Branche::GetZero();
+    }
+    if (H.GetFN().size() < MAX_DIMENSIONAL) {
+        return SimpleCase(H.GetFN(), pseudoBranch);
+    }
+
+    // неявно используются node1 и node2
     Branche allowingBranch = GetAllowingBranch(H);
     if (Branche::IsUnacceptableBranche(allowingBranch)) {
         throw "SimplePairwiseConnectivity: strange allowingBranch";
@@ -187,38 +192,79 @@ Branche PairwiseConnectivity(H& H, Branche& pseudoBranch, bool connected) {
     }
 
     auto HwithReliableBranch = H, HwithRemovedBranch = H;
-    HwithReliableBranch.MakeReliableBranch(allowingBranch);
-    HwithRemovedBranch.RemoveBranch(allowingBranch);
-    // case don't delete nodes and renumerate nodes then, no need to change visitedNodes
-    bool isFNconnected = HwithRemovedBranch.IsFNconnected();
+    HwithReliableBranch.MakeReliableBranch(allowingBranch.GetFirstNode(), allowingBranch.GetSecondNode());
+    HwithRemovedBranch.RemoveBranch(allowingBranch.GetFirstNode(), allowingBranch.GetSecondNode());
 
     if (!HwithRemovedBranch.IsSNconnected()) {
         unconnected++;
         if (HwithReliableBranch.hasReliablePath()) {
             reliable++;
-            auto unity = Branche::GetUnity();
-            return pseudoBranch1*unity;
+            return pseudoBranch1 * Branche::GetUnity();
         } else {
-            return PairwiseConnectivity(HwithReliableBranch, pseudoBranch1, true);
+            return PairwiseConnectivity(HwithReliableBranch, pseudoBranch1);
         }
     } else {
         if (HwithReliableBranch.hasReliablePath()) {
             reliable++;
-            return pseudoBranch1*Branche::GetUnity() + PairwiseConnectivity(HwithRemovedBranch, pseudoBranch2,
-                                                              isFNconnected);
+            return pseudoBranch1 * Branche::GetUnity() + PairwiseConnectivity(HwithRemovedBranch, pseudoBranch2);
         } else {
-            return PairwiseConnectivity(HwithReliableBranch, pseudoBranch1, true) +
-                    PairwiseConnectivity(HwithRemovedBranch, pseudoBranch2, isFNconnected);
+            return PairwiseConnectivity(HwithReliableBranch, pseudoBranch1) +
+                    PairwiseConnectivity(HwithRemovedBranch, pseudoBranch2);
         }
     }
 }
 // debug
+void GenCombinations(const H& H, const std::vector<Branche>& branchList, Branche& sum, std::vector<int>& brancheMask,
+                     int& curPos){
+    if (m == curPos) {
+        auto hypernet = H;
+        for (int i = 0; i < brancheMask.size(); i++) {
+            Branche branche = branchList[i];
+            if (brancheMask[i] == 0) {
+                hypernet.RemoveBranch(branche.GetFirstNode(), branche.GetSecondNode());
+            } else if (brancheMask[i] == 1) {
+                hypernet.MakeReliableBranch(branche.GetFirstNode(), branche.GetSecondNode());
+            }
+        }
+
+        if (hypernet.IsSNconnected()) {
+            reliable++;
+            Branche result = Branche::GetBranch(0);
+            int count = 0;
+            for (auto &item : brancheMask) {
+                if (item == 1) {
+                    count++;
+                    result.SetPower(result.GetPower() + 1);
+                } else if (item == 0) {
+                    result.SetPower(result.GetPower() + 1);
+                    result.GetC().insert(result.GetC().begin(), 0);
+                    result.GetC().pop_back();
+                }
+            }
+
+            /*if (count == 1){
+                throw "GenCombinations: what we need";
+            }*/
+            if (result.GetPower() != m) {
+                throw "GenCombinations: strange result power";
+            }
+
+            sum = sum + result;
+        } else {
+            unconnected++;
+        }
+    }
+    else{
+        brancheMask[curPos] = 0;
+        int increasedPos = curPos + 1;
+        GenCombinations(H, branchList, sum, brancheMask, increasedPos);
+        brancheMask[curPos] = 1;
+        GenCombinations(H, branchList, sum, brancheMask, increasedPos);
+    }
+}
+
 Branche SimplePairwiseConnectivity(H& H, Branche& pseudoBranch) {
     factors++;
-    if (H.GetFN().size() < MAX_DIMENSIONAL) {
-        return SimpleCase(H.GetFN(), pseudoBranch);
-    }
-
     Branche allowingBranch = GetAllowingBranch(H);
     if (Branche::IsUnacceptableBranche(allowingBranch)) {
         throw "SimplePairwiseConnectivity: strange allowingBranch";
@@ -238,8 +284,8 @@ Branche SimplePairwiseConnectivity(H& H, Branche& pseudoBranch) {
     }
 
     auto HwithReliableBranch = H, HwithRemovedBranch = H;
-    HwithReliableBranch.MakeReliableBranch(allowingBranch);
-    HwithRemovedBranch.RemoveBranch(allowingBranch);
+    HwithReliableBranch.MakeReliableBranch(allowingBranch.GetFirstNode(), allowingBranch.GetSecondNode());
+    HwithRemovedBranch.RemoveBranch(allowingBranch.GetFirstNode(), allowingBranch.GetSecondNode());
 
     if (!HwithRemovedBranch.IsSNconnected()) {
         unconnected++;

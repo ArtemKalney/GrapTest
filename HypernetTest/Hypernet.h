@@ -7,16 +7,6 @@ class H {
 private:
     std::vector<std::vector<Branche>> _FN;
     std::vector<std::vector<int>> _F;
-    std::vector<bool> _visitedNodes;
-    // Search in depth, starts from the node
-    void DFS(const int& node) {
-        this->_visitedNodes[node] = true;
-        for (int i = 0; i < this->_FN[node].size(); i++) {
-            if (this->_FN[node][i].IsExisting() && !this->_visitedNodes[i]) {
-                DFS(i);
-            }
-        }
-    }
 public:
     H(std::vector<std::vector<Branche>> FN, std::vector<std::vector<int>> F) :
             _FN(std::move(FN)),
@@ -48,23 +38,23 @@ public:
         return _F;
     }
 
-    std::vector<bool> GetVisitedNodes()
-    {
-        return _visitedNodes;
-    }
-
-    static bool EqualEdgeNodes (const std::vector<int>& F, const int& firstNode, const int& secondNode);
+    static bool EqualEdgeNodes (const std::vector<int>& edge, const int& firstNode, const int& secondNode);
+    // Search in depth, starts from the node
+    static void DFS(const int& node, std::vector<bool>& visitedNodes, const std::vector<std::vector<Branche>>& FN);
+    static std::vector<std::vector<Branche>> GetAdjacencyMatrix(std::vector<Branche>& BranchList);
 
     void PrintHypernet();
     bool IsSNconnected();
-    bool IsFNconnected();
     bool hasReliablePath();
     int GetBranchSaturation (const Branche& branche, const int& firstNode, const int& secondNode);
     std::vector<int> GetChain();
-    void RemoveBranch(const Branche& branche);
+    void RemoveBranch(const int& node1, const int& node2);
     void RemoveNode(const int& node);
-    void MakeReliableBranch(const Branche& branche);
+    void MakeReliableBranch(const int& node1, const int& node2);
     void RemoveEmptyBranches();
     std::vector<int> GetNodePowers();
-    void RenumerateNodes(const int& s, const int& t);
+    void RenumerateNodes(const int& node1, const int& node2);
+    void RenumerateNodesForGen(const int& node1, const int& node2);
+    std::vector<std::vector<Branche>> GetSN();
+    std::vector<Branche> GetBranchList();
 };

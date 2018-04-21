@@ -1,6 +1,40 @@
 #include "Hypernet.h"
 #include "globals.h"
 
+std::vector<std::vector<Branche>> H::GetAdjacencyMatrix(std::vector<Branche>& BranchList) {
+    std::vector<std::vector<Branche>> FN(n);
+    for (auto &row : FN) {
+        row.resize(FN.size(), Branche::GetZero());
+    }
+    for (int i = 0; i < FN.size(); i++) {
+        for (int j = 0; j < FN[i].size(); j++) {
+            for (auto &item : BranchList) {
+                if (Branche::EqualNodes(item, i, j)) {
+                    FN[i][j] = item;
+                }
+            }
+        }
+    }
+
+    return FN;
+}
+
+/*возможно нужно придумать метод для получения списка путей соответсвующих данному ребру*/
+bool H::EqualEdgeNodes(const std::vector<int>& edge, const int& firstNode, const int& secondNode) {
+    bool sameNodes = edge.front() == firstNode && edge.back() == secondNode;
+    bool reversedNodes = edge.front() == secondNode && edge.back() == firstNode;
+    return sameNodes || reversedNodes;
+}
+
+void H::DFS(const int& node, std::vector<bool>& visitedNodes, const std::vector<std::vector<Branche>>& FN) {
+    visitedNodes[node] = true;
+    for (int i = 0; i < FN[node].size(); i++) {
+        if (FN[node][i].IsExisting() && !visitedNodes[i]) {
+            DFS(i, visitedNodes, FN);
+        }
+    }
+}
+
 void H::PrintHypernet() {
     std::cout << "FN:" << std::endl;
     for (int i = 0; i < this->GetFN().size(); i++) {
@@ -19,22 +53,62 @@ void H::PrintHypernet() {
         std::cout << std::endl;
     }
 }
-
-/*возможно нужно придумать метод для получения списка путей соответсвующих данному ребру*/
-bool H::EqualEdgeNodes(const std::vector<int>& F, const int& firstNode, const int& secondNode) {
-    bool sameNodes = F.front() == firstNode && F.back() == secondNode;
-    bool reversedNodes = F.front() == secondNode && F.back() == firstNode;
-    return sameNodes || reversedNodes;
-}
-
-bool H::IsSNconnected() {
+// one model used for Branches and Edges
+std::vector<std::vector<Branche>> H::GetSN() {
+    std::vector<Branche> EdgeList;
     for (auto &row : this->_F) {
-        if (H::EqualEdgeNodes(row, 0, 1)) {
-            return true;
+        Branche newEdge = Branche::GetUnity();
+        newEdge.SetFirstNode(row.front());
+        newEdge.SetSecondNode(row.back());
+        bool isReliableEdge = true;
+        int prevCell = row.front();
+        for (auto &cell : row) {
+            //запрещает наличие петель
+            if (!this->GetFN()[cell][prevCell].GetIsReliable() && prevCell != cell) {
+                isReliableEdge = false;
+                break;
+            }
+            prevCell = cell;
+        }
+        newEdge.SetIsReliable(isReliableEdge);
+
+        bool isSimpleBranch = false;
+        for (auto &item : EdgeList) {
+            if (Branche::EqualNodes(item, newEdge)) {
+                item.SetSimple(item.GetSimple() + 1);
+                isSimpleBranch = true;
+            }
+        }
+        if (!isSimpleBranch) {
+            EdgeList.push_back(std::move(newEdge));
         }
     }
 
-    return false;
+    return H::GetAdjacencyMatrix(EdgeList);
+}
+
+std::vector<Branche> H::GetBranchList() {
+    std::vector<Branche> BranchList;
+    auto FN = this->GetFN();
+    for (int i = 0; i < FN.size(); i++) {
+        for (int j = 0; j < FN[i].size(); j++) {
+            Branche branche = FN[i][j];
+            if (i < j && branche.IsExisting()) {
+                BranchList.push_back(branche);
+            }
+        }
+    }
+
+    return BranchList;
+}
+
+bool H::IsSNconnected() {
+    auto SN = this->GetSN();
+    std::vector<bool> visitedNodes(SN.size(), false);
+
+    H::DFS(0, visitedNodes, SN);
+
+    return visitedNodes[0] && visitedNodes[1];
 }
 // need nodes from adjancy matrix case we don't update branch nodes
 int H::GetBranchSaturation(const Branche& branche, const int& firstNode, const int& secondNode) {
@@ -59,26 +133,22 @@ void H::RemoveEmptyBranches() {
                 int saturation = this->GetBranchSaturation(this->GetFN()[i][j], i, j);
                 if (saturation == 0 && !this->GetFN()[i][j].GetIsReliable()) {
                     this->GetFN()[i][j].GetC().clear();
-                    this->GetFN()[i][j].GetC().clear();
+                    this->GetFN()[j][i].GetC().clear();
                 }
             }
         }
     }
 }
 
-void H::RemoveBranch(const Branche& branche) {
+void H::RemoveBranch(const int& node1, const int& node2) {
     /*преобразования FN при удалении ветви*/
-    int firstNode = branche.GetFirstNode(), secondNode = branche.GetSecondNode();
-    /*~FN[firstNode][secondNode];
-    ~FN[secondNode][firstNode];*/
-    this->GetFN()[firstNode][secondNode].GetC().clear();
-    this->GetFN()[secondNode][firstNode].GetC().clear();
-
+    this->GetFN()[node1][node2].GetC().clear();
+    this->GetFN()[node2][node1].GetC().clear();
     /*преобразования F при удалении ветви*/
     for (int i = 0; i < _F.size(); i++) {
         auto prevItem = _F[i].front();
         for (auto &item : _F[i]) {
-            if (Branche::EqualNodes(branche, item, prevItem)) {
+            if (Branche::EqualNodes(node1, node2, item, prevItem)) {
                 _F.erase(_F.begin() + i);
                 i--;
             }
@@ -95,23 +165,12 @@ void H::RemoveNode(const int& node) {
     for (auto &row : this->GetFN()) {
         row.erase(row.begin() + node);
     }
-
     /*преобразования F при удалении вершины*/
     for (int i = 0; i < this->GetF().size(); i++) {
         bool deletedRow = false;
         for (int j = 0; j < this->GetF()[i].size(); j++) {
+            // удаляемая вершина оказалась в ребре
             if (this->GetF()[i][j] == node) {
-                // if node is inside edge we delete edge, otherwise cut edge by node
-                if (this->GetF()[i].front() == node || this->GetF()[i].back() == node) {
-                    this->GetF()[i].erase(this->GetF()[i].begin() + j);
-                } else {
-                    // postfix increment operator usage
-                    this->GetF().erase(this->GetF().begin() + i--);
-                    deletedRow = true;
-                    break;
-                }
-            }
-            if (this->GetF()[i].size() == 1) {
                 // postfix increment operator usage
                 this->GetF().erase(this->GetF().begin() + i--);
                 deletedRow = true;
@@ -132,32 +191,29 @@ void H::RemoveNode(const int& node) {
     this->RemoveEmptyBranches();
 }
 
-void H::MakeReliableBranch(const Branche& branche) {
-    int firstNode = branche.GetFirstNode(), secondNode = branche.GetSecondNode();
-    this->GetFN()[firstNode][secondNode].SetIsReliable(true);
-    this->GetFN()[secondNode][firstNode].SetIsReliable(true);
+void H::MakeReliableBranch(const int& node1, const int& node2) {
+    this->GetFN()[node1][node2].SetIsReliable(true);
+    this->GetFN()[node1][node2].SetIsReliable(true);
 }
 
 bool H::hasReliablePath() {
-    for (auto &row : this->_F) {
-        if (H::EqualEdgeNodes(row, 0, 1)) {
-            auto isReliablePath = true;
-            auto prevCell = row.front();
-            for (auto &cell : row) {
-                /*запрещает наличие петель */
-                if (!this->GetFN()[cell][prevCell].GetIsReliable() && prevCell != cell) {
-                    isReliablePath = false;
-                    break;
-                }
-                prevCell = cell;
-            }
-            if (isReliablePath) {
-                return true;
+    auto HwithRemovedBranches = *this;
+    auto FN = this->GetFN();
+    for (int i = 0; i < FN.size(); i++) {
+        for (int j = 0; j < FN[i].size(); j++) {
+            Branche branche = FN[i][j];
+            if (i < j && branche.IsExisting() && !branche.GetIsReliable()) {
+                HwithRemovedBranches.RemoveBranch(i, j);
             }
         }
     }
 
-    return false;
+    auto SN = HwithRemovedBranches.GetSN();
+    std::vector<bool> visitedNodes(SN.size(), false);
+
+    H::DFS(0, visitedNodes, SN);
+
+    return visitedNodes[0] && visitedNodes[1];
 }
 
 std::vector<int> H::GetNodePowers() {
@@ -173,66 +229,76 @@ std::vector<int> H::GetNodePowers() {
     return nodePowers;
 }
 
-void H::RenumerateNodes(const int& s, const int& t) {
-    if (s != t) {
-        std::vector<Branche> firstVector = this->GetFN()[s], secondVector = this->GetFN()[t];
-        for (int i = 0; i<this->GetFN().size(); i++) {
-            if (i != s && i != t) {
-                std::swap(firstVector[i], secondVector[i]);
+void H::RenumerateNodes(const int& node1, const int& node2) {
+    if (node1 == node2) {
+        throw "RenumerateNodes: equal nodes";
+    }
+    auto firstVector = this->GetFN()[node1], secondVector = this->GetFN()[node2];
+    // transforms FN with RenumerateNodes
+    for (int i = 0; i < this->GetFN().size(); i++) {
+        if (i != node1 && i != node2) {
+            std::swap(firstVector[i], secondVector[i]);
+        }
+    }
+    for (int i = 0; i < this->GetFN().size(); i++) {
+        if (this->GetFN()[node2][i].IsExisting()) {
+            this->GetFN()[node2][i].GetC().clear();
+            this->GetFN()[i][node2].GetC().clear();
+        }
+        if (this->GetFN()[node1][i].IsExisting()) {
+            this->GetFN()[node1][i].GetC().clear();
+            this->GetFN()[i][node1].GetC().clear();
+        }
+    }
+    for (int i = 0; i < this->GetFN().size(); i++) {
+        if (firstVector[i].IsExisting() && i != node1) {
+            this->GetFN()[node1][i] = firstVector[i];
+            if (i != node2) {
+                this->GetFN()[i][node1] = firstVector[i];
             }
         }
-
-        /*if (!visitedNodes.empty() && std::max(s, t) < visitedNodes.size()) {
-            bool r = visitedNodes[s];
-            visitedNodes[s] = visitedNodes[t];
-            visitedNodes[t] = r;
-        }*/
-
-        for (int i = 0; i < this->GetFN().size(); i++) {
-            if (this->GetFN()[t][i].IsExisting()) {
-                this->GetFN()[t][i].GetC().clear();
-                this->GetFN()[i][t].GetC().clear();
-            }
-            if (this->GetFN()[s][i].IsExisting()) {
-                this->GetFN()[s][i].GetC().clear();
-                this->GetFN()[i][s].GetC().clear();
+        if (secondVector[i].IsExisting() && i != node2) {
+            this->GetFN()[node2][i] = secondVector[i];
+            if (i != node1) {
+                this->GetFN()[i][node2] = secondVector[i];
             }
         }
-
-        for (int i = 0; i < this->GetFN().size(); i++) {
-            if (firstVector[i].IsExisting() && i != s) {
-                this->GetFN()[s][i] = firstVector[i];
-                if (i != t) {
-                    this->GetFN()[i][s] = firstVector[i];
-                }
-            }
-            if (secondVector[i].IsExisting() && i != t) {
-                this->GetFN()[t][i] = secondVector[i];
-                if (i != s) {
-                    this->GetFN()[i][t] = secondVector[i];
-                }
+    }
+    // transforms F with RenumerateNodes
+    for (auto &row : this->_F) {
+        for (auto &cell : row) {
+            if (cell == node1) {
+                cell = node2;
+            } else if (cell == node2) {
+                cell = node1;
             }
         }
     }
 }
 
-bool H::IsFNconnected()
-{
-    int nodesInComponent = 0;
-    this->_visitedNodes.resize(this->_FN.size());
-
-    for (auto item : this->_visitedNodes) {
-        item = false;
+void H::RenumerateNodesForGen(const int& node1, const int& node2) {
+    if (node1 == node2) {
+        throw "RenumerateNodes: equal nodes";
     }
-
-    this->DFS(0);
-    for (auto item : this->_visitedNodes) {
-        if (item) {
-            nodesInComponent++;
+    this->RenumerateNodes(node1, node2);
+    for (int i = 0; i < this->GetFN().size(); i++) {
+        for (int j = 0; j < this->GetFN()[i].size(); j++) {
+            Branche branche = this->GetFN()[i][j];
+            if(i < j && branche.IsExisting()) {
+                int firstNode = branche.GetFirstNode(), secondNode = branche.GetSecondNode();
+                if (firstNode == node1) {
+                    this->GetFN()[i][j].SetFirstNode(node2);
+                } else if (firstNode == node2) {
+                    this->GetFN()[i][j].SetFirstNode(node1);
+                }
+                if (secondNode == node1) {
+                    this->GetFN()[i][j].SetSecondNode(node2);
+                } else if (secondNode == node2) {
+                    this->GetFN()[i][j].SetSecondNode(node1);
+                }
+            }
         }
     }
-
-    return nodesInComponent == this->_FN.size();
 }
 
 // Find a chain that does not include checked nodes

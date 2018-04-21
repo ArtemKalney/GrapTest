@@ -4,10 +4,6 @@ FN:
 Branche:
 1 0 0 0 0 0 0 0 0 0 0 0 
 power=1,simple=0
-(0,3)
-Branche:
-1 0 0 0 0 0 0 0 0 0 0 0 
-power=1,simple=0
 (1,2)
 Branche:
 1 0 0 0 0 0 0 0 0 0 0 0 
@@ -32,10 +28,6 @@ power=1,simple=0
 Branche:
 1 0 0 0 0 0 0 0 0 0 0 0 
 power=1,simple=0
-(4,7)
-Branche:
-1 0 0 0 0 0 0 0 0 0 0 0 
-power=1,simple=0
 (5,8)
 Branche:
 1 0 0 0 0 0 0 0 0 0 0 0 
@@ -57,5 +49,5 @@ F:
 4 5 8 
 2 5 
 2 5 8 7 6 
-Real Solution:
-1 11 55 165 330 462 462 330 165 55 11 1 
+Solution:
+9 82 347 904 1617 2093 2010 1443 769 297 79 13 0 

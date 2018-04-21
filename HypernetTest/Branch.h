@@ -93,13 +93,13 @@ public:
         return _isReliable;
     }
 
-    static Branche GetBranch (const int& vectorSize, const int& firstNode, const int& secondNode, const int& power);
+    static Branche GetBranch (const int& firstNode, const int& secondNode, const int& power);
     static Branche GetBranch (const int& vectorSize, const int& power);
-    static Branche GetSimpleBranch (const int& vectorSize, const int& firstNode, const int& secondNode);
-    static Branche GetSimpleBranch (const int& vectorSize);
+    static Branche GetBranch (const int& power);
+    static Branche GetSimpleBranch (const int& firstNode, const int& secondNode);
+    static Branche GetSimpleBranch ();
     static Branche GetZero ();
     static Branche GetUnity ();
-    static void ResizeBranch (Branche& branche);
     static bool EqualNodes (const Branche& firstBranche, const Branche& secondBranche);
     static bool EqualNodes (const Branche& branche, const int& firstNode, const int& secondNode);
     static bool EqualNodes (const int& firstBranchNode, const int& secondBranchNode, const int& firstNode,

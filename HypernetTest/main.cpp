@@ -7,24 +7,6 @@ std::ofstream output;
 int reliable = 0, unconnected = 0, num2 = 0, chr = 0, bridges = 0, pendunt = 0, factors = 0, n = 0, m = 0, k = 0;
 std::vector<Branche> Bin;
 
-std::vector<std::vector<Branche>> GetAdjacencyMatrix(std::vector<Branche>& BranchList, const int& n) {
-    std::vector<std::vector<Branche>> FN(n);
-    for (auto &row : FN) {
-        row.resize(FN.size(), Branche::GetZero());
-    }
-    for (int i = 0; i < FN.size(); i++) {
-        for (int j = 0; j < FN[i].size(); j++) {
-            for (auto &item : BranchList) {
-                if (Branche::EqualNodes(item, i, j)) {
-                    FN[i][j] = item;
-                }
-            }
-        }
-    }
-
-    return FN;
-}
-
 void OutPrintBranche(Branche& branche) {
     if (branche.IsExisting()) {
         output << "Branche:" << std::endl;
@@ -71,46 +53,42 @@ int main() {
     input.getline(str, 50);
     std::cout << "Input graph : " << str << std::endl;
     int buf;
-    input >> buf;
-    n = buf;
-    input >> buf;
-    m = buf;
-    input >> buf;
-    k = buf;
+    input >> buf;n = buf;
+    input >> buf;m = buf;
+    input >> buf;k = buf;
 
     std::vector<Branche> BranchList;
-    // Read all edges from output.txt
+    // Read all branches from output.txt
     for (int i = 0; i < m; i++) {
-        bool simpleEdge = false;
+        bool isSimpleBranch = false;
         input >> buf;
         int firstNode = buf - 1;
         input >> buf;
         int secondNode = buf - 1;
-        auto newEdge = Branche::GetSimpleBranch(m, firstNode, secondNode);
+        Branche newBranch = Branche::GetSimpleBranch(firstNode, secondNode);
         // If edge was recorded, add to it simple
-        for (auto &edge : BranchList) {
-            if (Branche::EqualNodes(edge, newEdge)) {
-                edge.SetSimple(edge.GetSimple() + 1);
-                simpleEdge = true;
+        for (auto &item : BranchList) {
+            if (Branche::EqualNodes(item, newBranch)) {
+                item.SetSimple(item.GetSimple() + 1);
+                isSimpleBranch = true;
             }
         }
-        if (!simpleEdge) {
-            BranchList.push_back(std::move(newEdge));
+        if (!isSimpleBranch) {
+            BranchList.push_back(std::move(newBranch));
         }
     }
     std::vector<std::vector<int>> F;
-    // Read all paths from output.txt
+    // Read all edges from output.txt
     for (int i = 0; i < k; i++) {
-        std::vector<int> path;
+        std::vector<int> edge;
         input >> buf;
         while (buf != 0) {
             int node = buf - 1;
-            path.push_back(node);
+            edge.push_back(node);
             input >> buf;
         }
-        F.push_back(std::move(path));
+        F.push_back(std::move(edge));
     }
-
     // Input should end by $$$
     input >> str;
     if (strcmp(str, "$$$") != 0) {
@@ -119,19 +97,18 @@ int main() {
         return 0;
     }
 
-    /* std::cout << "Press 1 to get APC polynomial" << std::endl;
-     std::cout << "Press 2 to get MENC polynomial" << std::endl;
-     std::cout << "Press 3 to get pairwise connectivities" << std::endl;*/
+    std::cout << "Press 1 to get APC polynomial" << std::endl;
+    std::cout << "Press 2 to get MENC polynomial" << std::endl;
+    std::cout << "Press 3 to get pairwise connectivities" << std::endl;
     int option = 3;
-    /*std::cin >> option;
+    std::cin >> option;
     if (option != 1 && option != 2 && option != 3) {
         std::cout << "Wrong number" << std::endl;
         system("pause>>void");
         return 0;
-    }*/
-
+    }
     // In advance, calculate units of degree from 0 to m
-    Bin.resize(m + 1, Branche::GetSimpleBranch(m + 1));
+    Bin.resize(m + 1, Branche::GetBranch(m + 1, 0));
     for (int i = 0; i < Bin.size(); i++) {
         Bin[i].SetPower(i);
         if (i != 0) {
@@ -140,117 +117,105 @@ int main() {
             }
         }
     }
-
-    // Create an adjacency matrix
-    auto initialHypernet = H(GetAdjacencyMatrix(BranchList, n), F);
+    // Create an initialHypernet
+    H initialHypernet = H(H::GetAdjacencyMatrix(BranchList), F);
+    initialHypernet.RemoveEmptyBranches();
     output << "Input Hypernet:" << std::endl;
     OutPrintHypernet(initialHypernet);
-
-    // In the beginning we consider only connected graphs
+    // In the beginning we consider only connected hypernets
     if (!initialHypernet.IsSNconnected()) {
         std::cout << "Unconnected hypernet on input!" << std::endl;
         return 0;
     }
-
     // Create a pseudo-edge F, which we multiply by the end of the calculations
-    Branche pseudoEdge = Branche::GetBranch(n, 0);
+    Branche pseudoEdge = Branche::GetBranch(0);
     unsigned int startTime = clock();
     double value = 0, p = 0.9, z = 0.1;
-    Branche sum, simpleSum;
+    Branche sum;
 
     try {
         // Computing pairwise connectivities
         if (option == 3) {
-            /*maskApc.resize(initialGraph.size());
-            for (int i = 0; i < maskApc.size(); i++) {
-                maskApc[i].resize(initialGraph[i].size());
-                for (int j = 0; j < maskApc[i].size(); j++)
-                    i != j ? maskApc[i][j] = true : maskApc[i][j] = false;
-            }*/
-
-            /*for (int i = 0; i < initialGraph.size(); i++)
-                for (int j = i + 1; j < initialGraph[i].size(); j++)
-                    if (maskApc[i][j]) {
-                        vector<vector<edge>> H(initialGraph);
-                        // When calculating the pairwise connection, the pivot nodes have numbers 0,1
-                        // in the adjacency matrix
-                        if (i != 0 || j != 1) {
-                            if (i != 0 && j != 1) {
-                                Renumerate(H, i, 0);
-                                Renumerate(H, j, 1);
-                            }
-                            if (i == 0 && j != 1) Renumerate(H, j, 1);
-                            if (i != 0 && j == 1) Renumerate(H, i, 0);
-                        }
-
-                        edge R = PairwiseConnectivity(H, F, true);
-
-                        if(R.power < m)
-                            R = R*Bin[m - R.power];
-                        for (int k = 0; k < R.C.size(); k++)
-                            output << setprecision(15) << R.C[k] << " ";
-                        output << endl;
-                    }*/
-            H testHypernet = initialHypernet;
-            /*sum = PairwiseConnectivity(initialHypernet, pseudoEdge, true);*/
-            // debug
-            simpleSum = SimplePairwiseConnectivity(testHypernet, pseudoEdge);
+           /* H H = initialHypernet;
+            H.RenumerateNodes(1, 8);
+            sum = sum + SimplePairwiseConnectivity(H, pseudoEdge);*/
+            //debug
+            H customHypernet = H(H::GetAdjacencyMatrix(BranchList), F);
+            //customHypernet.RenumerateNodesForGen(1, 4);
+            std::vector<int> brancheMask(m);
+            int startPos = 0;
+            GenCombinations(customHypernet, customHypernet.GetBranchList(), sum, brancheMask, startPos);
         }
-
-/*
-    // Computing APC
-    if (option == 1) {
-        maskApc.resize(initialGraph.size());
-        for (int i = 0; i < maskApc.size(); i++) {
-            maskApc[i].resize(initialGraph[i].size());
-            for (int j = 0; j < maskApc[i].size(); j++)
-                i != j ? maskApc[i][j] = true : maskApc[i][j] = false;
-        }
-
-        vector<int> checkedNodes;
-
-        for (int i = 0; i < initialGraph.size(); i++)
-            for (int j = i + 1; j < initialGraph[i].size(); j++)
-                if (maskApc[i][j]) {
-                    vector<vector<edge>> H(initialGraph);
-                    // When calculating the pairwise connection, the pivot nodes have numbers 0,1
-                    // in the adjacency matrix
+        // Computing APC
+        if (option == 1) {
+            for (int i = 0; i < n; i++) {
+                for (int j = i + 1; j < n; j++) {
+                    /*auto H = initialHypernet;
+                    //When calculating the pairwise connection, the pivot nodes have numbers 0,1 in the adjacency matrix
                     if (i != 0 || j != 1) {
                         if (i != 0 && j != 1) {
-                            Renumerate(H, i, 0);
-                            Renumerate(H, j, 1);
+                            H.RenumerateNodes(i, 0);
+                            H.RenumerateNodes(j, 1);
                         }
-                        if (i == 0 && j != 1) Renumerate(H, j, 1);
-                        if (i != 0 && j == 1) Renumerate(H, i, 0);
+                        if (i == 0 && j != 1) {
+                            H.RenumerateNodes(j, 1);
+                        }
+                        if (i != 0 && j == 1) {
+                            H.RenumerateNodes(i, 0);
+                        }
                     }
-                    sum = sum + PairwiseConnectivity(H, F, true); // H changed
+                    sum = sum + PairwiseConnectivity(H, pseudoEdge);*/
+                    //debug
+                    H customHypernet = H(H::GetAdjacencyMatrix(BranchList), F);
+                    if (i != 0 || j != 1) {
+                        if (i != 0 && j != 1) {
+                            customHypernet.RenumerateNodesForGen(i, 0);
+                            customHypernet.RenumerateNodesForGen(j, 1);
+                        }
+                        if (i == 0 && j != 1) {
+                            customHypernet.RenumerateNodesForGen(j, 1);
+                        }
+                        if (i != 0 && j == 1) {
+                            customHypernet.RenumerateNodesForGen(i, 0);
+                        }
+                    }
+                    std::vector<int> brancheMask(m);
+                    int startPos = 0;
+                    GenCombinations(customHypernet, customHypernet.GetBranchList(), sum, brancheMask, startPos);
+
+                    std::cout << "+R" << i + 1 << j + 1 << std::endl;
                 }
-
-        for (int i = 0; i < sum.C.size(); i++)
-            sum.C[i] = sum.C[i] / Bin[initialGraph.size()].C[2];
-    }
-
-    // Computing MENC
-    if (option == 2) {
-        maskMenc.resize(initialGraph.size());
-        for (int i = 0; i < maskMenc.size(); i++)
-            i == 0 ? maskMenc[i] = false : maskMenc[i] = true;
-
-        vector<int> weight(initialGraph.size());
-        for (int i = 0; i < weight.size(); i++) weight[i] = 1;
-
-        for (int i = 0; i < initialGraph.size(); i++)
-            if (maskMenc[i]) {
-                vector<vector<edge>> H(initialGraph);
-                // When calculating the pairwise connection, the pivot nodes have numbers 0,1
-                // in the adjacency matrix
-                if (i != 1) Renumerate(H, i, 1);
-                sum = sum + PairwiseConnectivity(H, F, true);
             }
 
-        sum = sum + Bin.front();
-    }
-*/
+            for (int i = 0; i < sum.GetC().size(); i++) {
+                auto sumVector = sum.GetC();
+                sumVector[i] = sumVector[i] / Bin[n].GetC()[2];
+                sum.SetC(sumVector);
+            }
+        }
+        // Computing MENC
+        if (option == 2) {
+            for (int i = 1; i < n; i++) {
+                /*auto H = initialHypernet;
+                // When calculating the pairwise connection, the pivot nodes have numbers 0,1 in the adjacency matrix
+                if (i != 1) {
+                    H.RenumerateNodes(i, 1);
+                }
+                sum = sum + PairwiseConnectivity(H, pseudoEdge);*/
+                //debug
+                H customHypernet = H(H::GetAdjacencyMatrix(BranchList), F);
+                if (i != 1) {
+                    customHypernet.RenumerateNodesForGen(i, 1);
+                }
+                std::vector<int> brancheMask(m);
+                int startPos = 0;
+                GenCombinations(customHypernet, customHypernet.GetBranchList(), sum, brancheMask, startPos);
+
+                std::cout << "+R1" << i + 1 << std::endl;
+            }
+
+            sum = sum + Branche::GetUnity();
+        }
     }
     catch (const char *str) {
         std::cout << "--------------------------------" << std::endl;
@@ -273,6 +238,7 @@ int main() {
     std::cout << " 2-nodes graphs " << num2 << std::endl;
     std::cout << "Solution:" << std::endl;
     if (sum.IsExisting()) {
+        sum.GetC().resize(m + 1);
         if (sum.GetPower() < m) {
             sum = sum * Bin[m - sum.GetPower()];
         }
@@ -289,17 +255,6 @@ int main() {
         output << std::endl;
     } else {
         std::cout << "no sum :(" << std::endl;
-    }
-    // debug
-    if (simpleSum.IsExisting()) {
-        if (simpleSum.GetPower() < m) {
-            simpleSum = simpleSum * Bin[m - simpleSum.GetPower()];
-        }
-        output << "Real Solution:" << std::endl;
-        for (auto &item : simpleSum.GetC()) {
-            output << std::setprecision(15) << item << " ";
-        }
-        output << std::endl;
     }
 
     input.close();
