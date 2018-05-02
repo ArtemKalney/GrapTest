@@ -88,10 +88,10 @@ bool BridgeReduction(H& H)
 
 void PenduntReduction(H& H, Branche& pseudoBranch, std::vector<int>& forbiddenNodes)
 {
-    auto nodePowers = H.GetNodePowers();
+    auto nodePowers = H::GetNodePowers(H.GetFN());
     auto FN = H.GetFN();
 
-    int penduntNode = FN.size();
+    int penduntNode = FN.size() - 1;
     for (int i = 0; i < nodePowers.size(); i++) {
         bool isForbidden = std::find(forbiddenNodes.begin(), forbiddenNodes.end(), i) != forbiddenNodes.end();
         if (nodePowers[i] == 1 && i != 0 && i != 1 && !isForbidden) {
@@ -99,12 +99,23 @@ void PenduntReduction(H& H, Branche& pseudoBranch, std::vector<int>& forbiddenNo
         }
     }
 
-    if (nodePowers[penduntNode] == 1 && FN.size() > 2) {
-        pendunt++;
+    bool isForbidden = std::find(forbiddenNodes.begin(), forbiddenNodes.end(), penduntNode) != forbiddenNodes.end();
+    if (nodePowers[penduntNode] == 1 && FN.size() > 2 && !isForbidden) {
         auto HwithRemovedNode = H;
         HwithRemovedNode.RemoveNode(penduntNode);
         if (HwithRemovedNode.IsSNconnected()) {
-            H.RemoveNode(penduntNode);
+            auto nodeMask = H.GetNodeMask();
+            if (!nodeMask[penduntNode]){
+                pendunt++;
+                H.RemoveNode(penduntNode);
+                for (auto &item : forbiddenNodes) {
+                    if (penduntNode < item) {
+                        item--;
+                    }
+                }
+            } else {
+                forbiddenNodes.push_back(penduntNode);
+            }
         } else {
             forbiddenNodes.push_back(penduntNode);
         }
@@ -198,14 +209,14 @@ Branche PairwiseConnectivity(H& H, Branche& pseudoBranch) {
 
     if (!HwithRemovedBranch.IsSNconnected()) {
         unconnected++;
-        if (HwithReliableBranch.hasReliablePath()) {
+        if (HwithReliableBranch.HasReliablePath()) {
             reliable++;
             return pseudoBranch1 * Branche::GetUnity();
         } else {
             return PairwiseConnectivity(HwithReliableBranch, pseudoBranch1);
         }
     } else {
-        if (HwithReliableBranch.hasReliablePath()) {
+        if (HwithReliableBranch.HasReliablePath()) {
             reliable++;
             return pseudoBranch1 * Branche::GetUnity() + PairwiseConnectivity(HwithRemovedBranch, pseudoBranch2);
         } else {
@@ -217,17 +228,7 @@ Branche PairwiseConnectivity(H& H, Branche& pseudoBranch) {
 // debug
 void GenCombinations(const H& H, const std::vector<Branche>& branchList, Branche& sum, std::vector<int>& brancheMask,
                      int& curPos){
-    if (m == curPos) {
-        /*int count = 0;
-        for (auto &item : brancheMask) {
-            if (item == 1) {
-                count++;
-            }
-        }
-        if (count == 1){
-            throw "GenCombinations: what we need";
-        }*/
-
+    if (curPos == branchList.size()) {
         auto hypernet = H;
         for (int i = 0; i < brancheMask.size(); i++) {
             Branche branche = branchList[i];
@@ -251,7 +252,7 @@ void GenCombinations(const H& H, const std::vector<Branche>& branchList, Branche
                 }
             }
 
-            if (result.GetPower() != m) {
+            if (result.GetPower() != branchList.size()) {
                 throw "GenCombinations: strange result power";
             }
             sum = sum + result;
@@ -294,14 +295,14 @@ Branche SimplePairwiseConnectivity(H& H, Branche& pseudoBranch) {
 
     if (!HwithRemovedBranch.IsSNconnected()) {
         unconnected++;
-        if (HwithReliableBranch.hasReliablePath()) {
+        if (HwithReliableBranch.HasReliablePath()) {
             reliable++;
             return pseudoBranch1*Branche::GetUnity();
         } else {
             return SimplePairwiseConnectivity(HwithReliableBranch, pseudoBranch1);
         }
     } else {
-        if (HwithReliableBranch.hasReliablePath()) {
+        if (HwithReliableBranch.HasReliablePath()) {
             reliable++;
             return pseudoBranch1*Branche::GetUnity() + SimplePairwiseConnectivity(HwithRemovedBranch, pseudoBranch2);
         } else {

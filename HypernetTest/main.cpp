@@ -57,7 +57,7 @@ int main() {
     input >> buf;m = buf;
     input >> buf;k = buf;
 
-    std::vector<Branche> BranchList;
+    std::vector<Branche> branchList;
     // Read all branches from output.txt
     for (int i = 0; i < m; i++) {
         bool isSimpleBranch = false;
@@ -67,14 +67,14 @@ int main() {
         int secondNode = buf - 1;
         Branche newBranch = Branche::GetSimpleBranch(firstNode, secondNode);
         // If edge was recorded, add to it simple
-        for (auto &item : BranchList) {
+        for (auto &item : branchList) {
             if (Branche::EqualNodes(item, newBranch)) {
                 item.SetSimple(item.GetSimple() + 1);
                 isSimpleBranch = true;
             }
         }
         if (!isSimpleBranch) {
-            BranchList.push_back(std::move(newBranch));
+            branchList.push_back(std::move(newBranch));
         }
     }
     std::vector<std::vector<int>> F;
@@ -118,7 +118,7 @@ int main() {
         }
     }
     // Create an initialHypernet
-    H initialHypernet = H(H::GetAdjacencyMatrix(BranchList), F);
+    H initialHypernet = H(H::GetAdjacencyMatrix(branchList), F);
     initialHypernet.RemoveEmptyBranches();
     output << "Input Hypernet:" << std::endl;
     OutPrintHypernet(initialHypernet);
@@ -137,16 +137,17 @@ int main() {
         // Computing pairwise connectivities
         if (option == 3) {
             H H = initialHypernet;
-            H.RenumerateNodes(1, 0);
-            H.RenumerateNodes(2, 1);
+            //H.RenumerateNodes(1, 0);
+            //H.RenumerateNodes(4, 1);
             sum = sum + PairwiseConnectivity(H, pseudoEdge);
             //debug
-           /* H customHypernet = H(H::GetAdjacencyMatrix(BranchList), F);
-            customHypernet.RenumerateNodesForGen(1, 0);
-            customHypernet.RenumerateNodesForGen(2, 1);
-            std::vector<int> brancheMask(m);
+           /* auto customHypernet = initialHypernet;
+            //customHypernet.RenumerateNodesForGen(1, 0);
+            //customHypernet.RenumerateNodesForGen(8, 1);
+            auto branchListForGen = customHypernet.GetBranchList();
+            std::vector<int> brancheMask(branchListForGen.size());
             int startPos = 0;
-            GenCombinations(customHypernet, customHypernet.GetBranchList(), sum, brancheMask, startPos);*/
+            GenCombinations(customHypernet, branchListForGen, sum, brancheMask, startPos);*/
         }
         // Computing APC
         if (option == 1) {
@@ -166,9 +167,15 @@ int main() {
                             H.RenumerateNodes(i, 0);
                         }
                     }
-                    sum = sum + PairwiseConnectivity(H, pseudoEdge);
+                    Branche result = PairwiseConnectivity(H, pseudoEdge);
+                    if (result.IsExisting()) {
+                        sum = sum + result;
+                    } else {
+                        throw "PairwiseConnectivity: empty result";
+                    }
+                    //sum = sum + PairwiseConnectivity(H, pseudoEdge);
                     //debug
-                   /* H customHypernet = H(H::GetAdjacencyMatrix(BranchList), F);
+                   /* auto customHypernet = initialHypernet;
                     if (i != 0 || j != 1) {
                         if (i != 0 && j != 1) {
                             customHypernet.RenumerateNodesForGen(i, 0);
@@ -181,11 +188,12 @@ int main() {
                             customHypernet.RenumerateNodesForGen(i, 0);
                         }
                     }
-                    std::vector<int> brancheMask(m);
+                    auto branchListForGen = customHypernet.GetBranchList();
+                    std::vector<int> brancheMask(branchListForGen.size());
                     int startPos = 0;
-                    GenCombinations(customHypernet, customHypernet.GetBranchList(), sum, brancheMask, startPos);*/
+                    GenCombinations(customHypernet, branchListForGen, sum, brancheMask, startPos);*/
 
-                    std::cout << "+R" << i + 1 << j + 1 << std::endl;
+                    //std::cout << "+R" << i + 1 << j + 1 << std::endl;
                 }
             }
 
@@ -203,17 +211,24 @@ int main() {
                 if (i != 1) {
                     H.RenumerateNodes(i, 1);
                 }
-                sum = sum + PairwiseConnectivity(H, pseudoEdge);
+                Branche result = PairwiseConnectivity(H, pseudoEdge);
+                if (result.IsExisting()) {
+                    sum = sum + result;
+                } else {
+                    throw "PairwiseConnectivity: empty result";
+                }
+                //sum = sum + PairwiseConnectivity(H, pseudoEdge);
                 //debug
-                /*H customHypernet = H(H::GetAdjacencyMatrix(BranchList), F);
+                /*auto customHypernet = initialHypernet;
                 if (i != 1) {
                     customHypernet.RenumerateNodesForGen(i, 1);
                 }
-                std::vector<int> brancheMask(m);
+                auto branchListForGen = customHypernet.GetBranchList();
+                std::vector<int> brancheMask(branchListForGen.size());
                 int startPos = 0;
-                GenCombinations(customHypernet, customHypernet.GetBranchList(), sum, brancheMask, startPos);*/
+                GenCombinations(customHypernet, branchListForGen, sum, brancheMask, startPos);*/
 
-                std::cout << "+R1" << i + 1 << std::endl;
+                //std::cout << "+R1" << i + 1 << std::endl;
             }
 
             sum = sum + Branche::GetUnity();

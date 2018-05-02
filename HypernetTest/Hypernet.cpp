@@ -26,13 +26,137 @@ bool H::EqualEdgeNodes(const std::vector<int>& edge, const int& firstNode, const
     return sameNodes || reversedNodes;
 }
 
-void H::DFS(const int& node, std::vector<bool>& visitedNodes, const std::vector<std::vector<Branche>>& FN) {
+void H::DFS(const int& node, std::vector<bool>& visitedNodes, const std::vector<std::vector<Branche>>& graph) {
     visitedNodes[node] = true;
-    for (int i = 0; i < FN[node].size(); i++) {
-        if (FN[node][i].IsExisting() && !visitedNodes[i]) {
-            DFS(i, visitedNodes, FN);
+    for (int i = 0; i < graph[node].size(); i++) {
+        if (graph[node][i].IsExisting() && !visitedNodes[i]) {
+            DFS(i, visitedNodes, graph);
         }
     }
+}
+
+std::vector<int> H::GetNodePowers(const std::vector<std::vector<Branche>>& graph) {
+    std::vector<int> nodePowers(graph.size());
+    for (int i = 0; i < graph.size(); i++) {
+        for (auto &item : graph[i]) {
+            if (item.IsExisting()) {
+                nodePowers[i]++;
+            }
+        }
+    }
+
+    return nodePowers;
+}
+
+void H::GetPaths(const int &node, std::vector<bool>& visitedNodes, std::vector<bool>& consideredNodes, std::vector<bool>& nodeMask,
+                 const std::vector<std::vector<Branche>>& graph) {
+    visitedNodes[node] = true;
+    for (int i = 0; i < graph[node].size(); i++) {
+        if (graph[node][i].IsExisting() && !consideredNodes[i]) {
+            //наращивание цепи происходит только для не целевых вершин и не для посещённых
+            if (i != 0 && i != 1 && !visitedNodes[i]) {
+                bool canBranch = false;
+                for (int j = 0; j < graph[i].size(); j++) {
+                    Branche edge = graph[i][j];
+                    if (edge.IsExisting() && !Branche::EqualNodes(edge, node, i) && !consideredNodes[j]) {
+                        canBranch = true;
+                        break;
+                    }
+                }
+                auto nodePowers = H::GetNodePowers(graph);
+                if (nodePowers[i] != 1 && canBranch) {
+                    GetPaths(i, visitedNodes, consideredNodes, nodeMask, graph);
+                }
+                else {
+                    visitedNodes[i] = true;
+                    //TODO удаление висячих вершин и добавление в consideredNodes
+                    consideredNodes[i] = true;
+                    auto grapthWithRemovedNodes = graph;
+                    bool canAddNode = true;
+                    int currentNode = i;
+                    while (canAddNode) {
+                        for (int j = 0; j < grapthWithRemovedNodes[currentNode].size(); j++) {
+                            int incidentNode = j;
+                            Branche edge = grapthWithRemovedNodes[currentNode][incidentNode];
+                            if (edge.IsExisting()) {
+                                /*преобразования nodePowers при удалении currentNode*/
+                                nodePowers[incidentNode]--;
+                                /*преобразования graph при удалении currentNode*/
+                                for (auto &item : grapthWithRemovedNodes[currentNode]) {
+                                    item = Branche::GetZero();
+                                }
+                                for (auto &row : grapthWithRemovedNodes) {
+                                    row[currentNode] = Branche::GetZero();
+                                }
+                                if (nodePowers[incidentNode] == 1 && incidentNode != 0 && incidentNode != 1) {
+                                    currentNode = incidentNode;
+                                    consideredNodes[incidentNode] = true;
+                                } else {
+                                    canAddNode = false;
+                                    break;
+                                }
+                            }
+                        }
+                    }
+                    //не получается использовать range-based loop
+                    for (int j = 0; j < visitedNodes.size(); j++) {
+                        visitedNodes[j] = false;
+                    }
+                }
+            } else if (i == 0 || i == 1) {
+                //TODO уже посещённый i и это не "возвращение назад" приводит к окончанию
+                /*int pivoteNode = (i == 0) ? 1 : 0;
+                if (visitedNodes[i] && visitedNodes.size() > 2 && visitedNodes[pivoteNode]) {
+                    throw "уже посещённый i и это не \"возвращение назад\" приводит к окончанию";
+                    for (int j = 0; j < visitedNodes.size(); j++) {
+                        bool isVisitedNode = visitedNodes[j];
+                        if (isVisitedNode) {
+                            if (j != 0 && j != 1) {
+                                consideredNodes[j] = isVisitedNode;
+                            }
+                        }
+                    }
+                    //не получается использовать range-based loop
+                    for (int j = 0; j < visitedNodes.size(); j++) {
+                        visitedNodes[j] = false;
+                    }
+                } else {
+                    visitedNodes[i] = true;
+                }*/
+                visitedNodes[i] = true;
+                //nodeMask меняем только для цепей из 0 в 1
+                if (visitedNodes[0] && visitedNodes[1]) {
+                    for (int j = 0; j < nodeMask.size(); j++) {
+                        bool isVisitedNode = visitedNodes[j];
+                        if (isVisitedNode) {
+                            nodeMask[j] = isVisitedNode;
+                            if (j != 0 && j != 1) {
+                                consideredNodes[j] = isVisitedNode;
+                            }
+                        }
+                    }
+                    //не получается использовать range-based loop
+                    for (int j = 0; j < visitedNodes.size(); j++) {
+                        visitedNodes[j] = false;
+                    }
+                }
+            }
+        }
+    }
+}
+
+std::vector<bool> H::GetNodeMask() {
+    auto SN = this->GetSN();
+    std::vector<bool> nodeMask(SN.size(), false);
+    std::vector<bool> visitedNodes(SN.size(), false);
+    std::vector<bool> consideredNodes(SN.size(), false);
+    H::GetPaths(0, visitedNodes, consideredNodes, nodeMask, SN);
+    //не получается использовать range-based loop
+    for (int j = 0; j < visitedNodes.size(); j++) {
+        visitedNodes[j] = false;
+    }
+    H::GetPaths(1, visitedNodes, consideredNodes, nodeMask, SN);
+    return nodeMask;
 }
 
 void H::PrintHypernet() {
@@ -60,17 +184,6 @@ std::vector<std::vector<Branche>> H::GetSN() {
         Branche newEdge = Branche::GetUnity();
         newEdge.SetFirstNode(row.front());
         newEdge.SetSecondNode(row.back());
-        bool isReliableEdge = true;
-        int prevCell = row.front();
-        for (auto &cell : row) {
-            //запрещает наличие петель
-            if (!this->GetFN()[cell][prevCell].GetIsReliable() && prevCell != cell) {
-                isReliableEdge = false;
-                break;
-            }
-            prevCell = cell;
-        }
-        newEdge.SetIsReliable(isReliableEdge);
 
         bool isSimpleBranch = false;
         for (auto &item : EdgeList) {
@@ -196,7 +309,7 @@ void H::MakeReliableBranch(const int& node1, const int& node2) {
     this->GetFN()[node1][node2].SetIsReliable(true);
 }
 
-bool H::hasReliablePath() {
+bool H::HasReliablePath() {
     auto HwithRemovedBranches = *this;
     auto FN = this->GetFN();
     for (int i = 0; i < FN.size(); i++) {
@@ -214,19 +327,6 @@ bool H::hasReliablePath() {
     H::DFS(0, visitedNodes, SN);
 
     return visitedNodes[0] && visitedNodes[1];
-}
-
-std::vector<int> H::GetNodePowers() {
-    std::vector<int> nodePowers(this->_FN.size());
-    for (int i = 0; i < this->_FN.size(); i++) {
-        for (auto &item : this->_FN[i]) {
-            if (item.IsExisting()) {
-                nodePowers[i]++;
-            }
-        }
-    }
-
-    return nodePowers;
 }
 
 void H::RenumerateNodes(const int& node1, const int& node2) {
@@ -308,7 +408,7 @@ void H::RenumerateNodesForGen(const int& node1, const int& node2) {
 // Find a chain that does not include checked nodes
 std::vector<int> H::GetChain()
 {
-    auto nodePowers = this->GetNodePowers();
+    auto nodePowers = H::GetNodePowers(this->GetFN());
     std::vector<int> chain;
 
     // Initializing a chain by an edge where there is a node of degree 2
