@@ -1,7 +1,6 @@
 #include "stdafx.h"
 #include "funcs.h"
 #include "globals.h"
-
 // Chain replacement by edge
 void ChainReduction(H& H)
 {
@@ -41,7 +40,6 @@ void ChainReduction(H& H)
         return ChainReduction(H);
     }
 }
-
 // Removes the connectivity component, where both pivot nodes do not lie and returns true,
 //if the pivot nodes in different components, then returns false
 bool BridgeReduction(H& H)
@@ -86,44 +84,64 @@ bool BridgeReduction(H& H)
     }
 }
 
-void PenduntReduction(H& H, Branche& pseudoBranch, std::vector<int>& forbiddenNodes)
+void PenduntReduction(H& H, std::vector<int>& forbiddenNodes)
 {
     auto nodePowers = H::GetNodePowers(H.GetFN());
-    auto FN = H.GetFN();
-
-    int penduntNode = FN.size() - 1;
-    for (int i = 0; i < nodePowers.size(); i++) {
+    int penduntNode = 0;
+    for (int i = nodePowers.size() - 1; i > 1; i--) {
         bool isForbidden = std::find(forbiddenNodes.begin(), forbiddenNodes.end(), i) != forbiddenNodes.end();
-        if (nodePowers[i] == 1 && i != 0 && i != 1 && !isForbidden) {
+        if (nodePowers[i] == 1 && !isForbidden) {
             penduntNode = i;
+            break;
         }
     }
 
-    bool isForbidden = std::find(forbiddenNodes.begin(), forbiddenNodes.end(), penduntNode) != forbiddenNodes.end();
-    if (nodePowers[penduntNode] == 1 && FN.size() > 2 && !isForbidden) {
-        auto HwithRemovedNode = H;
+    if (nodePowers[penduntNode] == 1 && penduntNode != 0 && penduntNode != 1) {
+       /* auto HwithRemovedNode = H;
         HwithRemovedNode.RemoveNode(penduntNode);
+        //проверка что удаляемая вершина лежит в компоненте связности где 0 и 1, иначе прост удаляем
         if (HwithRemovedNode.IsSNconnected()) {
-            auto nodeMask = H.GetNodeMask();
-            if (!nodeMask[penduntNode]){
-                pendunt++;
-                H.RemoveNode(penduntNode);
-                for (auto &item : forbiddenNodes) {
-                    if (penduntNode < item) {
-                        item--;
-                    }
+            pendunt++;
+            H.RemoveNode(penduntNode);
+            for (auto &item : forbiddenNodes) {
+                if (penduntNode < item) {
+                    item--;
                 }
-            } else {
-                forbiddenNodes.push_back(penduntNode);
+            }
+        } else {
+            forbiddenNodes.push_back(penduntNode);
+        }*/
+
+       /* auto SN = H.GetSN();
+        auto SNnodePowers = H::GetNodePowers(SN);
+        if (SNnodePowers[penduntNode] == 1) {
+            pendunt++;
+            H.RemoveNode(penduntNode);
+            for (auto &item : forbiddenNodes) {
+                if (penduntNode < item) {
+                    item--;
+                }
+            }
+        } else {
+            forbiddenNodes.push_back(penduntNode);
+        }*/
+
+        bool can = H.CanDeletePenduntNode(penduntNode);
+        if (can) {
+            pendunt++;
+            H.RemoveNode(penduntNode);
+            for (auto &item : forbiddenNodes) {
+                if (penduntNode < item) {
+                    item--;
+                }
             }
         } else {
             forbiddenNodes.push_back(penduntNode);
         }
 
-        PenduntReduction(H, pseudoBranch, forbiddenNodes);
+        PenduntReduction(H, forbiddenNodes);
     }
 }
-
 // Obtain a allowing Branche of minimal degree, from the end of the numbering
 Branche GetAllowingBranch(H& H)
 {
@@ -171,7 +189,7 @@ Branche PairwiseConnectivity(H& H, Branche& pseudoBranch) {
     }
 
     std::vector<int> forbiddenNodes;
-    PenduntReduction(H, pseudoBranch, forbiddenNodes);
+    PenduntReduction(H, forbiddenNodes);
     /*ChainReduction(H);*/
     if (H.GetFN().size() < MAX_DIMENSIONAL) {
         return SimpleCase(H.GetFN(), pseudoBranch);

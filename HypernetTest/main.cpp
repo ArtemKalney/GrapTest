@@ -118,7 +118,7 @@ int main() {
         }
     }
     // Create an initialHypernet
-    H initialHypernet = H(H::GetAdjacencyMatrix(branchList), F);
+    H initialHypernet = H(H::GetAdjacencyMatrix(branchList, n), F);
     initialHypernet.RemoveEmptyBranches();
     output << "Input Hypernet:" << std::endl;
     OutPrintHypernet(initialHypernet);
@@ -137,8 +137,8 @@ int main() {
         // Computing pairwise connectivities
         if (option == 3) {
             H H = initialHypernet;
-            //H.RenumerateNodes(1, 0);
-            //H.RenumerateNodes(4, 1);
+            //H.RenumerateNodes(5, 0);
+            H.RenumerateNodes(7, 1);
             sum = sum + PairwiseConnectivity(H, pseudoEdge);
             //debug
            /* auto customHypernet = initialHypernet;
@@ -173,9 +173,8 @@ int main() {
                     } else {
                         throw "PairwiseConnectivity: empty result";
                     }
-                    //sum = sum + PairwiseConnectivity(H, pseudoEdge);
                     //debug
-                   /* auto customHypernet = initialHypernet;
+                    /*auto customHypernet = initialHypernet;
                     if (i != 0 || j != 1) {
                         if (i != 0 && j != 1) {
                             customHypernet.RenumerateNodesForGen(i, 0);
@@ -217,7 +216,6 @@ int main() {
                 } else {
                     throw "PairwiseConnectivity: empty result";
                 }
-                //sum = sum + PairwiseConnectivity(H, pseudoEdge);
                 //debug
                 /*auto customHypernet = initialHypernet;
                 if (i != 1) {
