@@ -98,12 +98,12 @@ bool Branche::IsUnity() {
 }
 
 void Branche::PrintBranche() {
-    if (this->IsExisting()) {
+    if (IsExisting()) {
         std::cout << "Branche:" << std::endl;
-        for (auto &item : this->_C) {
+        for (auto &item : _C) {
             std::cout << item << " ";
         }
-        std::cout << std::endl << "power=" << this->_power << ",simple=" << this->_simple << std::endl;
+        std::cout << std::endl << "power=" << _power << ",simple=" << _simple << std::endl;
     }
     else {
         std::cout << "empty edge" << std::endl;
@@ -111,7 +111,7 @@ void Branche::PrintBranche() {
 }
 
 bool Branche::IsSimpleBranch() {
-    return this->_power == 1 && this->_simple == 0;
+    return _power == 1 && _simple == 0;
 }
 /* * The following rules for calculations:
  * 0 <=> edge.C.empty() = true
