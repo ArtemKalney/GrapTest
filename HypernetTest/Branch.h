@@ -1,6 +1,6 @@
 #pragma once
 
-#include "stdafx.h"
+#include "Stdafx.h"
 
 class Branche
 {
@@ -106,7 +106,6 @@ public:
                             const int& secondNode);
     static void ParallelReduction(Branche& branche);
     static bool IsUnacceptableBranche(Branche& branche);
-
     bool IsExisting() const;
     bool IsUnity();
     void PrintBranche();

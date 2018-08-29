@@ -1,10 +1,12 @@
-#include "funcs.h"
-#include "globals.h"
+#include "Funcs.h"
+#include "Globals.h"
 
 std::ifstream input("input.txt");
 std::ofstream output;
 
-int reliable = 0, unconnected = 0, num2 = 0, chr = 0, bridges = 0, pendunt = 0, factors = 0, n = 0, m = 0, k = 0;
+int n = 0, m = 0, k = 0;
+int ReliableHypernetsCount = 0, UnconnectedHypernentsCount = 0, TwoNodesHypernetsCount = 0, ChainsReduced = 0,
+        UnconnectedNodesReduced = 0, PairConnectivityCalls = 0, EdgesReduced = 0;
 std::vector<Branche> Bin;
 
 void OutPrintBranche(Branche& branche) {
@@ -71,6 +73,7 @@ int main() {
             if (Branche::EqualNodes(item, newBranch)) {
                 item.SetSimple(item.GetSimple() + 1);
                 isSimpleBranch = true;
+                break;
             }
         }
         if (!isSimpleBranch) {
@@ -87,6 +90,7 @@ int main() {
             edge.push_back(node);
             input >> buf;
         }
+
         F.push_back(std::move(edge));
     }
     // Input should end by $$$
@@ -100,7 +104,7 @@ int main() {
     std::cout << "Press 1 to get APC polynomial" << std::endl;
     std::cout << "Press 2 to get MENC polynomial" << std::endl;
     std::cout << "Press 3 to get pairwise connectivities" << std::endl;
-    int option = 3;
+    int option;
     std::cin >> option;
     if (option != 1 && option != 2 && option != 3) {
         std::cout << "Wrong number" << std::endl;
@@ -137,13 +141,16 @@ int main() {
         // Computing pairwise connectivities
         if (option == 3) {
             H H = initialHypernet;
-            //H.RenumerateNodes(5, 0);
-            H.RenumerateNodes(7, 1);
-            sum = sum + PairwiseConnectivity(H, pseudoEdge);
+            //H.RenumerateNodes(2, 0);
+            //H.RenumerateNodes(2, 1);
+            if (H.IsSNconnected()) {
+                auto result = PairConnectivity(H, pseudoEdge);
+                sum = sum + result;
+            }
             //debug
-           /* auto customHypernet = initialHypernet;
-            //customHypernet.RenumerateNodesForGen(1, 0);
-            //customHypernet.RenumerateNodesForGen(8, 1);
+            /*auto customHypernet = initialHypernet;
+            //customHypernet.RenumerateNodesForGen(2, 0);
+            customHypernet.RenumerateNodesForGen(2, 1);
             auto branchListForGen = customHypernet.GetBranchList();
             std::vector<int> brancheMask(branchListForGen.size());
             int startPos = 0;
@@ -167,11 +174,8 @@ int main() {
                             H.RenumerateNodes(i, 0);
                         }
                     }
-                    Branche result = PairwiseConnectivity(H, pseudoEdge);
-                    if (result.IsExisting()) {
-                        sum = sum + result;
-                    } else {
-                        throw "PairwiseConnectivity: empty result";
+                    if (H.IsSNconnected()) {
+                        sum = sum + PairConnectivity(H, pseudoEdge);
                     }
                     //debug
                     /*auto customHypernet = initialHypernet;
@@ -210,14 +214,12 @@ int main() {
                 if (i != 1) {
                     H.RenumerateNodes(i, 1);
                 }
-                Branche result = PairwiseConnectivity(H, pseudoEdge);
-                if (result.IsExisting()) {
+                if (H.IsSNconnected()) {
+                    auto result = PairConnectivity(H, pseudoEdge);
                     sum = sum + result;
-                } else {
-                    throw "PairwiseConnectivity: empty result";
                 }
                 //debug
-                /*auto customHypernet = initialHypernet;
+               /* auto customHypernet = initialHypernet;
                 if (i != 1) {
                     customHypernet.RenumerateNodesForGen(i, 1);
                 }
@@ -230,6 +232,7 @@ int main() {
             }
 
             sum = sum + Branche::GetUnity();
+            sum.GetC().resize(m + 1, 1);
         }
     }
     catch (const char *str) {
@@ -242,15 +245,15 @@ int main() {
     unsigned int endTime = clock();
     int searchTime = endTime - startTime;
     std::cout << "Time of programm " << searchTime << " msec" << std::endl;
-    std::cout << "Call prosedure " << factors << std::endl;
+    std::cout << "PairConnectivityCalls " << PairConnectivityCalls << std::endl;
     std::cout << "Reductions : " << std::endl;
-    std::cout << " bridge reductions " << bridges << std::endl;
-    std::cout << " pendunt reductions " << pendunt << std::endl;
-    std::cout << " chains reduced " << chr << std::endl;
-    std::cout << "Were ends of recursion : " << reliable + unconnected + num2 << std::endl;
-    std::cout << " reliable graphs " << reliable << std::endl;
-    std::cout << " unconnected graphs " << unconnected << std::endl;
-    std::cout << " 2-nodes graphs " << num2 << std::endl;
+    std::cout << " UnconnectedNodesReduced " << UnconnectedNodesReduced << std::endl;
+    std::cout << " EdgesReduced " << EdgesReduced << std::endl;
+    std::cout << " ChainsReduced " << ChainsReduced << std::endl;
+    std::cout << "Were ends of recursion : " << ReliableHypernetsCount + UnconnectedHypernentsCount + TwoNodesHypernetsCount << std::endl;
+    std::cout << " ReliableHypernetsCount " << ReliableHypernetsCount << std::endl;
+    std::cout << " UnconnectedHypernentsCount " << UnconnectedHypernentsCount << std::endl;
+    std::cout << " TwoNodesHypernetsCount " << TwoNodesHypernetsCount << std::endl;
     std::cout << "Solution:" << std::endl;
     if (sum.IsExisting()) {
         sum.GetC().resize(m + 1);

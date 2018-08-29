@@ -149,6 +149,33 @@ Branch.cpp.s:
 	$(MAKE) -f CMakeFiles\HyperNetTest.dir\build.make CMakeFiles/HyperNetTest.dir/Branch.cpp.s
 .PHONY : Branch.cpp.s
 
+GenCombinations.obj: GenCombinations.cpp.obj
+
+.PHONY : GenCombinations.obj
+
+# target to build an object file
+GenCombinations.cpp.obj:
+	$(MAKE) -f CMakeFiles\HyperNetTest.dir\build.make CMakeFiles/HyperNetTest.dir/GenCombinations.cpp.obj
+.PHONY : GenCombinations.cpp.obj
+
+GenCombinations.i: GenCombinations.cpp.i
+
+.PHONY : GenCombinations.i
+
+# target to preprocess a source file
+GenCombinations.cpp.i:
+	$(MAKE) -f CMakeFiles\HyperNetTest.dir\build.make CMakeFiles/HyperNetTest.dir/GenCombinations.cpp.i
+.PHONY : GenCombinations.cpp.i
+
+GenCombinations.s: GenCombinations.cpp.s
+
+.PHONY : GenCombinations.s
+
+# target to generate assembly for a file
+GenCombinations.cpp.s:
+	$(MAKE) -f CMakeFiles\HyperNetTest.dir\build.make CMakeFiles/HyperNetTest.dir/GenCombinations.cpp.s
+.PHONY : GenCombinations.cpp.s
+
 Hypernet.obj: Hypernet.cpp.obj
 
 .PHONY : Hypernet.obj
@@ -176,59 +203,59 @@ Hypernet.cpp.s:
 	$(MAKE) -f CMakeFiles\HyperNetTest.dir\build.make CMakeFiles/HyperNetTest.dir/Hypernet.cpp.s
 .PHONY : Hypernet.cpp.s
 
-main.obj: main.cpp.obj
+Main.obj: Main.cpp.obj
 
-.PHONY : main.obj
-
-# target to build an object file
-main.cpp.obj:
-	$(MAKE) -f CMakeFiles\HyperNetTest.dir\build.make CMakeFiles/HyperNetTest.dir/main.cpp.obj
-.PHONY : main.cpp.obj
-
-main.i: main.cpp.i
-
-.PHONY : main.i
-
-# target to preprocess a source file
-main.cpp.i:
-	$(MAKE) -f CMakeFiles\HyperNetTest.dir\build.make CMakeFiles/HyperNetTest.dir/main.cpp.i
-.PHONY : main.cpp.i
-
-main.s: main.cpp.s
-
-.PHONY : main.s
-
-# target to generate assembly for a file
-main.cpp.s:
-	$(MAKE) -f CMakeFiles\HyperNetTest.dir\build.make CMakeFiles/HyperNetTest.dir/main.cpp.s
-.PHONY : main.cpp.s
-
-pairconnection.obj: pairconnection.cpp.obj
-
-.PHONY : pairconnection.obj
+.PHONY : Main.obj
 
 # target to build an object file
-pairconnection.cpp.obj:
-	$(MAKE) -f CMakeFiles\HyperNetTest.dir\build.make CMakeFiles/HyperNetTest.dir/pairconnection.cpp.obj
-.PHONY : pairconnection.cpp.obj
+Main.cpp.obj:
+	$(MAKE) -f CMakeFiles\HyperNetTest.dir\build.make CMakeFiles/HyperNetTest.dir/Main.cpp.obj
+.PHONY : Main.cpp.obj
 
-pairconnection.i: pairconnection.cpp.i
+Main.i: Main.cpp.i
 
-.PHONY : pairconnection.i
+.PHONY : Main.i
 
 # target to preprocess a source file
-pairconnection.cpp.i:
-	$(MAKE) -f CMakeFiles\HyperNetTest.dir\build.make CMakeFiles/HyperNetTest.dir/pairconnection.cpp.i
-.PHONY : pairconnection.cpp.i
+Main.cpp.i:
+	$(MAKE) -f CMakeFiles\HyperNetTest.dir\build.make CMakeFiles/HyperNetTest.dir/Main.cpp.i
+.PHONY : Main.cpp.i
 
-pairconnection.s: pairconnection.cpp.s
+Main.s: Main.cpp.s
 
-.PHONY : pairconnection.s
+.PHONY : Main.s
 
 # target to generate assembly for a file
-pairconnection.cpp.s:
-	$(MAKE) -f CMakeFiles\HyperNetTest.dir\build.make CMakeFiles/HyperNetTest.dir/pairconnection.cpp.s
-.PHONY : pairconnection.cpp.s
+Main.cpp.s:
+	$(MAKE) -f CMakeFiles\HyperNetTest.dir\build.make CMakeFiles/HyperNetTest.dir/Main.cpp.s
+.PHONY : Main.cpp.s
+
+PairConnectivity.obj: PairConnectivity.cpp.obj
+
+.PHONY : PairConnectivity.obj
+
+# target to build an object file
+PairConnectivity.cpp.obj:
+	$(MAKE) -f CMakeFiles\HyperNetTest.dir\build.make CMakeFiles/HyperNetTest.dir/PairConnectivity.cpp.obj
+.PHONY : PairConnectivity.cpp.obj
+
+PairConnectivity.i: PairConnectivity.cpp.i
+
+.PHONY : PairConnectivity.i
+
+# target to preprocess a source file
+PairConnectivity.cpp.i:
+	$(MAKE) -f CMakeFiles\HyperNetTest.dir\build.make CMakeFiles/HyperNetTest.dir/PairConnectivity.cpp.i
+.PHONY : PairConnectivity.cpp.i
+
+PairConnectivity.s: PairConnectivity.cpp.s
+
+.PHONY : PairConnectivity.s
+
+# target to generate assembly for a file
+PairConnectivity.cpp.s:
+	$(MAKE) -f CMakeFiles\HyperNetTest.dir\build.make CMakeFiles/HyperNetTest.dir/PairConnectivity.cpp.s
+.PHONY : PairConnectivity.cpp.s
 
 # Help Target
 help:
@@ -242,15 +269,18 @@ help:
 	@echo ... Branch.obj
 	@echo ... Branch.i
 	@echo ... Branch.s
+	@echo ... GenCombinations.obj
+	@echo ... GenCombinations.i
+	@echo ... GenCombinations.s
 	@echo ... Hypernet.obj
 	@echo ... Hypernet.i
 	@echo ... Hypernet.s
-	@echo ... main.obj
-	@echo ... main.i
-	@echo ... main.s
-	@echo ... pairconnection.obj
-	@echo ... pairconnection.i
-	@echo ... pairconnection.s
+	@echo ... Main.obj
+	@echo ... Main.i
+	@echo ... Main.s
+	@echo ... PairConnectivity.obj
+	@echo ... PairConnectivity.i
+	@echo ... PairConnectivity.s
 .PHONY : help
 
 

@@ -143,7 +143,7 @@ CMAKE_OBJCOPY:FILEPATH=E:/MingGW/mingw64/bin/objcopy.exe
 CMAKE_OBJDUMP:FILEPATH=E:/MingGW/mingw64/bin/objdump.exe
 
 //Value Computed by CMake
-CMAKE_PROJECT_NAME:STATIC=HyperNetTest
+CMAKE_PROJECT_NAME:STATIC=HypernetTest
 
 //Path to a program.
 CMAKE_RANLIB:FILEPATH=E:/MingGW/mingw64/bin/ranlib.exe
@@ -222,6 +222,12 @@ HyperNetTest_BINARY_DIR:STATIC=E:/Projects/Clion/HypernetTest/cmake-build-debug
 
 //Value Computed by CMake
 HyperNetTest_SOURCE_DIR:STATIC=E:/Projects/Clion/HypernetTest
+
+//Value Computed by CMake
+HypernetTest_BINARY_DIR:STATIC=E:/Projects/Clion/HypernetTest/cmake-build-debug
+
+//Value Computed by CMake
+HypernetTest_SOURCE_DIR:STATIC=E:/Projects/Clion/HypernetTest
 
 
 ########################

@@ -4,26 +4,33 @@
 CMakeFiles/HyperNetTest.dir/Branch.cpp.obj
  E:/Projects/Clion/HypernetTest/Branch.cpp
  E:/Projects/Clion/HypernetTest/Branch.h
+ E:/Projects/Clion/HypernetTest/Globals.h
  E:/Projects/Clion/HypernetTest/Hypernet.h
- E:/Projects/Clion/HypernetTest/globals.h
- E:/Projects/Clion/HypernetTest/stdafx.h
+ E:/Projects/Clion/HypernetTest/Stdafx.h
+CMakeFiles/HyperNetTest.dir/GenCombinations.cpp.obj
+ E:/Projects/Clion/HypernetTest/Branch.h
+ E:/Projects/Clion/HypernetTest/Funcs.h
+ E:/Projects/Clion/HypernetTest/GenCombinations.cpp
+ E:/Projects/Clion/HypernetTest/Globals.h
+ E:/Projects/Clion/HypernetTest/Hypernet.h
+ E:/Projects/Clion/HypernetTest/Stdafx.h
 CMakeFiles/HyperNetTest.dir/Hypernet.cpp.obj
  E:/Projects/Clion/HypernetTest/Branch.h
+ E:/Projects/Clion/HypernetTest/Globals.h
  E:/Projects/Clion/HypernetTest/Hypernet.cpp
  E:/Projects/Clion/HypernetTest/Hypernet.h
- E:/Projects/Clion/HypernetTest/globals.h
- E:/Projects/Clion/HypernetTest/stdafx.h
-CMakeFiles/HyperNetTest.dir/main.cpp.obj
+ E:/Projects/Clion/HypernetTest/Stdafx.h
+CMakeFiles/HyperNetTest.dir/Main.cpp.obj
  E:/Projects/Clion/HypernetTest/Branch.h
+ E:/Projects/Clion/HypernetTest/Funcs.h
+ E:/Projects/Clion/HypernetTest/Globals.h
  E:/Projects/Clion/HypernetTest/Hypernet.h
- E:/Projects/Clion/HypernetTest/funcs.h
- E:/Projects/Clion/HypernetTest/globals.h
- E:/Projects/Clion/HypernetTest/main.cpp
- E:/Projects/Clion/HypernetTest/stdafx.h
-CMakeFiles/HyperNetTest.dir/pairconnection.cpp.obj
+ E:/Projects/Clion/HypernetTest/Main.cpp
+ E:/Projects/Clion/HypernetTest/Stdafx.h
+CMakeFiles/HyperNetTest.dir/PairConnectivity.cpp.obj
  E:/Projects/Clion/HypernetTest/Branch.h
+ E:/Projects/Clion/HypernetTest/Funcs.h
+ E:/Projects/Clion/HypernetTest/Globals.h
  E:/Projects/Clion/HypernetTest/Hypernet.h
- E:/Projects/Clion/HypernetTest/funcs.h
- E:/Projects/Clion/HypernetTest/globals.h
- E:/Projects/Clion/HypernetTest/pairconnection.cpp
- E:/Projects/Clion/HypernetTest/stdafx.h
+ E:/Projects/Clion/HypernetTest/PairConnectivity.cpp
+ E:/Projects/Clion/HypernetTest/Stdafx.h

@@ -56,52 +56,52 @@ include CMakeFiles/HyperNetTest.dir/progress.make
 # Include the compile flags for this target's objects.
 include CMakeFiles/HyperNetTest.dir/flags.make
 
-CMakeFiles/HyperNetTest.dir/main.cpp.obj: CMakeFiles/HyperNetTest.dir/flags.make
-CMakeFiles/HyperNetTest.dir/main.cpp.obj: ../main.cpp
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=E:\Projects\Clion\HypernetTest\cmake-build-debug\CMakeFiles --progress-num=$(CMAKE_PROGRESS_1) "Building CXX object CMakeFiles/HyperNetTest.dir/main.cpp.obj"
-	E:\MingGW\mingw64\bin\g++.exe  $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -o CMakeFiles\HyperNetTest.dir\main.cpp.obj -c E:\Projects\Clion\HypernetTest\main.cpp
+CMakeFiles/HyperNetTest.dir/Main.cpp.obj: CMakeFiles/HyperNetTest.dir/flags.make
+CMakeFiles/HyperNetTest.dir/Main.cpp.obj: ../Main.cpp
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=E:\Projects\Clion\HypernetTest\cmake-build-debug\CMakeFiles --progress-num=$(CMAKE_PROGRESS_1) "Building CXX object CMakeFiles/HyperNetTest.dir/Main.cpp.obj"
+	E:\MingGW\mingw64\bin\g++.exe  $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -o CMakeFiles\HyperNetTest.dir\Main.cpp.obj -c E:\Projects\Clion\HypernetTest\Main.cpp
 
-CMakeFiles/HyperNetTest.dir/main.cpp.i: cmake_force
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Preprocessing CXX source to CMakeFiles/HyperNetTest.dir/main.cpp.i"
-	E:\MingGW\mingw64\bin\g++.exe $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -E E:\Projects\Clion\HypernetTest\main.cpp > CMakeFiles\HyperNetTest.dir\main.cpp.i
+CMakeFiles/HyperNetTest.dir/Main.cpp.i: cmake_force
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Preprocessing CXX source to CMakeFiles/HyperNetTest.dir/Main.cpp.i"
+	E:\MingGW\mingw64\bin\g++.exe $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -E E:\Projects\Clion\HypernetTest\Main.cpp > CMakeFiles\HyperNetTest.dir\Main.cpp.i
 
-CMakeFiles/HyperNetTest.dir/main.cpp.s: cmake_force
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Compiling CXX source to assembly CMakeFiles/HyperNetTest.dir/main.cpp.s"
-	E:\MingGW\mingw64\bin\g++.exe $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -S E:\Projects\Clion\HypernetTest\main.cpp -o CMakeFiles\HyperNetTest.dir\main.cpp.s
+CMakeFiles/HyperNetTest.dir/Main.cpp.s: cmake_force
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Compiling CXX source to assembly CMakeFiles/HyperNetTest.dir/Main.cpp.s"
+	E:\MingGW\mingw64\bin\g++.exe $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -S E:\Projects\Clion\HypernetTest\Main.cpp -o CMakeFiles\HyperNetTest.dir\Main.cpp.s
 
-CMakeFiles/HyperNetTest.dir/main.cpp.obj.requires:
+CMakeFiles/HyperNetTest.dir/Main.cpp.obj.requires:
 
-.PHONY : CMakeFiles/HyperNetTest.dir/main.cpp.obj.requires
+.PHONY : CMakeFiles/HyperNetTest.dir/Main.cpp.obj.requires
 
-CMakeFiles/HyperNetTest.dir/main.cpp.obj.provides: CMakeFiles/HyperNetTest.dir/main.cpp.obj.requires
-	$(MAKE) -f CMakeFiles\HyperNetTest.dir\build.make CMakeFiles/HyperNetTest.dir/main.cpp.obj.provides.build
-.PHONY : CMakeFiles/HyperNetTest.dir/main.cpp.obj.provides
+CMakeFiles/HyperNetTest.dir/Main.cpp.obj.provides: CMakeFiles/HyperNetTest.dir/Main.cpp.obj.requires
+	$(MAKE) -f CMakeFiles\HyperNetTest.dir\build.make CMakeFiles/HyperNetTest.dir/Main.cpp.obj.provides.build
+.PHONY : CMakeFiles/HyperNetTest.dir/Main.cpp.obj.provides
 
-CMakeFiles/HyperNetTest.dir/main.cpp.obj.provides.build: CMakeFiles/HyperNetTest.dir/main.cpp.obj
+CMakeFiles/HyperNetTest.dir/Main.cpp.obj.provides.build: CMakeFiles/HyperNetTest.dir/Main.cpp.obj
 
 
-CMakeFiles/HyperNetTest.dir/pairconnection.cpp.obj: CMakeFiles/HyperNetTest.dir/flags.make
-CMakeFiles/HyperNetTest.dir/pairconnection.cpp.obj: ../pairconnection.cpp
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=E:\Projects\Clion\HypernetTest\cmake-build-debug\CMakeFiles --progress-num=$(CMAKE_PROGRESS_2) "Building CXX object CMakeFiles/HyperNetTest.dir/pairconnection.cpp.obj"
-	E:\MingGW\mingw64\bin\g++.exe  $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -o CMakeFiles\HyperNetTest.dir\pairconnection.cpp.obj -c E:\Projects\Clion\HypernetTest\pairconnection.cpp
+CMakeFiles/HyperNetTest.dir/PairConnectivity.cpp.obj: CMakeFiles/HyperNetTest.dir/flags.make
+CMakeFiles/HyperNetTest.dir/PairConnectivity.cpp.obj: ../PairConnectivity.cpp
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=E:\Projects\Clion\HypernetTest\cmake-build-debug\CMakeFiles --progress-num=$(CMAKE_PROGRESS_2) "Building CXX object CMakeFiles/HyperNetTest.dir/PairConnectivity.cpp.obj"
+	E:\MingGW\mingw64\bin\g++.exe  $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -o CMakeFiles\HyperNetTest.dir\PairConnectivity.cpp.obj -c E:\Projects\Clion\HypernetTest\PairConnectivity.cpp
 
-CMakeFiles/HyperNetTest.dir/pairconnection.cpp.i: cmake_force
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Preprocessing CXX source to CMakeFiles/HyperNetTest.dir/pairconnection.cpp.i"
-	E:\MingGW\mingw64\bin\g++.exe $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -E E:\Projects\Clion\HypernetTest\pairconnection.cpp > CMakeFiles\HyperNetTest.dir\pairconnection.cpp.i
+CMakeFiles/HyperNetTest.dir/PairConnectivity.cpp.i: cmake_force
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Preprocessing CXX source to CMakeFiles/HyperNetTest.dir/PairConnectivity.cpp.i"
+	E:\MingGW\mingw64\bin\g++.exe $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -E E:\Projects\Clion\HypernetTest\PairConnectivity.cpp > CMakeFiles\HyperNetTest.dir\PairConnectivity.cpp.i
 
-CMakeFiles/HyperNetTest.dir/pairconnection.cpp.s: cmake_force
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Compiling CXX source to assembly CMakeFiles/HyperNetTest.dir/pairconnection.cpp.s"
-	E:\MingGW\mingw64\bin\g++.exe $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -S E:\Projects\Clion\HypernetTest\pairconnection.cpp -o CMakeFiles\HyperNetTest.dir\pairconnection.cpp.s
+CMakeFiles/HyperNetTest.dir/PairConnectivity.cpp.s: cmake_force
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Compiling CXX source to assembly CMakeFiles/HyperNetTest.dir/PairConnectivity.cpp.s"
+	E:\MingGW\mingw64\bin\g++.exe $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -S E:\Projects\Clion\HypernetTest\PairConnectivity.cpp -o CMakeFiles\HyperNetTest.dir\PairConnectivity.cpp.s
 
-CMakeFiles/HyperNetTest.dir/pairconnection.cpp.obj.requires:
+CMakeFiles/HyperNetTest.dir/PairConnectivity.cpp.obj.requires:
 
-.PHONY : CMakeFiles/HyperNetTest.dir/pairconnection.cpp.obj.requires
+.PHONY : CMakeFiles/HyperNetTest.dir/PairConnectivity.cpp.obj.requires
 
-CMakeFiles/HyperNetTest.dir/pairconnection.cpp.obj.provides: CMakeFiles/HyperNetTest.dir/pairconnection.cpp.obj.requires
-	$(MAKE) -f CMakeFiles\HyperNetTest.dir\build.make CMakeFiles/HyperNetTest.dir/pairconnection.cpp.obj.provides.build
-.PHONY : CMakeFiles/HyperNetTest.dir/pairconnection.cpp.obj.provides
+CMakeFiles/HyperNetTest.dir/PairConnectivity.cpp.obj.provides: CMakeFiles/HyperNetTest.dir/PairConnectivity.cpp.obj.requires
+	$(MAKE) -f CMakeFiles\HyperNetTest.dir\build.make CMakeFiles/HyperNetTest.dir/PairConnectivity.cpp.obj.provides.build
+.PHONY : CMakeFiles/HyperNetTest.dir/PairConnectivity.cpp.obj.provides
 
-CMakeFiles/HyperNetTest.dir/pairconnection.cpp.obj.provides.build: CMakeFiles/HyperNetTest.dir/pairconnection.cpp.obj
+CMakeFiles/HyperNetTest.dir/PairConnectivity.cpp.obj.provides.build: CMakeFiles/HyperNetTest.dir/PairConnectivity.cpp.obj
 
 
 CMakeFiles/HyperNetTest.dir/Branch.cpp.obj: CMakeFiles/HyperNetTest.dir/flags.make
@@ -152,25 +152,51 @@ CMakeFiles/HyperNetTest.dir/Hypernet.cpp.obj.provides: CMakeFiles/HyperNetTest.d
 CMakeFiles/HyperNetTest.dir/Hypernet.cpp.obj.provides.build: CMakeFiles/HyperNetTest.dir/Hypernet.cpp.obj
 
 
+CMakeFiles/HyperNetTest.dir/GenCombinations.cpp.obj: CMakeFiles/HyperNetTest.dir/flags.make
+CMakeFiles/HyperNetTest.dir/GenCombinations.cpp.obj: ../GenCombinations.cpp
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=E:\Projects\Clion\HypernetTest\cmake-build-debug\CMakeFiles --progress-num=$(CMAKE_PROGRESS_5) "Building CXX object CMakeFiles/HyperNetTest.dir/GenCombinations.cpp.obj"
+	E:\MingGW\mingw64\bin\g++.exe  $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -o CMakeFiles\HyperNetTest.dir\GenCombinations.cpp.obj -c E:\Projects\Clion\HypernetTest\GenCombinations.cpp
+
+CMakeFiles/HyperNetTest.dir/GenCombinations.cpp.i: cmake_force
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Preprocessing CXX source to CMakeFiles/HyperNetTest.dir/GenCombinations.cpp.i"
+	E:\MingGW\mingw64\bin\g++.exe $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -E E:\Projects\Clion\HypernetTest\GenCombinations.cpp > CMakeFiles\HyperNetTest.dir\GenCombinations.cpp.i
+
+CMakeFiles/HyperNetTest.dir/GenCombinations.cpp.s: cmake_force
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Compiling CXX source to assembly CMakeFiles/HyperNetTest.dir/GenCombinations.cpp.s"
+	E:\MingGW\mingw64\bin\g++.exe $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -S E:\Projects\Clion\HypernetTest\GenCombinations.cpp -o CMakeFiles\HyperNetTest.dir\GenCombinations.cpp.s
+
+CMakeFiles/HyperNetTest.dir/GenCombinations.cpp.obj.requires:
+
+.PHONY : CMakeFiles/HyperNetTest.dir/GenCombinations.cpp.obj.requires
+
+CMakeFiles/HyperNetTest.dir/GenCombinations.cpp.obj.provides: CMakeFiles/HyperNetTest.dir/GenCombinations.cpp.obj.requires
+	$(MAKE) -f CMakeFiles\HyperNetTest.dir\build.make CMakeFiles/HyperNetTest.dir/GenCombinations.cpp.obj.provides.build
+.PHONY : CMakeFiles/HyperNetTest.dir/GenCombinations.cpp.obj.provides
+
+CMakeFiles/HyperNetTest.dir/GenCombinations.cpp.obj.provides.build: CMakeFiles/HyperNetTest.dir/GenCombinations.cpp.obj
+
+
 # Object files for target HyperNetTest
 HyperNetTest_OBJECTS = \
-"CMakeFiles/HyperNetTest.dir/main.cpp.obj" \
-"CMakeFiles/HyperNetTest.dir/pairconnection.cpp.obj" \
+"CMakeFiles/HyperNetTest.dir/Main.cpp.obj" \
+"CMakeFiles/HyperNetTest.dir/PairConnectivity.cpp.obj" \
 "CMakeFiles/HyperNetTest.dir/Branch.cpp.obj" \
-"CMakeFiles/HyperNetTest.dir/Hypernet.cpp.obj"
+"CMakeFiles/HyperNetTest.dir/Hypernet.cpp.obj" \
+"CMakeFiles/HyperNetTest.dir/GenCombinations.cpp.obj"
 
 # External object files for target HyperNetTest
 HyperNetTest_EXTERNAL_OBJECTS =
 
-HyperNetTest.exe: CMakeFiles/HyperNetTest.dir/main.cpp.obj
-HyperNetTest.exe: CMakeFiles/HyperNetTest.dir/pairconnection.cpp.obj
+HyperNetTest.exe: CMakeFiles/HyperNetTest.dir/Main.cpp.obj
+HyperNetTest.exe: CMakeFiles/HyperNetTest.dir/PairConnectivity.cpp.obj
 HyperNetTest.exe: CMakeFiles/HyperNetTest.dir/Branch.cpp.obj
 HyperNetTest.exe: CMakeFiles/HyperNetTest.dir/Hypernet.cpp.obj
+HyperNetTest.exe: CMakeFiles/HyperNetTest.dir/GenCombinations.cpp.obj
 HyperNetTest.exe: CMakeFiles/HyperNetTest.dir/build.make
 HyperNetTest.exe: CMakeFiles/HyperNetTest.dir/linklibs.rsp
 HyperNetTest.exe: CMakeFiles/HyperNetTest.dir/objects1.rsp
 HyperNetTest.exe: CMakeFiles/HyperNetTest.dir/link.txt
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --bold --progress-dir=E:\Projects\Clion\HypernetTest\cmake-build-debug\CMakeFiles --progress-num=$(CMAKE_PROGRESS_5) "Linking CXX executable HyperNetTest.exe"
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --bold --progress-dir=E:\Projects\Clion\HypernetTest\cmake-build-debug\CMakeFiles --progress-num=$(CMAKE_PROGRESS_6) "Linking CXX executable HyperNetTest.exe"
 	$(CMAKE_COMMAND) -E cmake_link_script CMakeFiles\HyperNetTest.dir\link.txt --verbose=$(VERBOSE)
 
 # Rule to build all files generated by this target.
@@ -178,10 +204,11 @@ CMakeFiles/HyperNetTest.dir/build: HyperNetTest.exe
 
 .PHONY : CMakeFiles/HyperNetTest.dir/build
 
-CMakeFiles/HyperNetTest.dir/requires: CMakeFiles/HyperNetTest.dir/main.cpp.obj.requires
-CMakeFiles/HyperNetTest.dir/requires: CMakeFiles/HyperNetTest.dir/pairconnection.cpp.obj.requires
+CMakeFiles/HyperNetTest.dir/requires: CMakeFiles/HyperNetTest.dir/Main.cpp.obj.requires
+CMakeFiles/HyperNetTest.dir/requires: CMakeFiles/HyperNetTest.dir/PairConnectivity.cpp.obj.requires
 CMakeFiles/HyperNetTest.dir/requires: CMakeFiles/HyperNetTest.dir/Branch.cpp.obj.requires
 CMakeFiles/HyperNetTest.dir/requires: CMakeFiles/HyperNetTest.dir/Hypernet.cpp.obj.requires
+CMakeFiles/HyperNetTest.dir/requires: CMakeFiles/HyperNetTest.dir/GenCombinations.cpp.obj.requires
 
 .PHONY : CMakeFiles/HyperNetTest.dir/requires
 

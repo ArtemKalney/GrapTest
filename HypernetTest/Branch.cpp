@@ -1,6 +1,6 @@
-#include "stdafx.h"
+#include "Stdafx.h"
 #include "Branch.h"
-#include "globals.h"
+#include "Globals.h"
 
 Branche Branche::GetBranch (const int& firstNode, const int& secondNode, const int& power) {
     std::vector<double> vec(m);
@@ -154,6 +154,7 @@ Branche operator *(Branche firstBranch, Branche secondBranch)
                 }
             }
         }
+        result.SetIsReliable(false);
     }
 
     return result;
@@ -195,6 +196,7 @@ Branche operator +(Branche firstBranch, Branche secondBranch)
         for (int i = 0; i<result.GetC().size(); i++) {
             result.GetC()[i] = firstBranch.GetC()[i] + secondBranch.GetC()[i];
         }
+        result.SetIsReliable(false);
     } else if (firstBranch.IsExisting() && !secondBranch.IsExisting()) {
         return firstBranch;
     } else if (!firstBranch.IsExisting() && secondBranch.IsExisting()) {
@@ -241,6 +243,7 @@ Branche operator -(Branche firstBranch, Branche secondBranch)
         for (int i = 0; i<result.GetC().size(); i++) {
             result.GetC()[i] = firstBranch.GetC()[i] - secondBranch.GetC()[i];
         }
+        result.SetIsReliable(false);
     } else if (firstBranch.IsExisting() && !secondBranch.IsExisting()) {
         return firstBranch;
     } else if (!firstBranch.IsExisting() && secondBranch.IsExisting()) {
@@ -271,6 +274,7 @@ Branche operator ~(Branche branche)
         for (int i = 0; i<result.GetC().size(); i++) {
             result.GetC()[i] = I.GetC()[i] - branche.GetC()[i];
         }
+        result.SetIsReliable(false);
     } else {
         auto unity = Branche::GetUnity();
         return unity;
