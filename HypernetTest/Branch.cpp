@@ -2,21 +2,14 @@
 #include "Branch.h"
 #include "Globals.h"
 
-Branche Branche::GetBranch (const int& firstNode, const int& secondNode, const int& power) {
-    std::vector<double> vec(m);
-    vec.front() = 1;
-    auto newBranche = Branche(vec, power, firstNode, secondNode, 0, false);
-    return newBranche;
-}
-
-Branche Branche::GetBranch (const int& power) {
+Branche Branche::GetBranch(const int& power) {
     std::vector<double> vec(m);
     vec.front() = 1;
     auto newBranche = Branche(vec, power, 0, 0, 0, false);
     return newBranche;
 }
 
-Branche Branche::GetBranch (const int& vectorSize, const int& power) {
+Branche Branche::GetBranch(const int& vectorSize, const int& power) {
     std::vector<double> vec(vectorSize);
     vec.front() = 1;
     auto newBranche = Branche(vec, power, 0, 0, 0, false);
@@ -30,20 +23,13 @@ Branche Branche::GetSimpleBranch (const int& firstNode, const int& secondNode) {
     return newBranche;
 }
 
-Branche Branche::GetSimpleBranch() {
-    std::vector<double> vec(m);
-    vec.front() = 1;
-    auto newBranche = Branche(vec, 1, 0, 0, 0, false);
-    return newBranche;
-}
-
-Branche Branche::GetZero () {
+Branche Branche::GetZero() {
     std::vector<double> vec;
     auto newBranche = Branche(vec, 0, 0, 0, 0, false);
     return newBranche;
 }
 
-Branche Branche::GetUnity () {
+Branche Branche::GetUnity() {
     std::vector<double> vec;
     vec.push_back(1);
     auto newBranche = Branche(vec , 0, 0, 0, 0, false);
@@ -97,6 +83,10 @@ bool Branche::IsUnity() {
     return _C.size() == 1 && _C.front() == 1;
 }
 
+bool Branche::IsSimpleBranch() {
+    return _power == 1 && _simple == 0;
+}
+
 void Branche::PrintBranche() {
     if (IsExisting()) {
         std::cout << "Branche:" << std::endl;
@@ -108,10 +98,6 @@ void Branche::PrintBranche() {
     else {
         std::cout << "empty edge" << std::endl;
     }
-}
-
-bool Branche::IsSimpleBranch() {
-    return _power == 1 && _simple == 0;
 }
 /* * The following rules for calculations:
  * 0 <=> edge.C.empty() = true

@@ -141,14 +141,14 @@ int main() {
         // Computing pairwise connectivities
         if (option == 3) {
             H H = initialHypernet;
-            //H.RenumerateNodes(2, 0);
-            //H.RenumerateNodes(2, 1);
+            H.RenumerateNodes(6, 0);
+            H.RenumerateNodes(7, 1);
             if (H.IsSNconnected()) {
                 auto result = PairConnectivity(H, pseudoEdge);
                 sum = sum + result;
             }
             //debug
-            /*auto customHypernet = initialHypernet;
+           /* auto customHypernet = initialHypernet;
             //customHypernet.RenumerateNodesForGen(2, 0);
             customHypernet.RenumerateNodesForGen(2, 1);
             auto branchListForGen = customHypernet.GetBranchList();
@@ -232,7 +232,7 @@ int main() {
             }
 
             sum = sum + Branche::GetUnity();
-            sum.GetC().resize(m + 1, 1);
+            //sum.GetC().resize(m + 1, 1);
         }
     }
     catch (const char *str) {

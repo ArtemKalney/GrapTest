@@ -1,33 +1,6 @@
 #include "Hypernet.h"
 #include "Globals.h"
 
-bool H::CanDeletePenduntNode(const int& node) {
-    auto SN = GetSN();
-    std::vector<bool> visitedNodes(SN.size(), false);
-    H::DFS(0, visitedNodes, SN);
-    auto canDeleteMask = GetCanDeleteMask(SN, visitedNodes);
-    // для соизмерения матриц смежности
-    auto HwithRemovedBranches = *this;
-    for (int i=0; i < HwithRemovedBranches.GetFN()[node].size(); i++) {
-        if (HwithRemovedBranches.GetFN()[node][i].IsExisting()) {
-            HwithRemovedBranches.RemoveBranch(node, i);
-            HwithRemovedBranches.RemoveBranch(i, node);
-        }
-    }
-    auto SNwithRemovedNode = HwithRemovedBranches.GetSN();
-    for (int i = 0; i < SNwithRemovedNode.size(); i++) {
-        for (int j = i + 1; j < SNwithRemovedNode[i].size(); j++) {
-            Branche edge = SNwithRemovedNode[i][j];
-            bool isDeletedEdge = !edge.IsExisting() && SN[i][j].IsExisting();
-            if (isDeletedEdge && !canDeleteMask[i][j]) {
-                return false;
-            }
-        }
-    }
-
-    return true;
-}
-
 bool H::IsSNconnected() {
     auto SN = GetSN();
     std::vector<bool> visitedNodes(SN.size(), false);
@@ -86,42 +59,6 @@ bool H::HasReliablePath() {
     return visitedNodes[0] && visitedNodes[1];
 }
 
-std::vector<int> H::GetHomogeneousChain(std::vector<int>& forbiddenNodes) {
-    auto chain = GetChain(forbiddenNodes);
-    // проверяем что цепь онадёженная, если да то возвращаем её,
-    // иначе добавляем её внутренние вершины к списку запрещённых вершин и снова ищем цепь
-    if (!chain.empty()) {
-        bool isUnreliableChain = true;
-        for(int i=0; i<chain.size() - 1; i++){
-            if (_FN[i][i + 1].GetIsReliable()) {
-                isUnreliableChain = false;
-                break;
-            }
-        }
-        bool isReliableChain = true;
-        for(int i=0; i<chain.size() - 1; i++){
-            if (!_FN[i][i + 1].GetIsReliable()) {
-                isReliableChain = false;
-                break;
-            }
-        }
-
-        if (isUnreliableChain || isReliableChain) {
-            return chain;
-        } else {
-            for (int i = 1; i < chain.size() - 1; i++) {
-                if (std::find(forbiddenNodes.begin(), forbiddenNodes.end(), chain[i]) != forbiddenNodes.end()) {
-                    forbiddenNodes.push_back(chain[i]);
-                }
-            }
-
-            GetHomogeneousChain(forbiddenNodes);
-        }
-    }
-
-    return chain;
-}
-
 std::vector<std::vector<bool>> H::GetCanDeleteMask(const std::vector<std::vector<Branche>> &SN,
                                                    const std::vector<bool> &visitedNodes) {
     auto nodePowers = H::GetNodePowers(SN);
@@ -168,75 +105,6 @@ std::vector<std::vector<bool>> H::GetCanDeleteMask(const std::vector<std::vector
     } while (isChanged);
 
     return edgeMask;
-}
-// Find a chain that does not include forbiddenNodes nodes
-std::vector<int> H::GetChain(std::vector<int>& forbiddenNodes) {
-    auto nodePowers = H::GetNodePowers(_FN);
-    std::vector<int> chain;
-    // Initializing a chain by an edge where there is a node of degree 2
-    bool foundChainBase = false;
-    int i = 0;
-    while (!foundChainBase && i < _FN.size()) {
-        for (int j = 0; j < _FN[i].size(); j++) {
-            bool isForbiddenNodes =
-                    std::find(forbiddenNodes.begin(), forbiddenNodes.end(), i) != forbiddenNodes.end() &&
-                    std::find(forbiddenNodes.begin(), forbiddenNodes.end(), j) != forbiddenNodes.end();
-            bool isPivoteNodeInChain = IsPivoteNode(i) && nodePowers[i] == 2 || IsPivoteNode(j) && nodePowers[j] == 2;
-            if (_FN[i][j].IsExisting() && (nodePowers[j] == 2 || nodePowers[i] == 2)
-                && !isPivoteNodeInChain && !isForbiddenNodes) {
-                chain.push_back(i);
-                chain.push_back(j);
-                foundChainBase = true;
-                break;
-            }
-        }
-        i++;
-    }
-    // Chain extensions in both directions
-    if (!chain.empty()) {
-        i = chain.front();
-        bool canExpandLeft = true;
-        while (nodePowers[i] == 2 && i != chain.back() && canExpandLeft) {
-            for (int j = 0; j < _FN[i].size(); j++) {
-                if (_FN[i][j].IsExisting()) {
-                    if (IsPivoteNode(j) && nodePowers[j] == 2) {
-                        canExpandLeft = false;
-                        chain.insert(chain.begin(), j);
-                        break;
-                    } else if (j != chain[1]) {
-                        if (j != chain.back()) {
-                            chain.insert(chain.begin(), j);
-                        }
-                        i = j;
-                        break;
-                    }
-                }
-            }
-        }
-        i = chain.back();
-        bool canExpandRight = true;
-        while (nodePowers[i] == 2 && i != chain.front() && canExpandRight) {
-            for (int j = 0; j < _FN[i].size(); j++) {
-                if (_FN[i][j].IsExisting()) {
-                    if (IsPivoteNode(j) && nodePowers[j] == 2) {
-                        canExpandRight = false;
-                        chain.push_back(j);
-                        break;
-                    } else if (j != chain[chain.size() - 2]) {
-                        if (j != chain.front()) {
-                            chain.push_back(j);
-                        }
-                        i = j;
-                        break;
-                    }
-                }
-            }
-        }
-
-        return chain;
-    }
-
-    return chain;
 }
 // one model used for Branches and Edges
 std::vector<std::vector<Branche>> H::GetSN() {
@@ -306,20 +174,6 @@ std::vector<int> H::GetNodePowers(const std::vector<std::vector<Branche>>& graph
 
     return nodePowers;
 }
-
-std::vector<int> H::GetNodePowers(const std::vector<std::vector<int>>& F, const int& size) {
-    std::vector<int> nodePowers(size);
-    for (int i = 0; i < size; i++) {
-        for (auto &row : F) {
-            if (row.front() == i || row.back() == i) {
-                nodePowers[i]++;
-            }
-        }
-    }
-
-    return nodePowers;
-}
-
 // need nodes from adjancy matrix case we don't update branch nodes
 int H::GetBranchSaturation(const Branche& branche, const int& firstNode, const int& secondNode) {
     int count = 0;
@@ -396,50 +250,6 @@ void H::RenumerateNodes(const int& node1, const int& node2) {
         }
     }
 }
-// для полного перебора
-void H::RenumerateNodesForGen(const int& node1, const int& node2) {
-    if (node1 == node2) {
-        throw "RenumerateNodes: equal nodes";
-    }
-    RenumerateNodes(node1, node2);
-    for (int i = 0; i < _FN.size(); i++) {
-        for (int j = 0; j < _FN[i].size(); j++) {
-            Branche branche = _FN[i][j];
-            if(i < j && branche.IsExisting()) {
-                int firstNode = branche.GetFirstNode(), secondNode = branche.GetSecondNode();
-                if (firstNode == node1) {
-                    _FN[i][j].SetFirstNode(node2);
-                    _FN[j][i].SetFirstNode(node2);
-                } else if (firstNode == node2) {
-                    _FN[i][j].SetFirstNode(node1);
-                    _FN[j][i].SetFirstNode(node1);
-                }
-                if (secondNode == node1) {
-                    _FN[i][j].SetSecondNode(node2);
-                    _FN[j][i].SetSecondNode(node2);
-                } else if (secondNode == node2) {
-                    _FN[i][j].SetSecondNode(node1);
-                    _FN[j][i].SetSecondNode(node1);
-                }
-            }
-        }
-    }
-}
-// для полного перебора
-std::vector<Branche> H::GetBranchList() {
-    std::vector<Branche> BranchList;
-    auto FN = _FN;
-    for (int i = 0; i < FN.size(); i++) {
-        for (int j = 0; j < FN[i].size(); j++) {
-            Branche branche = FN[i][j];
-            if (i < j && branche.IsExisting()) {
-                BranchList.push_back(branche);
-            }
-        }
-    }
-
-    return BranchList;
-}
 
 void H::RemoveNodeFN(const int& node) {
     _FN.erase(_FN.begin() + node);
@@ -473,53 +283,6 @@ void H::RemoveNodeSN(const int& node) {
     RemoveEmptyBranches();
 }
 
-void H::ContractEdge(const int& deleteNode, const int& node) {
-    for (auto &row : _F) {
-        bool deletedRow = false;
-        // если ребро инцедентно deleteNode, то делаем его инцидентым вершине node
-        if (row.front() == deleteNode || row.back() == deleteNode) {
-            int incidentNode = row.front() == deleteNode ? row.back() : row.front();
-            if (incidentNode != node) {
-                auto newEdge = row;
-                if (row.front() == deleteNode) {
-                    row.front() = node;
-                } else if (row.back() == deleteNode) {
-                    row.back() = node;
-                }
-
-                _F.push_back(newEdge);
-            } else {
-                deletedRow = true;
-                _F.erase(std::remove(_F.begin(), _F.end(), row), _F.end());
-            }
-        }
-        // удаляем deleteNode
-        if (!deletedRow) {
-            for (auto &item : row) {
-                if (item > deleteNode) {
-                    item--;
-                } else if (item == deleteNode) {
-                    row.erase(std::remove(row.begin(), row.end(), item), row.end());
-                }
-            }
-        }
-    }
-    RemoveEmptyBranches();
-}
-
-bool H::IsSlightlyIncidental(const int& node, const std::vector<int>& edge) {
-    bool containNode = std::find(edge.begin(), edge.end(), node) != edge.end();
-    return edge.front() != node && edge.back() != node && containNode;
-}
-
-bool H::IsIncidental(const int& node, const std::vector<int>& edge) {
-    return edge.front() == node || edge.back() == node;
-}
-
-int H::IsPivoteNode(const int& node) {
-    return node == 0 || node == 1;
-}
-
 void H::PrintHypernet() {
     std::cout << "FN:" << std::endl;
     for (int i = 0; i < _FN.size(); i++) {
@@ -537,4 +300,48 @@ void H::PrintHypernet() {
         }
         std::cout << std::endl;
     }
+}
+// to debug
+void H::RenumerateNodesForGen(const int& node1, const int& node2) {
+    if (node1 == node2) {
+        throw "RenumerateNodes: equal nodes";
+    }
+    RenumerateNodes(node1, node2);
+    for (int i = 0; i < _FN.size(); i++) {
+        for (int j = 0; j < _FN[i].size(); j++) {
+            Branche branche = _FN[i][j];
+            if(i < j && branche.IsExisting()) {
+                int firstNode = branche.GetFirstNode(), secondNode = branche.GetSecondNode();
+                if (firstNode == node1) {
+                    _FN[i][j].SetFirstNode(node2);
+                    _FN[j][i].SetFirstNode(node2);
+                } else if (firstNode == node2) {
+                    _FN[i][j].SetFirstNode(node1);
+                    _FN[j][i].SetFirstNode(node1);
+                }
+                if (secondNode == node1) {
+                    _FN[i][j].SetSecondNode(node2);
+                    _FN[j][i].SetSecondNode(node2);
+                } else if (secondNode == node2) {
+                    _FN[i][j].SetSecondNode(node1);
+                    _FN[j][i].SetSecondNode(node1);
+                }
+            }
+        }
+    }
+}
+
+std::vector<Branche> H::GetBranchList() {
+    std::vector<Branche> BranchList;
+    auto FN = _FN;
+    for (int i = 0; i < FN.size(); i++) {
+        for (int j = 0; j < FN[i].size(); j++) {
+            Branche branche = FN[i][j];
+            if (i < j && branche.IsExisting()) {
+                BranchList.push_back(branche);
+            }
+        }
+    }
+
+    return BranchList;
 }
