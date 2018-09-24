@@ -105,7 +105,7 @@ public:
     {
         return _isReliable;
     }
-
+    //todo уменьшить static функкций
     static Branch GetBranch(const int& vectorSize, const int& power);
     static Branch GetBranch(const int& power);
     static Branch GetSimpleBranch(const int& id, const int& firstNode, const int& secondNode);
@@ -126,3 +126,4 @@ Branch operator +(Branch firstBranch, Branch secondBranch);
 Branch operator -(Branch firstBranch, Branch secondBranch);
 Branch operator ~(Branch branch);
 bool operator ==(Branch firstBranch, Branch secondBranch);
+bool operator !=(Branch firstBranch, Branch secondBranch);

@@ -110,17 +110,17 @@ depend:
 .PHONY : depend
 
 #=============================================================================
-# Target rules for targets named HyperNetTest
+# Target rules for targets named HypernetTest
 
 # Build rule for target.
-HyperNetTest: cmake_check_build_system
-	$(MAKE) -f CMakeFiles\Makefile2 HyperNetTest
-.PHONY : HyperNetTest
+HypernetTest: cmake_check_build_system
+	$(MAKE) -f CMakeFiles\Makefile2 HypernetTest
+.PHONY : HypernetTest
 
 # fast build rule for target.
-HyperNetTest/fast:
-	$(MAKE) -f CMakeFiles\HyperNetTest.dir\build.make CMakeFiles/HyperNetTest.dir/build
-.PHONY : HyperNetTest/fast
+HypernetTest/fast:
+	$(MAKE) -f CMakeFiles\HypernetTest.dir\build.make CMakeFiles/HypernetTest.dir/build
+.PHONY : HypernetTest/fast
 
 Branch.obj: Branch.cpp.obj
 
@@ -128,7 +128,7 @@ Branch.obj: Branch.cpp.obj
 
 # target to build an object file
 Branch.cpp.obj:
-	$(MAKE) -f CMakeFiles\HyperNetTest.dir\build.make CMakeFiles/HyperNetTest.dir/Branch.cpp.obj
+	$(MAKE) -f CMakeFiles\HypernetTest.dir\build.make CMakeFiles/HypernetTest.dir/Branch.cpp.obj
 .PHONY : Branch.cpp.obj
 
 Branch.i: Branch.cpp.i
@@ -137,7 +137,7 @@ Branch.i: Branch.cpp.i
 
 # target to preprocess a source file
 Branch.cpp.i:
-	$(MAKE) -f CMakeFiles\HyperNetTest.dir\build.make CMakeFiles/HyperNetTest.dir/Branch.cpp.i
+	$(MAKE) -f CMakeFiles\HypernetTest.dir\build.make CMakeFiles/HypernetTest.dir/Branch.cpp.i
 .PHONY : Branch.cpp.i
 
 Branch.s: Branch.cpp.s
@@ -146,7 +146,7 @@ Branch.s: Branch.cpp.s
 
 # target to generate assembly for a file
 Branch.cpp.s:
-	$(MAKE) -f CMakeFiles\HyperNetTest.dir\build.make CMakeFiles/HyperNetTest.dir/Branch.cpp.s
+	$(MAKE) -f CMakeFiles\HypernetTest.dir\build.make CMakeFiles/HypernetTest.dir/Branch.cpp.s
 .PHONY : Branch.cpp.s
 
 GenCombinations.obj: GenCombinations.cpp.obj
@@ -155,7 +155,7 @@ GenCombinations.obj: GenCombinations.cpp.obj
 
 # target to build an object file
 GenCombinations.cpp.obj:
-	$(MAKE) -f CMakeFiles\HyperNetTest.dir\build.make CMakeFiles/HyperNetTest.dir/GenCombinations.cpp.obj
+	$(MAKE) -f CMakeFiles\HypernetTest.dir\build.make CMakeFiles/HypernetTest.dir/GenCombinations.cpp.obj
 .PHONY : GenCombinations.cpp.obj
 
 GenCombinations.i: GenCombinations.cpp.i
@@ -164,7 +164,7 @@ GenCombinations.i: GenCombinations.cpp.i
 
 # target to preprocess a source file
 GenCombinations.cpp.i:
-	$(MAKE) -f CMakeFiles\HyperNetTest.dir\build.make CMakeFiles/HyperNetTest.dir/GenCombinations.cpp.i
+	$(MAKE) -f CMakeFiles\HypernetTest.dir\build.make CMakeFiles/HypernetTest.dir/GenCombinations.cpp.i
 .PHONY : GenCombinations.cpp.i
 
 GenCombinations.s: GenCombinations.cpp.s
@@ -173,7 +173,7 @@ GenCombinations.s: GenCombinations.cpp.s
 
 # target to generate assembly for a file
 GenCombinations.cpp.s:
-	$(MAKE) -f CMakeFiles\HyperNetTest.dir\build.make CMakeFiles/HyperNetTest.dir/GenCombinations.cpp.s
+	$(MAKE) -f CMakeFiles\HypernetTest.dir\build.make CMakeFiles/HypernetTest.dir/GenCombinations.cpp.s
 .PHONY : GenCombinations.cpp.s
 
 Hypernet.obj: Hypernet.cpp.obj
@@ -182,7 +182,7 @@ Hypernet.obj: Hypernet.cpp.obj
 
 # target to build an object file
 Hypernet.cpp.obj:
-	$(MAKE) -f CMakeFiles\HyperNetTest.dir\build.make CMakeFiles/HyperNetTest.dir/Hypernet.cpp.obj
+	$(MAKE) -f CMakeFiles\HypernetTest.dir\build.make CMakeFiles/HypernetTest.dir/Hypernet.cpp.obj
 .PHONY : Hypernet.cpp.obj
 
 Hypernet.i: Hypernet.cpp.i
@@ -191,7 +191,7 @@ Hypernet.i: Hypernet.cpp.i
 
 # target to preprocess a source file
 Hypernet.cpp.i:
-	$(MAKE) -f CMakeFiles\HyperNetTest.dir\build.make CMakeFiles/HyperNetTest.dir/Hypernet.cpp.i
+	$(MAKE) -f CMakeFiles\HypernetTest.dir\build.make CMakeFiles/HypernetTest.dir/Hypernet.cpp.i
 .PHONY : Hypernet.cpp.i
 
 Hypernet.s: Hypernet.cpp.s
@@ -200,7 +200,7 @@ Hypernet.s: Hypernet.cpp.s
 
 # target to generate assembly for a file
 Hypernet.cpp.s:
-	$(MAKE) -f CMakeFiles\HyperNetTest.dir\build.make CMakeFiles/HyperNetTest.dir/Hypernet.cpp.s
+	$(MAKE) -f CMakeFiles\HypernetTest.dir\build.make CMakeFiles/HypernetTest.dir/Hypernet.cpp.s
 .PHONY : Hypernet.cpp.s
 
 Main.obj: Main.cpp.obj
@@ -209,7 +209,7 @@ Main.obj: Main.cpp.obj
 
 # target to build an object file
 Main.cpp.obj:
-	$(MAKE) -f CMakeFiles\HyperNetTest.dir\build.make CMakeFiles/HyperNetTest.dir/Main.cpp.obj
+	$(MAKE) -f CMakeFiles\HypernetTest.dir\build.make CMakeFiles/HypernetTest.dir/Main.cpp.obj
 .PHONY : Main.cpp.obj
 
 Main.i: Main.cpp.i
@@ -218,7 +218,7 @@ Main.i: Main.cpp.i
 
 # target to preprocess a source file
 Main.cpp.i:
-	$(MAKE) -f CMakeFiles\HyperNetTest.dir\build.make CMakeFiles/HyperNetTest.dir/Main.cpp.i
+	$(MAKE) -f CMakeFiles\HypernetTest.dir\build.make CMakeFiles/HypernetTest.dir/Main.cpp.i
 .PHONY : Main.cpp.i
 
 Main.s: Main.cpp.s
@@ -227,7 +227,7 @@ Main.s: Main.cpp.s
 
 # target to generate assembly for a file
 Main.cpp.s:
-	$(MAKE) -f CMakeFiles\HyperNetTest.dir\build.make CMakeFiles/HyperNetTest.dir/Main.cpp.s
+	$(MAKE) -f CMakeFiles\HypernetTest.dir\build.make CMakeFiles/HypernetTest.dir/Main.cpp.s
 .PHONY : Main.cpp.s
 
 PairConnectivity.obj: PairConnectivity.cpp.obj
@@ -236,7 +236,7 @@ PairConnectivity.obj: PairConnectivity.cpp.obj
 
 # target to build an object file
 PairConnectivity.cpp.obj:
-	$(MAKE) -f CMakeFiles\HyperNetTest.dir\build.make CMakeFiles/HyperNetTest.dir/PairConnectivity.cpp.obj
+	$(MAKE) -f CMakeFiles\HypernetTest.dir\build.make CMakeFiles/HypernetTest.dir/PairConnectivity.cpp.obj
 .PHONY : PairConnectivity.cpp.obj
 
 PairConnectivity.i: PairConnectivity.cpp.i
@@ -245,7 +245,7 @@ PairConnectivity.i: PairConnectivity.cpp.i
 
 # target to preprocess a source file
 PairConnectivity.cpp.i:
-	$(MAKE) -f CMakeFiles\HyperNetTest.dir\build.make CMakeFiles/HyperNetTest.dir/PairConnectivity.cpp.i
+	$(MAKE) -f CMakeFiles\HypernetTest.dir\build.make CMakeFiles/HypernetTest.dir/PairConnectivity.cpp.i
 .PHONY : PairConnectivity.cpp.i
 
 PairConnectivity.s: PairConnectivity.cpp.s
@@ -254,7 +254,7 @@ PairConnectivity.s: PairConnectivity.cpp.s
 
 # target to generate assembly for a file
 PairConnectivity.cpp.s:
-	$(MAKE) -f CMakeFiles\HyperNetTest.dir\build.make CMakeFiles/HyperNetTest.dir/PairConnectivity.cpp.s
+	$(MAKE) -f CMakeFiles\HypernetTest.dir\build.make CMakeFiles/HypernetTest.dir/PairConnectivity.cpp.s
 .PHONY : PairConnectivity.cpp.s
 
 # Help Target
@@ -264,7 +264,7 @@ help:
 	@echo ... clean
 	@echo ... depend
 	@echo ... edit_cache
-	@echo ... HyperNetTest
+	@echo ... HypernetTest
 	@echo ... rebuild_cache
 	@echo ... Branch.obj
 	@echo ... Branch.i

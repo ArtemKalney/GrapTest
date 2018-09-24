@@ -4,10 +4,9 @@
 
 // Chain replacement by edge
 void ChainReduction(H& H) {
-    std::vector<int> forbiddenNodes;
-    auto chain = H.GetHomogeneousChain(forbiddenNodes);
-    // отеивается вариант с цепью сотоящей из параллельных рёбер
-    if (chain.size() < 2) {
+    std::vector<int> forbiddenNodeNumbers;
+    auto chain = H.GetHomogeneousChain();
+    if (chain.empty()) {
         return;
     }
 
@@ -57,7 +56,7 @@ void ChainReduction(H& H) {
                     edgePtr->erase(std::remove(edgePtr->begin(), edgePtr->end(), nodeNumber));
                     // объединяем рёбра
                     ptrToInsert->insert(ptrToInsert->end(), edgePtr->begin(), edgePtr->end());
-                    // заменяем в FN ссылки соответсвующие edgePtr на ноdое ребро
+                    // заменяем в FN ссылки соответсвующие edgePtr на новое ребро
                     //todo сделать проще
                     for (auto &item : H.GetFN()) {
                         for (auto &ptr : item.GetEdges()) {
@@ -116,6 +115,8 @@ void ChainReduction(H& H) {
         H.GetFN().push_back(newBranch);
 
         return ChainReduction(H);
+    } else {
+        UnsimpleChains++;
     }
 }
 // Removes the connectivity component, where both pivot nodes do not lie and returns true,
@@ -160,8 +161,7 @@ void EdgeReduction(H& H) {
             H.GetF().erase(
                     std::remove_if(H.GetF().begin(), H.GetF().end(),
                                    [edge](std::shared_ptr<std::vector<int>> &ptr) -> bool {
-                                       bool isRemoved = H::EqualEdgeNodes(*ptr, edge.GetFirstNode(),
-                                                                          edge.GetSecondNode());
+                                       bool isRemoved = H::EqualEdgeNodes(*ptr, edge);
                                        if (isRemoved) {
                                            ptr->clear();
                                        }

@@ -63,7 +63,7 @@ Globals.h
 E:/Projects/Clion/Development/HypernetTest/Globals.h
 
 E:/Projects/Clion/Development/HypernetTest/Stdafx.h
-stdio.h
+cstdio
 -
 tchar.h
 -
@@ -71,7 +71,7 @@ fstream
 -
 iomanip
 -
-math.h
+cmath
 -
 iostream
 -

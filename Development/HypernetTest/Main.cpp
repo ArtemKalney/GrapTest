@@ -7,33 +7,13 @@ std::ofstream output;
 int n = 0, m = 0, k = 0;
 int FreeId = 0;
 int ReliableHypernetsCount = 0, UnconnectedHypernetsCount = 0, TwoNodesHypernetsCount = 0, ChainsReduced = 0,
-        UnconnectedNodesReduced = 0, PairConnectivityCalls = 0, EdgesReduced = 0;
+        UnconnectedNodesReduced = 0, PairConnectivityCalls = 0, EdgesReduced = 0, UnsimpleChains = 0;
 std::vector<Branch> Bin;
 
-void OutprintBranche(Branch &branche) {
-    if (!branche.IsZero()) {
-        output << "Branch:" << std::endl;
-        for (auto &item : branche.GetC()) {
-            output << item << " ";
-        }
-        output << std::endl << "power=" << branche.GetPower() << std::endl;
-    } else {
-        output << "empty edge" << std::endl;
-    }
-}
-
-void OutPrintHypernet(H &H) {
-    output << "FN:" << std::endl;
-    for(auto &item : H.GetFN()) {
-        output << "(" << item.GetFirstNode() << "," << item.GetSecondNode() << ")" << std::endl;
-        OutprintBranche(item);
-    }
-    output << "F:" << std::endl;
-    for (auto &row : H.GetF()) {
-        for (auto &cell : *row) {
-            output << cell << " ";
-        }
-        output << std::endl;
+void NormalizeSolution(Branch &branch){
+    branch.GetC().resize(m + 1);
+    if (branch.GetPower() < m) {
+        branch = branch * Bin[m - branch.GetPower()];
     }
 }
 
@@ -84,8 +64,8 @@ int main() {
 
         auto ptr = std::make_shared<std::vector<int>>(edge);
         for (int j = 0; j < edge.size() - 1; j++) {
-            auto it = std::find_if(branchList.begin(), branchList.end(), [edge, j](Branch &branche) ->
-                    bool { return Branch::EqualNodes(branche, edge[j], edge[j + 1]); });
+            auto it = std::find_if(branchList.begin(), branchList.end(), [edge, j](Branch &branch) ->
+                    bool { return Branch::EqualNodes(branch, edge[j], edge[j + 1]); });
             branchList[it - branchList.begin()].GetEdges().push_back(ptr);
         }
         F.push_back(ptr);
@@ -121,8 +101,6 @@ int main() {
     // Create an initialHypernet
     H initialHypernet = H(std::move(branchList), std::move(nodeList), std::move(F));
     initialHypernet.RemoveEmptyBranches();
-    output << "Input Hypernet:" << std::endl;
-    OutPrintHypernet(initialHypernet);
     // In the beginning we consider only connected hypernets
     if (!initialHypernet.IsSNconnected()) {
         std::cout << "Unconnected hypernet on input!" << std::endl;
@@ -138,7 +116,7 @@ int main() {
         // Computing pairwise connectivities
         if (option == 3) {
             H H = initialHypernet;
-            H.RenumerateNodes(6, 0);
+//            H.RenumerateNodes(6, 0);
             H.RenumerateNodes(7, 1);
             if (H.IsSNconnected()) {
                 auto result = PairConnectivity(H, pseudoEdge);
@@ -151,6 +129,33 @@ int main() {
 //            std::vector<bool> brancheMask(customHypernet.GetFN().size(), false);
 //            int startPos = 0;
 //            GenCombinations(customHypernet, customHypernet.GetFN(), sum, brancheMask, startPos);
+            // All connectivities
+//            for (int i = 0; i < n; i++) {
+//                for (int j = i + 1; j < n; j++) {
+//                    auto H = initialHypernet;
+//                    if (i != 0 || j != 1) {
+//                        if (i != 0 && j != 1) {
+//                            H.RenumerateNodes(i, 0);
+//                            H.RenumerateNodes(j, 1);
+//                        }
+//                        if (i == 0 && j != 1) {
+//                            H.RenumerateNodes(j, 1);
+//                        }
+//                        if (i != 0 && j == 1) {
+//                            H.RenumerateNodes(i, 0);
+//                        }
+//                    }
+//                    if (H.IsSNconnected()) {
+//                        auto result = PairConnectivity(H, pseudoEdge);
+//                        NormalizeSolution(result);
+//                        for (auto &item : result.GetC()) {
+//                            output << std::setprecision(15) << item << " ";
+//                        }
+//                        output << std::endl;
+//                    }
+//                }
+//            }
+//            return 0;
         }
         // Computing APC
         if (option == 1) {
@@ -243,16 +248,14 @@ int main() {
     std::cout << " UnconnectedNodesReduced " << UnconnectedNodesReduced << std::endl;
     std::cout << " EdgesReduced " << EdgesReduced << std::endl;
     std::cout << " ChainsReduced " << ChainsReduced << std::endl;
+//    std::cout << " UnsimpleChains " << UnsimpleChains << std::endl;
     std::cout << "Were ends of recursion : " << ReliableHypernetsCount + UnconnectedHypernetsCount + TwoNodesHypernetsCount << std::endl;
     std::cout << " ReliableHypernetsCount " << ReliableHypernetsCount << std::endl;
     std::cout << " UnconnectedHypernetsCount " << UnconnectedHypernetsCount << std::endl;
     std::cout << " TwoNodesHypernetsCount " << TwoNodesHypernetsCount << std::endl;
     std::cout << "Solution:" << std::endl;
     if (!sum.IsZero()) {
-        sum.GetC().resize(m + 1);
-        if (sum.GetPower() < m) {
-            sum = sum * Bin[m - sum.GetPower()];
-        }
+        NormalizeSolution(sum);
         sum.PrintBranch();
         for (int i = 0; i < sum.GetPower(); i++) {
             value += sum.GetC()[i] * pow(p, sum.GetPower() - i) * pow(z, i);
@@ -271,6 +274,6 @@ int main() {
     input.close();
     output.close();
 
-    /*system("pause>>void");*/
+//    system("pause>>void");
     return 0;
 }

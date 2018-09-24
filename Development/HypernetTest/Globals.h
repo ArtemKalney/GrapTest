@@ -9,5 +9,5 @@ extern std::vector<Branch> Bin;
 extern int n, m, k;
 extern int FreeId;
 extern int ReliableHypernetsCount, UnconnectedHypernetsCount, TwoNodesHypernetsCount, ChainsReduced,
-        UnconnectedNodesReduced, PairConnectivityCalls, EdgesReduced;
+        UnconnectedNodesReduced, PairConnectivityCalls, EdgesReduced, UnsimpleChains;
 

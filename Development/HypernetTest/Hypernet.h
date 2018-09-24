@@ -73,9 +73,9 @@ public:
     {
         return _F;
     }
-
-    static bool EqualEdgeNodes(const std::vector<int>& edge, const int& firstNode, const int& secondNode);
-    static void DFS(const int& nodeNumber, std::vector<Node>& nodes, const std::vector<Branch>& graph);
+    //todo уменьшить static функкций
+    static bool EqualEdgeNodes(const std::vector<int>& firstEdge, const Branch& secondEdge);
+    static void DFS(const int& node, std::vector<Node>& nodes, const std::vector<Branch>& graph);
     static std::vector<int> GetNodePowers(const std::vector<Branch>& graph, const int& size);
     static bool IsPivotNode(const int &node);
     static int GetBranchSaturation(Branch& branch);
@@ -84,21 +84,20 @@ public:
     static bool IsIncident(const int &node, const Branch &branch);
     bool IsSNconnected();
     bool HasReliablePath();
-    std::vector<Branch> GetChain(std::vector<int>& forbiddenNodes);
-    std::vector<Branch> GetHomogeneousChain(std::vector<int>& forbiddenNodes);
+    std::vector<Branch> GetHomogeneousChain();
     void RemoveBranch(Branch& branch);
-    void RemoveNode(const int& nodeNumber);
-    void RemoveNodeFN(const int& nodeNumber);
-    void RemoveNodeSN(const int& nodeNumber);
+    void RemoveNode(const int& node);
+    void RemoveNodeFN(const int& node);
+    void RemoveNodeSN(const int& node);
     void MakeReliableBranch(Branch& branch);
     void RemoveEmptyBranches();
-    void RenumerateNodes(const int& node1, const int& node2);
+    void RenumerateNodes(const int& firstNode, const int& secondNode);
     std::vector<Branch> GetSN();
     std::vector<bool> GetCanDeleteMask(const std::vector<Branch> &SN);
     std::vector<Node> GetNodesInChain(const std::vector<Branch>& chain);
     void PrintHypernet();
     // to debug
-    void RenumerateNodesForGen(const int& node1, const int& node2);
+    void RenumerateNodesForGen(const int& firstNode, const int& secondNode);
     std::vector<std::vector<int>> GetEdgesF();
     std::vector<std::vector<std::vector<int>>> GetEdgesFN();
 };

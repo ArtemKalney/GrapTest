@@ -59,39 +59,39 @@ CMAKE_SOURCE_DIR = E:\Projects\Clion\Development\HypernetTest
 CMAKE_BINARY_DIR = E:\Projects\Clion\Development\HypernetTest\cmake-build-debug
 
 #=============================================================================
-# Target rules for target CMakeFiles/HyperNetTest.dir
+# Target rules for target CMakeFiles/HypernetTest.dir
 
 # All Build rule for target.
-CMakeFiles/HyperNetTest.dir/all:
-	$(MAKE) -f CMakeFiles\HyperNetTest.dir\build.make CMakeFiles/HyperNetTest.dir/depend
-	$(MAKE) -f CMakeFiles\HyperNetTest.dir\build.make CMakeFiles/HyperNetTest.dir/build
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --progress-dir=E:\Projects\Clion\Development\HypernetTest\cmake-build-debug\CMakeFiles --progress-num=1,2,3,4,5,6 "Built target HyperNetTest"
-.PHONY : CMakeFiles/HyperNetTest.dir/all
+CMakeFiles/HypernetTest.dir/all:
+	$(MAKE) -f CMakeFiles\HypernetTest.dir\build.make CMakeFiles/HypernetTest.dir/depend
+	$(MAKE) -f CMakeFiles\HypernetTest.dir\build.make CMakeFiles/HypernetTest.dir/build
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --progress-dir=E:\Projects\Clion\Development\HypernetTest\cmake-build-debug\CMakeFiles --progress-num=1,2,3,4,5,6 "Built target HypernetTest"
+.PHONY : CMakeFiles/HypernetTest.dir/all
 
 # Include target in all.
-all: CMakeFiles/HyperNetTest.dir/all
+all: CMakeFiles/HypernetTest.dir/all
 
 .PHONY : all
 
 # Build rule for subdir invocation for target.
-CMakeFiles/HyperNetTest.dir/rule: cmake_check_build_system
+CMakeFiles/HypernetTest.dir/rule: cmake_check_build_system
 	$(CMAKE_COMMAND) -E cmake_progress_start E:\Projects\Clion\Development\HypernetTest\cmake-build-debug\CMakeFiles 6
-	$(MAKE) -f CMakeFiles\Makefile2 CMakeFiles/HyperNetTest.dir/all
+	$(MAKE) -f CMakeFiles\Makefile2 CMakeFiles/HypernetTest.dir/all
 	$(CMAKE_COMMAND) -E cmake_progress_start E:\Projects\Clion\Development\HypernetTest\cmake-build-debug\CMakeFiles 0
-.PHONY : CMakeFiles/HyperNetTest.dir/rule
+.PHONY : CMakeFiles/HypernetTest.dir/rule
 
 # Convenience name for target.
-HyperNetTest: CMakeFiles/HyperNetTest.dir/rule
+HypernetTest: CMakeFiles/HypernetTest.dir/rule
 
-.PHONY : HyperNetTest
-
-# clean rule for target.
-CMakeFiles/HyperNetTest.dir/clean:
-	$(MAKE) -f CMakeFiles\HyperNetTest.dir\build.make CMakeFiles/HyperNetTest.dir/clean
-.PHONY : CMakeFiles/HyperNetTest.dir/clean
+.PHONY : HypernetTest
 
 # clean rule for target.
-clean: CMakeFiles/HyperNetTest.dir/clean
+CMakeFiles/HypernetTest.dir/clean:
+	$(MAKE) -f CMakeFiles\HypernetTest.dir\build.make CMakeFiles/HypernetTest.dir/clean
+.PHONY : CMakeFiles/HypernetTest.dir/clean
+
+# clean rule for target.
+clean: CMakeFiles/HypernetTest.dir/clean
 
 .PHONY : clean
 

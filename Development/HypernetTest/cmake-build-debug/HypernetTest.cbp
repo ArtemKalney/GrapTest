@@ -27,8 +27,8 @@
 					<DistClean command="E:/MingGW/mingw64/bin/mingw32-make.exe -f &quot;E:/Projects/Clion/Development/HypernetTest/cmake-build-debug/Makefile&quot;  VERBOSE=1 clean"/>
 				</MakeCommands>
 			</Target>
-			<Target title="HyperNetTest">
-				<Option output="E:/Projects/Clion/Development/HypernetTest/cmake-build-debug/HyperNetTest.exe" prefix_auto="0" extension_auto="0"/>
+			<Target title="HypernetTest">
+				<Option output="E:/Projects/Clion/Development/HypernetTest/cmake-build-debug/HypernetTest.exe" prefix_auto="0" extension_auto="0"/>
 				<Option working_dir="E:/Projects/Clion/Development/HypernetTest/cmake-build-debug"/>
 				<Option object_output="./"/>
 				<Option type="1"/>
@@ -42,14 +42,14 @@
 					<Add directory="E:/MingGW/mingw64/bin/../lib/gcc/x86_64-w64-mingw32/7.2.0/../../../../x86_64-w64-mingw32/include"/>
 				</Compiler>
 				<MakeCommands>
-					<Build command="E:/MingGW/mingw64/bin/mingw32-make.exe -f &quot;E:/Projects/Clion/Development/HypernetTest/cmake-build-debug/Makefile&quot;  VERBOSE=1 HyperNetTest"/>
+					<Build command="E:/MingGW/mingw64/bin/mingw32-make.exe -f &quot;E:/Projects/Clion/Development/HypernetTest/cmake-build-debug/Makefile&quot;  VERBOSE=1 HypernetTest"/>
 					<CompileFile command="E:/MingGW/mingw64/bin/mingw32-make.exe -f &quot;E:/Projects/Clion/Development/HypernetTest/cmake-build-debug/Makefile&quot;  VERBOSE=1 &quot;$file&quot;"/>
 					<Clean command="E:/MingGW/mingw64/bin/mingw32-make.exe -f &quot;E:/Projects/Clion/Development/HypernetTest/cmake-build-debug/Makefile&quot;  VERBOSE=1 clean"/>
 					<DistClean command="E:/MingGW/mingw64/bin/mingw32-make.exe -f &quot;E:/Projects/Clion/Development/HypernetTest/cmake-build-debug/Makefile&quot;  VERBOSE=1 clean"/>
 				</MakeCommands>
 			</Target>
-			<Target title="HyperNetTest/fast">
-				<Option output="E:/Projects/Clion/Development/HypernetTest/cmake-build-debug/HyperNetTest.exe" prefix_auto="0" extension_auto="0"/>
+			<Target title="HypernetTest/fast">
+				<Option output="E:/Projects/Clion/Development/HypernetTest/cmake-build-debug/HypernetTest.exe" prefix_auto="0" extension_auto="0"/>
 				<Option working_dir="E:/Projects/Clion/Development/HypernetTest/cmake-build-debug"/>
 				<Option object_output="./"/>
 				<Option type="1"/>
@@ -63,7 +63,7 @@
 					<Add directory="E:/MingGW/mingw64/bin/../lib/gcc/x86_64-w64-mingw32/7.2.0/../../../../x86_64-w64-mingw32/include"/>
 				</Compiler>
 				<MakeCommands>
-					<Build command="E:/MingGW/mingw64/bin/mingw32-make.exe -f &quot;E:/Projects/Clion/Development/HypernetTest/cmake-build-debug/Makefile&quot;  VERBOSE=1 HyperNetTest/fast"/>
+					<Build command="E:/MingGW/mingw64/bin/mingw32-make.exe -f &quot;E:/Projects/Clion/Development/HypernetTest/cmake-build-debug/Makefile&quot;  VERBOSE=1 HypernetTest/fast"/>
 					<CompileFile command="E:/MingGW/mingw64/bin/mingw32-make.exe -f &quot;E:/Projects/Clion/Development/HypernetTest/cmake-build-debug/Makefile&quot;  VERBOSE=1 &quot;$file&quot;"/>
 					<Clean command="E:/MingGW/mingw64/bin/mingw32-make.exe -f &quot;E:/Projects/Clion/Development/HypernetTest/cmake-build-debug/Makefile&quot;  VERBOSE=1 clean"/>
 					<DistClean command="E:/MingGW/mingw64/bin/mingw32-make.exe -f &quot;E:/Projects/Clion/Development/HypernetTest/cmake-build-debug/Makefile&quot;  VERBOSE=1 clean"/>
@@ -81,34 +81,34 @@
 			</Target>
 		</Build>
 		<Unit filename="E:/Projects/Clion/Development/HypernetTest/Branch.cpp">
-			<Option target="HyperNetTest"/>
+			<Option target="HypernetTest"/>
 		</Unit>
 		<Unit filename="E:/Projects/Clion/Development/HypernetTest/Branch.h">
-			<Option target="HyperNetTest"/>
+			<Option target="HypernetTest"/>
 		</Unit>
 		<Unit filename="E:/Projects/Clion/Development/HypernetTest/Funcs.h">
-			<Option target="HyperNetTest"/>
+			<Option target="HypernetTest"/>
 		</Unit>
 		<Unit filename="E:/Projects/Clion/Development/HypernetTest/GenCombinations.cpp">
-			<Option target="HyperNetTest"/>
+			<Option target="HypernetTest"/>
 		</Unit>
 		<Unit filename="E:/Projects/Clion/Development/HypernetTest/Globals.h">
-			<Option target="HyperNetTest"/>
+			<Option target="HypernetTest"/>
 		</Unit>
 		<Unit filename="E:/Projects/Clion/Development/HypernetTest/Hypernet.cpp">
-			<Option target="HyperNetTest"/>
+			<Option target="HypernetTest"/>
 		</Unit>
 		<Unit filename="E:/Projects/Clion/Development/HypernetTest/Hypernet.h">
-			<Option target="HyperNetTest"/>
+			<Option target="HypernetTest"/>
 		</Unit>
 		<Unit filename="E:/Projects/Clion/Development/HypernetTest/Main.cpp">
-			<Option target="HyperNetTest"/>
+			<Option target="HypernetTest"/>
 		</Unit>
 		<Unit filename="E:/Projects/Clion/Development/HypernetTest/PairConnectivity.cpp">
-			<Option target="HyperNetTest"/>
+			<Option target="HypernetTest"/>
 		</Unit>
 		<Unit filename="E:/Projects/Clion/Development/HypernetTest/Stdafx.h">
-			<Option target="HyperNetTest"/>
+			<Option target="HypernetTest"/>
 		</Unit>
 		<Unit filename="E:/Projects/Clion/Development/HypernetTest/CMakeLists.txt">
 			<Option virtualFolder="CMake Files\"/>

@@ -210,3 +210,8 @@ bool operator ==(Branch firstBranch, Branch secondBranch)
 {
     return firstBranch.GetId() == secondBranch.GetId();
 }
+
+bool operator !=(Branch firstBranch, Branch secondBranch)
+{
+    return firstBranch.GetId() != secondBranch.GetId();
+}
