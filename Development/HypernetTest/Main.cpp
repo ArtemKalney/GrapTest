@@ -115,13 +115,13 @@ int main() {
     try {
         // Computing pairwise connectivities
         if (option == 3) {
-            H H = initialHypernet;
+//            H H = initialHypernet;
 //            H.RenumerateNodes(6, 0);
-            H.RenumerateNodes(7, 1);
-            if (H.IsSNconnected()) {
-                auto result = PairConnectivity(H, pseudoEdge);
-                sum = sum + result;
-            }
+//            H.RenumerateNodes(7, 1);
+//            if (H.IsSNconnected()) {
+//                auto result = PairConnectivity(H, pseudoEdge);
+//                sum = sum + result;
+//            }
             //debug
 //            auto customHypernet = initialHypernet;
 //            //customHypernet.RenumerateNodesForGen(2, 0);
@@ -130,32 +130,32 @@ int main() {
 //            int startPos = 0;
 //            GenCombinations(customHypernet, customHypernet.GetFN(), sum, brancheMask, startPos);
             // All connectivities
-//            for (int i = 0; i < n; i++) {
-//                for (int j = i + 1; j < n; j++) {
-//                    auto H = initialHypernet;
-//                    if (i != 0 || j != 1) {
-//                        if (i != 0 && j != 1) {
-//                            H.RenumerateNodes(i, 0);
-//                            H.RenumerateNodes(j, 1);
-//                        }
-//                        if (i == 0 && j != 1) {
-//                            H.RenumerateNodes(j, 1);
-//                        }
-//                        if (i != 0 && j == 1) {
-//                            H.RenumerateNodes(i, 0);
-//                        }
-//                    }
-//                    if (H.IsSNconnected()) {
-//                        auto result = PairConnectivity(H, pseudoEdge);
-//                        NormalizeSolution(result);
-//                        for (auto &item : result.GetC()) {
-//                            output << std::setprecision(15) << item << " ";
-//                        }
-//                        output << std::endl;
-//                    }
-//                }
-//            }
-//            return 0;
+            for (int i = 0; i < n; i++) {
+                for (int j = i + 1; j < n; j++) {
+                    auto H = initialHypernet;
+                    if (i != 0 || j != 1) {
+                        if (i != 0 && j != 1) {
+                            H.RenumerateNodes(i, 0);
+                            H.RenumerateNodes(j, 1);
+                        }
+                        if (i == 0 && j != 1) {
+                            H.RenumerateNodes(j, 1);
+                        }
+                        if (i != 0 && j == 1) {
+                            H.RenumerateNodes(i, 0);
+                        }
+                    }
+                    if (H.IsSNconnected()) {
+                        auto result = PairConnectivity(H, pseudoEdge);
+                        NormalizeSolution(result);
+                        for (auto &item : result.GetC()) {
+                            output << std::setprecision(15) << item << " ";
+                        }
+                        output << std::endl;
+                    }
+                }
+            }
+            return 0;
         }
         // Computing APC
         if (option == 1) {
@@ -274,6 +274,6 @@ int main() {
     input.close();
     output.close();
 
-//    system("pause>>void");
+    system("pause>>void");
     return 0;
 }

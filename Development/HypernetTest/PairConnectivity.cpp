@@ -4,8 +4,8 @@
 
 // Chain replacement by edge
 void ChainReduction(H& H) {
-    std::vector<int> forbiddenNodeNumbers;
-    auto chain = H.GetHomogeneousChain();
+    std::vector<int> forbiddenNodes;
+    auto chain = H.GetHomogeneousChain(forbiddenNodes);
     if (chain.empty()) {
         return;
     }
@@ -15,7 +15,7 @@ void ChainReduction(H& H) {
     auto SNnodepowers = H::GetNodePowers(H.GetSN(), H.GetNodes().size());
     bool isSimpleChain = true;
     for (int i = 1; i < nodesInChain.size() - 1; i++) {
-        int nodeNumber = nodesInChain[i].NodeNumber;
+        int nodeNumber = nodesInChain[i];
         if (SNnodepowers[nodeNumber] != 2 && SNnodepowers[nodeNumber] != 0) {
             isSimpleChain = false;
             break;
@@ -27,7 +27,7 @@ void ChainReduction(H& H) {
 //        преобразования F при замене цепи ребром
         auto nodesF = nodesInChain;
         for (int i = 1; i < nodesF.size() - 1; i++) {
-            int nodeNumber = nodesF[i].NodeNumber;
+            int nodeNumber = nodesF[i];
             for (int j = 0; j < H.GetF().size(); j++) {
                 auto edgePtr = H.GetF()[j];
                 if (H::IsSlightlyIncident(nodeNumber, *edgePtr)) {
@@ -75,8 +75,8 @@ void ChainReduction(H& H) {
             }
             // decrease indexes after delete
             for (auto &item : nodesF) {
-                if (nodeNumber < item.NodeNumber) {
-                    item.NodeNumber--;
+                if (nodeNumber < item) {
+                    item--;
                 }
             }
             for (auto &ptr : H.GetF()) {
@@ -102,21 +102,28 @@ void ChainReduction(H& H) {
         newBranch.SetEdges(chain.front().GetEdges());
         newBranch.SetId(FreeId++);
         for (int i = 1; i < nodesFN.size() - 1; i++) {
-            int nodeNumber = nodesFN[i].NodeNumber;
+            int nodeNumber = nodesFN[i];
             H.RemoveNodeFN(nodeNumber);
             for (auto &item : nodesFN) {
-                if (nodeNumber < item.NodeNumber) {
-                    item.NodeNumber--;
+                if (nodeNumber < item) {
+                    item--;
                 }
             }
         }
-        newBranch.SetFirstNode(nodesFN.front().NodeNumber);
-        newBranch.SetSecondNode(nodesFN.back().NodeNumber);
+        newBranch.SetFirstNode(nodesFN.front());
+        newBranch.SetSecondNode(nodesFN.back());
         H.GetFN().push_back(newBranch);
 
         return ChainReduction(H);
     } else {
         UnsimpleChains++;
+        for (auto &item : nodesInChain) {
+            if (std::find(forbiddenNodes.begin(), forbiddenNodes.end(), item) == forbiddenNodes.end()) {
+                forbiddenNodes.push_back(item);
+            }
+        }
+
+        return ChainReduction(H);
     }
 }
 // Removes the connectivity component, where both pivot nodes do not lie and returns true,

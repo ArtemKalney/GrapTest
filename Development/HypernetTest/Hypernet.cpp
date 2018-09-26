@@ -110,15 +110,19 @@ std::vector<bool> H::GetCanDeleteMask(const std::vector<Branch> &SN) {
     return edgeMask;
 }
 
-std::vector<Branch> H::GetHomogeneousChain() {
+std::vector<Branch> H::GetHomogeneousChain(std::vector<int>& forbiddenNodes) {
     auto nodePowers = H::GetNodePowers(_FN, _nodes.size());
     // Initializing a branch by an edge where there is a node of degree 2
     // todo учесть всё
-    auto it = std::find_if(_FN.begin(), _FN.end(), [this, nodePowers](Branch &branch) -> bool {
+    auto it = std::find_if(_FN.begin(), _FN.end(), [this, nodePowers, forbiddenNodes](Branch &branch) -> bool {
         int firstNode = branch.GetFirstNode(), secondNode = branch.GetSecondNode();
         bool isPivotNodeInsideChain = IsPivotNode(firstNode) && nodePowers[firstNode] == 2 ||
                                       IsPivotNode(secondNode) && nodePowers[secondNode] == 2;
-        if (!isPivotNodeInsideChain && (nodePowers[firstNode] == 2 || nodePowers[secondNode] == 2)) {
+        bool isForbiddenNodes =
+                std::find(forbiddenNodes.begin(), forbiddenNodes.end(), firstNode) != forbiddenNodes.end() &&
+                std::find(forbiddenNodes.begin(), forbiddenNodes.end(), secondNode) != forbiddenNodes.end();
+        if (!isForbiddenNodes && !isPivotNodeInsideChain &&
+            (nodePowers[firstNode] == 2 || nodePowers[secondNode] == 2)) {
             bool isParallelBranch = std::find_if(_FN.begin(), _FN.end(), [branch](Branch &item) -> bool {
                 return Branch::EqualNodes(item, branch) && item != branch;
             }) != _FN.end();
@@ -378,38 +382,36 @@ int H::GetBranchSaturation(Branch& branch) {
     return count;
 }
 
-std::vector<Node> H::GetNodesInChain(const std::vector<Branch>& chain) {
+std::vector<int> H::GetNodesInChain(const std::vector<Branch>& chain) {
     auto FNnodepowers = GetNodePowers(_FN, _nodes.size());
-    std::vector<Node> nodesInChain;
+    std::vector<int> nodesInChain;
     for (auto &item : chain) {
         for (auto &node : _nodes) {
-            int nodeNumber = node.NodeNumber;
-            if (H::IsIncident(nodeNumber, item)) {
-                auto it = std::find_if(nodesInChain.begin(), nodesInChain.end(), [nodeNumber](Node &item) ->
-                        bool { return item.NodeNumber == nodeNumber; });
+            if (H::IsIncident(node.NodeNumber, item)) {
+                auto it = std::find(nodesInChain.begin(), nodesInChain.end(), node.NodeNumber);
                 if (it == nodesInChain.end()) {
                     if (item == chain.front() || item == chain.back()) {
-                        bool isTerminalNode = FNnodepowers[nodeNumber] != 2 || H::IsPivotNode(nodeNumber);
-                        Node incidentNode = nodeNumber == item.GetFirstNode() ? _nodes[item.GetSecondNode()]
+                        bool isTerminalNode = FNnodepowers[node.NodeNumber] != 2 || H::IsPivotNode(node.NodeNumber);
+                        Node incidentNode = node.NodeNumber == item.GetFirstNode() ? _nodes[item.GetSecondNode()]
                                                                               : _nodes[item.GetFirstNode()];
                         if (item == chain.front()) {
                             if (isTerminalNode) {
-                                nodesInChain.push_back(node);
-                                nodesInChain.push_back(incidentNode);
+                                nodesInChain.push_back(node.NodeNumber);
+                                nodesInChain.push_back(incidentNode.NodeNumber);
                             } else {
-                                nodesInChain.push_back(incidentNode);
-                                nodesInChain.push_back(node);
+                                nodesInChain.push_back(incidentNode.NodeNumber);
+                                nodesInChain.push_back(node.NodeNumber);
                             }
                         }
                         if (item == chain.back()) {
                             if (isTerminalNode) {
-                                nodesInChain.push_back(node);
+                                nodesInChain.push_back(node.NodeNumber);
                             } else {
-                                nodesInChain.push_back(incidentNode);
+                                nodesInChain.push_back(incidentNode.NodeNumber);
                             }
                         }
                     } else {
-                        nodesInChain.push_back(node);
+                        nodesInChain.push_back(node.NodeNumber);
                     }
                 }
             }

@@ -84,7 +84,7 @@ public:
     static bool IsIncident(const int &node, const Branch &branch);
     bool IsSNconnected();
     bool HasReliablePath();
-    std::vector<Branch> GetHomogeneousChain();
+    std::vector<Branch> GetHomogeneousChain(std::vector<int>& forbiddenNodes);
     void RemoveBranch(Branch& branch);
     void RemoveNode(const int& node);
     void RemoveNodeFN(const int& node);
@@ -94,7 +94,7 @@ public:
     void RenumerateNodes(const int& firstNode, const int& secondNode);
     std::vector<Branch> GetSN();
     std::vector<bool> GetCanDeleteMask(const std::vector<Branch> &SN);
-    std::vector<Node> GetNodesInChain(const std::vector<Branch>& chain);
+    std::vector<int> GetNodesInChain(const std::vector<Branch>& chain);
     void PrintHypernet();
     // to debug
     void RenumerateNodesForGen(const int& firstNode, const int& secondNode);
