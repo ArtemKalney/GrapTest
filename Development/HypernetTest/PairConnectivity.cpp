@@ -29,46 +29,50 @@ void ChainReduction(H& H) {
         for (int i = 1; i < nodesF.size() - 1; i++) {
             int nodeNumber = nodesF[i];
             for (int j = 0; j < H.GetF().size(); j++) {
-                auto edgePtr = H.GetF()[j];
-                if (H::IsSlightlyIncident(nodeNumber, *edgePtr)) {
-                    edgePtr->erase(std::remove(edgePtr->begin(), edgePtr->end(), nodeNumber), edgePtr->end());
+                Route route = H.GetF()[j];
+                auto ptr = route.Ptr;
+                if (H::IsSlightlyIncident(nodeNumber, route)) {
+                    ptr->erase(std::remove(ptr->begin(), ptr->end(), nodeNumber), ptr->end());
                     // если длина ребра с тановится 1, то удаляем его
-                    if (edgePtr->size() == 1) {
-                        edgePtr->clear();
+                    if (ptr->size() == 1) {
+                        ptr->clear();
                         H.GetF().erase(H.GetF().begin() + j--);
                     }
-                } else if (H::IsIncident(nodeNumber, *edgePtr)) {
+                } else if (H::IsIncident(nodeNumber, route)) {
                     H.GetF().erase(H.GetF().begin() + j--);
                     auto it = std::find_if(H.GetF().begin(), H.GetF().end(),
-                                           [nodeNumber](std::shared_ptr<std::vector<int>> &ptr) ->
-                                                   bool { return H::IsIncident(nodeNumber, *ptr); });
-                    auto ptrToInsert = *it;
-                    if (ptrToInsert->front() == nodeNumber && edgePtr->front() == nodeNumber) {
+                                           [nodeNumber](Route &route) ->
+                                                   bool { return H::IsIncident(nodeNumber, route); });
+                    auto ptrToInsert = it -> Ptr;
+                    if (ptrToInsert->front() == nodeNumber && ptr->front() == nodeNumber) {
                         std::reverse(ptrToInsert->begin(), ptrToInsert->end());
-                    } else if (ptrToInsert->back() == nodeNumber && edgePtr->back() == nodeNumber) {
-                        std::reverse(edgePtr->begin(), edgePtr->end());
-                    } else if (ptrToInsert->front() == nodeNumber && edgePtr->back() == nodeNumber) {
+                    } else if (ptrToInsert->back() == nodeNumber && ptr->back() == nodeNumber) {
+                        std::reverse(ptr->begin(), ptr->end());
+                    } else if (ptrToInsert->front() == nodeNumber && ptr->back() == nodeNumber) {
                         std::reverse(ptrToInsert->begin(), ptrToInsert->end());
-                        std::reverse(edgePtr->begin(), edgePtr->end());
+                        std::reverse(ptr->begin(), ptr->end());
                     }
                     // удаляем вершину из обоих рёбер
                     ptrToInsert->erase(std::remove(ptrToInsert->begin(), ptrToInsert->end(), nodeNumber));
-                    edgePtr->erase(std::remove(edgePtr->begin(), edgePtr->end(), nodeNumber));
+                    ptr->erase(std::remove(ptr->begin(), ptr->end(), nodeNumber));
                     // объединяем рёбра
-                    ptrToInsert->insert(ptrToInsert->end(), edgePtr->begin(), edgePtr->end());
-                    // заменяем в FN ссылки соответсвующие edgePtr на новое ребро
+                    ptrToInsert->insert(ptrToInsert->end(), ptr->begin(), ptr->end());
+                    // заменяем в FN ссылки соответсвующие ptr на новое ребро
                     //todo сделать проще
-                    for (auto &item : H.GetFN()) {
-                        for (auto &ptr : item.GetEdges()) {
-                            if (ptr == edgePtr) {
-                                ptr = *it;
+                    int idToInsert = H.GetF()[it - H.GetF().begin()].Id;
+                    for (auto &branch : H.GetFN()) {
+                        for (auto &item : branch.GetRoutes()) {
+                            if (item == route) {
+                                item.Ptr = ptrToInsert;
+                                item.Id = idToInsert;
                             }
                         }
                     }
                     // нужно для newBranch
-                    for(auto &ptr : chain.front().GetEdges()) {
-                        if (ptr == edgePtr) {
-                            ptr = *it;
+                    for(auto &item : chain.front().GetRoutes()) {
+                        if (item == route) {
+                            item.Ptr = ptrToInsert;
+                            item.Id = idToInsert;
                         }
                     }
                 }
@@ -79,8 +83,8 @@ void ChainReduction(H& H) {
                     item--;
                 }
             }
-            for (auto &ptr : H.GetF()) {
-                for (auto &item : *ptr) {
+            for (auto &route : H.GetF()) {
+                for (auto &item : *route.Ptr) {
                     if (nodeNumber < item) {
                         item--;
                     }
@@ -99,8 +103,8 @@ void ChainReduction(H& H) {
                 newBranch = newBranch * item;
             }
         }
-        newBranch.SetEdges(chain.front().GetEdges());
-        newBranch.SetId(FreeId++);
+        newBranch.SetRoutes(chain.front().GetRoutes());
+        newBranch.SetId(chain.front().GetId());
         for (int i = 1; i < nodesFN.size() - 1; i++) {
             int nodeNumber = nodesFN[i];
             H.RemoveNodeFN(nodeNumber);
@@ -134,14 +138,14 @@ bool BridgeReduction(H& H)
         item.IsVisited = false;
     }
     H::DFS(0, H.GetNodes(), H.GetFN());
-    int visitedNodes = 0;
+    int visitedNodesCount = 0;
     for(auto &item : H.GetNodes()) {
        if (item.IsVisited) {
-           visitedNodes++;
+           visitedNodesCount++;
        }
     }
 
-    if (visitedNodes != H.GetNodes().size()) {
+    if (visitedNodesCount != H.GetNodes().size()) {
         for (int i = 0; i < H.GetNodes().size(); i++) {
             Node node = H.GetNodes()[i];
             if (!node.IsVisited) {
@@ -165,15 +169,13 @@ void EdgeReduction(H& H) {
         if (canDeleteMask[i]) {
             EdgesReduced++;
             Branch edge = SN[i];
-            H.GetF().erase(
-                    std::remove_if(H.GetF().begin(), H.GetF().end(),
-                                   [edge](std::shared_ptr<std::vector<int>> &ptr) -> bool {
-                                       bool isRemoved = H::EqualEdgeNodes(*ptr, edge);
-                                       if (isRemoved) {
-                                           ptr->clear();
-                                       }
-                                       return isRemoved;
-                                   }), H.GetF().end());
+            H.GetF().erase(std::remove_if(H.GetF().begin(), H.GetF().end(), [edge](Route &route) -> bool {
+                bool isRemoved = route.Id == edge.GetId();
+                if (isRemoved) {
+                    route.Ptr->clear();
+                }
+                return isRemoved;
+            }), H.GetF().end());
         }
     }
 
@@ -214,6 +216,7 @@ Branch SimpleCase (const std::vector<Branch>& FN, const Branch& pseudoBranch) {
 
 Branch PairConnectivity(H &H, Branch &pseudoBranch) {
     PairConnectivityCalls++;
+
     if (BridgeReduction(H)) {
         return Branch::GetZero();
     }

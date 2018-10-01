@@ -4,6 +4,7 @@ file(REMOVE_RECURSE
   "CMakeFiles/HypernetTest.dir/Branch.cpp.obj"
   "CMakeFiles/HypernetTest.dir/Hypernet.cpp.obj"
   "CMakeFiles/HypernetTest.dir/GenCombinations.cpp.obj"
+  "CMakeFiles/HypernetTest.dir/Rote.cpp.obj"
   "HypernetTest.pdb"
   "HypernetTest.exe"
   "HypernetTest.exe.manifest"

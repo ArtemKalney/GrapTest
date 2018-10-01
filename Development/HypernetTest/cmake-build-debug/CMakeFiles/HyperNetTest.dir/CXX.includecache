@@ -7,8 +7,6 @@
 #IncludeRegexTransform: 
 
 E:/Projects/Clion/Development/HypernetTest/Branch.cpp
-Stdafx.h
-E:/Projects/Clion/Development/HypernetTest/Stdafx.h
 Branch.h
 E:/Projects/Clion/Development/HypernetTest/Branch.h
 Globals.h
@@ -17,6 +15,8 @@ E:/Projects/Clion/Development/HypernetTest/Globals.h
 E:/Projects/Clion/Development/HypernetTest/Branch.h
 Stdafx.h
 E:/Projects/Clion/Development/HypernetTest/Stdafx.h
+Route.h
+E:/Projects/Clion/Development/HypernetTest/Route.h
 
 E:/Projects/Clion/Development/HypernetTest/Funcs.h
 Branch.h
@@ -47,6 +47,8 @@ Stdafx.h
 E:/Projects/Clion/Development/HypernetTest/Stdafx.h
 Branch.h
 E:/Projects/Clion/Development/HypernetTest/Branch.h
+Route.h
+E:/Projects/Clion/Development/HypernetTest/Route.h
 
 E:/Projects/Clion/Development/HypernetTest/Main.cpp
 Funcs.h
@@ -61,6 +63,14 @@ Funcs.h
 E:/Projects/Clion/Development/HypernetTest/Funcs.h
 Globals.h
 E:/Projects/Clion/Development/HypernetTest/Globals.h
+
+E:/Projects/Clion/Development/HypernetTest/Rote.cpp
+Route.h
+E:/Projects/Clion/Development/HypernetTest/Route.h
+
+E:/Projects/Clion/Development/HypernetTest/Route.h
+Stdafx.h
+E:/Projects/Clion/Development/HypernetTest/Stdafx.h
 
 E:/Projects/Clion/Development/HypernetTest/Stdafx.h
 cstdio

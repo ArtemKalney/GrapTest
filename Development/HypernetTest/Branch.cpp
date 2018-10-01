@@ -1,39 +1,38 @@
-#include "Stdafx.h"
 #include "Branch.h"
 #include "Globals.h"
 
 Branch Branch::GetBranch(const int& power) {
     std::vector<double> C(m);
     C.front() = 1;
-    std::vector<std::shared_ptr<std::vector<int>>> edges;
-    return Branch(-1, C, edges, power, 0, 0, false);
+    std::vector<Route> routes;
+    return Branch(-1, C, routes, power, 0, 0, false);
 }
 
 Branch Branch::GetBranch(const int& vectorSize, const int& power) {
     std::vector<double> C(vectorSize);
     C.front() = 1;
-    std::vector<std::shared_ptr<std::vector<int>>> edges;
-    return Branch(-1, C, edges, power, 0, 0, false);
+    std::vector<Route> routes;
+    return Branch(-1, C, routes, power, 0, 0, false);
 }
 
 Branch Branch::GetSimpleBranch(const int& id, const int& firstNode, const int& secondNode) {
     std::vector<double> C(m);
     C.front() = 1;
-    std::vector<std::shared_ptr<std::vector<int>>> edges;
-    return Branch(id, C, edges, 1, firstNode, secondNode, false);
+    std::vector<Route> routes;
+    return Branch(id, C, routes, 1, firstNode, secondNode, false);
 }
 
 Branch Branch::GetZero() {
     std::vector<double> C;
-    std::vector<std::shared_ptr<std::vector<int>>> edges;
-    return Branch(-1, C, edges, 0, 0, 0, false);
+    std::vector<Route> routes;
+    return Branch(-1, C, routes, 0, 0, 0, false);
 }
 
 Branch Branch::GetUnity() {
     std::vector<double> C;
     C.push_back(1);
-    std::vector<std::shared_ptr<std::vector<int>>> edges;
-    return Branch(-1, C, edges, 0, 0, 0, false);
+    std::vector<Route> routes;
+    return Branch(-1, C, routes, 0, 0, 0, false);
 }
 
 bool Branch::EqualNodes(const Branch& firstBranch, const Branch& secondBranch) {

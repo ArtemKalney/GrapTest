@@ -5,90 +5,50 @@ std::ifstream input("input.txt");
 std::ofstream output;
 
 int n = 0, m = 0, k = 0;
-int FreeId = 0;
 int ReliableHypernetsCount = 0, UnconnectedHypernetsCount = 0, TwoNodesHypernetsCount = 0, ChainsReduced = 0,
         UnconnectedNodesReduced = 0, PairConnectivityCalls = 0, EdgesReduced = 0, UnsimpleChains = 0;
 std::vector<Branch> Bin;
 
-void NormalizeSolution(Branch &branch){
-    branch.GetC().resize(m + 1);
-    if (branch.GetPower() < m) {
-        branch = branch * Bin[m - branch.GetPower()];
-    }
-}
-
-int main() {
-    output.open("output.txt");
-    setlocale(LC_ALL, "");
-
-    if (!input.is_open()) {
-        std::cout << "File can not be opened!\n";
-        system("pause>>void");
-        return 0;
-    }
-
-    char str[50];
-    input.getline(str, 50);
-    std::cout << "Input graph : " << str << std::endl;
+void GetData (std::vector<Branch>& branches,  std::vector<Node>& nodes, std::vector<Route>& edges) {
     int buf;
     input >> buf;n = buf;
     input >> buf;m = buf;
     input >> buf;k = buf;
-    FreeId = m;
-
-    std::vector<Branch> branchList;
     // Read all branches from input.txt
     for (int i = 0; i < m; i++) {
         input >> buf;
         int firstNode = buf - 1;
         input >> buf;
         int secondNode = buf - 1;
-        branchList.push_back(Branch::GetSimpleBranch(i, firstNode, secondNode));
+        branches.push_back(Branch::GetSimpleBranch(i, firstNode, secondNode));
     }
     // Fill all nodes
-    std::vector<Node> nodeList;
     for (int i = 0; i < n; i++) {
         Node node = Node(i, false);
-        nodeList.push_back(node);
+        nodes.push_back(node);
     }
     // Read all edges from input.txt
-    std::vector<std::shared_ptr<std::vector<int>>> F;
     for (int i = 0; i < k; i++) {
-        std::vector<int> edge;
+        std::vector<int> vector;
         input >> buf;
         while (buf != 0) {
             int node = buf - 1;
-            edge.push_back(node);
+            vector.push_back(node);
             input >> buf;
         }
 
-        auto ptr = std::make_shared<std::vector<int>>(edge);
-        for (int j = 0; j < edge.size() - 1; j++) {
-            auto it = std::find_if(branchList.begin(), branchList.end(), [edge, j](Branch &branch) ->
-                    bool { return Branch::EqualNodes(branch, edge[j], edge[j + 1]); });
-            branchList[it - branchList.begin()].GetEdges().push_back(ptr);
+        auto ptr = std::make_shared<std::vector<int>>(vector);
+        Route route = Route(i, ptr);
+        for (int j = 0; j < vector.size() - 1; j++) {
+            auto it = std::find_if(branches.begin(), branches.end(), [vector, j](Branch &branch) ->
+                    bool { return Branch::EqualNodes(branch, vector[j], vector[j + 1]); });
+            branches[it - branches.begin()].GetRoutes().push_back(route);
         }
-        F.push_back(ptr);
+        edges.push_back(route);
     }
-    // Input should end by $$$
-    input >> str;
-    if (strcmp(str, "$$$") != 0) {
-        std::cout << "Incorrect entry" << std::endl;
-        system("pause>>void");
-        return 0;
-    }
+}
 
-    std::cout << "Press 1 to get APC polynomial" << std::endl;
-    std::cout << "Press 2 to get MENC polynomial" << std::endl;
-    std::cout << "Press 3 to get pairwise connectivities" << std::endl;
-    int option;
-    std::cin >> option;
-    if (option != 1 && option != 2 && option != 3) {
-        std::cout << "Wrong number" << std::endl;
-        system("pause>>void");
-        return 0;
-    }
-    // In advance, calculate units of degree from 0 to m
+void ComputeBinomialCoefficients() {
     Bin.resize(m + 1, Branch::GetBranch(m + 1, 0));
     for (int i = 0; i < Bin.size(); i++) {
         Bin[i].SetPower(i);
@@ -98,38 +58,31 @@ int main() {
             }
         }
     }
-    // Create an initialHypernet
-    H initialHypernet = H(std::move(branchList), std::move(nodeList), std::move(F));
-    initialHypernet.RemoveEmptyBranches();
-    // In the beginning we consider only connected hypernets
-    if (!initialHypernet.IsSNconnected()) {
-        std::cout << "Unconnected hypernet on input!" << std::endl;
-        return 0;
-    }
-    // Create a pseudo-edge F, which we multiply by the end of the calculations
-    Branch pseudoEdge = Branch::GetBranch(0);
-    unsigned int startTime = clock();
-    double value = 0, p = 0.9, z = 0.1;
-    Branch sum;
+}
 
-    try {
-        // Computing pairwise connectivities
-        if (option == 3) {
-//            H H = initialHypernet;
-//            H.RenumerateNodes(6, 0);
-//            H.RenumerateNodes(7, 1);
-//            if (H.IsSNconnected()) {
-//                auto result = PairConnectivity(H, pseudoEdge);
-//                sum = sum + result;
-//            }
-            //debug
+void NormalizeSolution(Branch &branch){
+    branch.GetC().resize(m + 1);
+    if (branch.GetPower() < m) {
+        branch = branch * Bin[m - branch.GetPower()];
+    }
+}
+
+void ComputePairConnectivities(Branch& sum, const H& initialHypernet, Branch& pseudoBranch) {
+//    H H = initialHypernet;
+//    //H.RenumerateNodes(6, 0);
+//    //H.RenumerateNodes(7, 1);
+//    if (H.IsSNconnected()) {
+//        auto result = PairConnectivity(H, pseudoBranch);
+//        sum = sum + result;
+//    }
+    //debug
 //            auto customHypernet = initialHypernet;
 //            //customHypernet.RenumerateNodesForGen(2, 0);
-//            customHypernet.RenumerateNodesForGen(2, 1);
+//            //customHypernet.RenumerateNodesForGen(2, 1);
 //            std::vector<bool> brancheMask(customHypernet.GetFN().size(), false);
 //            int startPos = 0;
 //            GenCombinations(customHypernet, customHypernet.GetFN(), sum, brancheMask, startPos);
-            // All connectivities
+    // All connectivities
             for (int i = 0; i < n; i++) {
                 for (int j = i + 1; j < n; j++) {
                     auto H = initialHypernet;
@@ -146,7 +99,7 @@ int main() {
                         }
                     }
                     if (H.IsSNconnected()) {
-                        auto result = PairConnectivity(H, pseudoEdge);
+                        auto result = PairConnectivity(H, pseudoBranch);
                         NormalizeSolution(result);
                         for (auto &item : result.GetC()) {
                             output << std::setprecision(15) << item << " ";
@@ -155,30 +108,55 @@ int main() {
                     }
                 }
             }
-            return 0;
+}
+
+void ComputeMENC(Branch& sum, const H& initialHypernet, Branch& pseudoBranch) {
+    for (int i = 1; i < n; i++) {
+        auto H = initialHypernet;
+        if (i != 1) {
+            H.RenumerateNodes(i, 1);
         }
-        // Computing APC
-        if (option == 1) {
-            for (int i = 0; i < n; i++) {
-                for (int j = i + 1; j < n; j++) {
-                    auto H = initialHypernet;
-                    if (i != 0 || j != 1) {
-                        if (i != 0 && j != 1) {
-                            H.RenumerateNodes(i, 0);
-                            H.RenumerateNodes(j, 1);
-                        }
-                        if (i == 0 && j != 1) {
-                            H.RenumerateNodes(j, 1);
-                        }
-                        if (i != 0 && j == 1) {
-                            H.RenumerateNodes(i, 0);
-                        }
-                    }
-                    if (H.IsSNconnected()) {
-                        auto result = PairConnectivity(H, pseudoEdge);
-                        sum = sum + result;
-                    }
-                    //debug
+        if (H.IsSNconnected()) {
+            auto result = PairConnectivity(H, pseudoBranch);
+            sum = sum + result;
+        }
+        //debug
+//                auto customHypernet = initialHypernet;
+//                if (i != 1) {
+//                    customHypernet.RenumerateNodesForGen(i, 1);
+//                }
+//                std::vector<bool> brancheMask(customHypernet.GetFN().size());
+//                int startPos = 0;
+//                GenCombinations(customHypernet, customHypernet.GetFN(), sum, brancheMask, startPos);
+
+        //std::cout << "+R1" << i + 1 << std::endl;
+    }
+
+    sum = sum + Branch::GetUnity();
+    //sum.GetC().resize(m + 1, 1);
+}
+
+void ComputeAPC(Branch& sum, const H& initialHypernet, Branch& pseudoBranch) {
+    for (int i = 0; i < n; i++) {
+        for (int j = i + 1; j < n; j++) {
+            auto H = initialHypernet;
+            if (i != 0 || j != 1) {
+                if (i != 0 && j != 1) {
+                    H.RenumerateNodes(i, 0);
+                    H.RenumerateNodes(j, 1);
+                }
+                if (i == 0 && j != 1) {
+                    H.RenumerateNodes(j, 1);
+                }
+                if (i != 0 && j == 1) {
+                    H.RenumerateNodes(i, 0);
+                }
+            }
+            if (H.IsSNconnected()) {
+                auto result = PairConnectivity(H, pseudoBranch);
+                sum = sum + result;
+            }
+            //debug
 //                    auto customHypernet = initialHypernet;
 //                    if (i != 0 || j != 1) {
 //                        if (i != 0 && j != 1) {
@@ -196,41 +174,75 @@ int main() {
 //                    int startPos = 0;
 //                    GenCombinations(customHypernet, customHypernet.GetFN(), sum, brancheMask, startPos);
 
-                    //std::cout << "+R" << i + 1 << j + 1 << std::endl;
-                }
-            }
-
-            for (int i = 0; i < sum.GetC().size(); i++) {
-                auto sumVector = sum.GetC();
-                sumVector[i] = sumVector[i] / Bin[n].GetC()[2];
-                sum.SetC(sumVector);
-            }
+            //std::cout << "+R" << i + 1 << j + 1 << std::endl;
         }
-        // Computing MENC
+    }
+
+    for (int i = 0; i < sum.GetC().size(); i++) {
+        auto sumVector = sum.GetC();
+        sumVector[i] = sumVector[i] / Bin[n].GetC()[2];
+        sum.SetC(sumVector);
+    }
+}
+
+int main() {
+    output.open("output.txt");
+    setlocale(LC_ALL, "");
+    if (!input.is_open()) {
+        std::cout << "File can not be opened!\n";
+        system("pause>>void");
+        return 0;
+    }
+    char str[50];
+    input.getline(str, 50);
+    std::cout << "Input graph : " << str << std::endl;
+    std::vector<Branch> branches;
+    std::vector<Node> nodes;
+    std::vector<Route> edges;
+    GetData(branches, nodes, edges);
+    // Input should end by $$$
+    input >> str;
+    if (strcmp(str, "$$$") != 0) {
+        std::cout << "Incorrect entry" << std::endl;
+        system("pause>>void");
+        return 0;
+    }
+    std::cout << "Press 1 to get APC polynomial" << std::endl;
+    std::cout << "Press 2 to get MENC polynomial" << std::endl;
+    std::cout << "Press 3 to get pairwise connectivities" << std::endl;
+    int option;
+    std::cin >> option;
+    if (option != 1 && option != 2 && option != 3) {
+        std::cout << "Wrong number" << std::endl;
+        system("pause>>void");
+        return 0;
+    }
+
+    ComputeBinomialCoefficients();
+    // Create an initialHypernet
+    H initialHypernet = H(std::move(branches), std::move(nodes), std::move(edges));
+    initialHypernet.RemoveEmptyBranches();
+    // In the beginning we consider only connected hypernets
+    if (!initialHypernet.IsSNconnected()) {
+        std::cout << "Unconnected hypernet on input!" << std::endl;
+        return 0;
+    }
+    // Create a pseudo-branch F, which we multiply by the end of the calculations
+    Branch pseudoBranch = Branch::GetBranch(0);
+    unsigned int startTime = clock();
+    double value = 0, p = 0.9, z = 0.1;
+    Branch sum;
+
+    try {
+        if (option == 1) {
+            ComputeAPC(sum, initialHypernet, pseudoBranch);
+        }
         if (option == 2) {
-            for (int i = 1; i < n; i++) {
-                auto H = initialHypernet;
-                if (i != 1) {
-                    H.RenumerateNodes(i, 1);
-                }
-                if (H.IsSNconnected()) {
-                    auto result = PairConnectivity(H, pseudoEdge);
-                    sum = sum + result;
-                }
-                //debug
-//                auto customHypernet = initialHypernet;
-//                if (i != 1) {
-//                    customHypernet.RenumerateNodesForGen(i, 1);
-//                }
-//                std::vector<bool> brancheMask(customHypernet.GetFN().size());
-//                int startPos = 0;
-//                GenCombinations(customHypernet, customHypernet.GetFN(), sum, brancheMask, startPos);
-
-                //std::cout << "+R1" << i + 1 << std::endl;
-            }
-
-            sum = sum + Branch::GetUnity();
-            //sum.GetC().resize(m + 1, 1);
+            ComputeMENC(sum, initialHypernet, pseudoBranch);
+        }
+        if (option == 3) {
+            ComputePairConnectivities(sum, initialHypernet, pseudoBranch);
+            return 0;
         }
     }
     catch (const char *str) {
@@ -249,7 +261,8 @@ int main() {
     std::cout << " EdgesReduced " << EdgesReduced << std::endl;
     std::cout << " ChainsReduced " << ChainsReduced << std::endl;
 //    std::cout << " UnsimpleChains " << UnsimpleChains << std::endl;
-    std::cout << "Were ends of recursion : " << ReliableHypernetsCount + UnconnectedHypernetsCount + TwoNodesHypernetsCount << std::endl;
+    std::cout << "Were ends of recursion : " << ReliableHypernetsCount + UnconnectedHypernetsCount +
+                                                TwoNodesHypernetsCount << std::endl;
     std::cout << " ReliableHypernetsCount " << ReliableHypernetsCount << std::endl;
     std::cout << " UnconnectedHypernetsCount " << UnconnectedHypernetsCount << std::endl;
     std::cout << " TwoNodesHypernetsCount " << TwoNodesHypernetsCount << std::endl;

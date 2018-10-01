@@ -107,6 +107,12 @@
 		<Unit filename="E:/Projects/Clion/Development/HypernetTest/PairConnectivity.cpp">
 			<Option target="HypernetTest"/>
 		</Unit>
+		<Unit filename="E:/Projects/Clion/Development/HypernetTest/Rote.cpp">
+			<Option target="HypernetTest"/>
+		</Unit>
+		<Unit filename="E:/Projects/Clion/Development/HypernetTest/Route.h">
+			<Option target="HypernetTest"/>
+		</Unit>
 		<Unit filename="E:/Projects/Clion/Development/HypernetTest/Stdafx.h">
 			<Option target="HypernetTest"/>
 		</Unit>

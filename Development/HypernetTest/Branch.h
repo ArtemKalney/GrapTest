@@ -1,13 +1,14 @@
 #pragma once
 
 #include "Stdafx.h"
+#include "Route.h"
 
 class Branch
 {
 private:
     int _id;
     std::vector<double> _C;
-    std::vector<std::shared_ptr<std::vector<int>>>  _edges;
+    std::vector<Route>  _routes;
     int _power;
     int _firstNode;
     int _secondNode;
@@ -15,11 +16,11 @@ private:
 public:
     Branch() {}
 
-    Branch(const int& id, std::vector<double> C, std::vector<std::shared_ptr<std::vector<int>>>& edges, const int& power,
+    Branch(const int& id, std::vector<double> C, std::vector<Route>& routes, const int& power,
             const int& firstNode, const int& secondNode, bool isReliable) :
             _id(id),
             _C(std::move(C)),
-            _edges(std::move(edges)),
+            _routes(std::move(routes)),
             _power(power),
             _firstNode(firstNode),
             _secondNode(secondNode),
@@ -29,7 +30,7 @@ public:
     Branch(const Branch& branch) :
             _id(branch._id),
             _C(branch._C),
-            _edges(branch._edges),
+            _routes(branch._routes),
             _power(branch._power),
             _firstNode(branch._firstNode),
             _secondNode(branch._secondNode),
@@ -56,14 +57,14 @@ public:
         return _C;
     }
 
-    void SetEdges(const  std::vector<std::shared_ptr<std::vector<int>>>& edges)
+    void SetRoutes(const std::vector<Route> &routes)
     {
-        _edges = edges;
+        _routes = routes;
     }
 
-    std::vector<std::shared_ptr<std::vector<int>>>& GetEdges()
+    std::vector<Route>& GetRoutes()
     {
-        return _edges;
+        return _routes;
     }
 
     void SetPower(const int& power)

@@ -9,21 +9,22 @@ bool H::IsSNconnected() {
     return _nodes[1].IsVisited;
 }
 
-void H::RemoveBranch(Branch& branch) {
+void H::RemoveBranch(const Branch& branch) {
+//    преобразования F
+    for(auto &item : _FN) {
+        if (item == branch) {
+            for(auto &route : item.GetRoutes()) {
+                if (!route.Ptr->empty()) {
+                    route.Ptr->clear();
+                    _F.erase(std::remove_if(_F.begin(), _F.end(), [](Route &route) ->
+                            bool { return route.Ptr->empty(); }), _F.end());
+                }
+            }
+        }
+    }
 //    преобразования FN
     _FN.erase(std::remove_if(_FN.begin(), _FN.end(), [branch](Branch &item) ->
             bool { return branch == item; }), _FN.end());
-//    преобразования F
-    for (auto &edgePtr : branch.GetEdges()) {
-        // потому как branch из другой области видимости, где ссылки смотрят на другие вектора
-        auto it = std::find_if(_F.begin(), _F.end(), [edgePtr](std::shared_ptr<std::vector<int>> &ptr) ->
-                bool { return *edgePtr == *ptr; });
-        if (it != _F.end()) {
-            // вроде ускоряет
-            _F[it - _F.begin()]->clear();
-            _F.erase(it);
-        }
-    }
 
     RemoveEmptyBranches();
 }
@@ -35,7 +36,7 @@ void H::RemoveNode(const int& node) {
     RemoveNodeSN(node);
 }
 
-void H::MakeReliableBranch(Branch& branch) {
+void H::MakeReliableBranch(const Branch& branch) {
     auto it = std::find_if(_FN.begin(), _FN.end(), [branch](Branch &item) ->
             bool { return branch == item; });
    _FN[it - _FN.begin()].SetIsReliable(true);
@@ -112,7 +113,7 @@ std::vector<bool> H::GetCanDeleteMask(const std::vector<Branch> &SN) {
 
 std::vector<Branch> H::GetHomogeneousChain(std::vector<int>& forbiddenNodes) {
     auto nodePowers = H::GetNodePowers(_FN, _nodes.size());
-    // Initializing a branch by an edge where there is a node of degree 2
+    // Initializing a branch by an branch where there is a node of degree 2
     // todo учесть всё
     auto it = std::find_if(_FN.begin(), _FN.end(), [this, nodePowers, forbiddenNodes](Branch &branch) -> bool {
         int firstNode = branch.GetFirstNode(), secondNode = branch.GetSecondNode();
@@ -214,21 +215,15 @@ std::vector<Branch> H::GetHomogeneousChain(std::vector<int>& forbiddenNodes) {
 // one model used for Branches and Edges
 std::vector<Branch> H::GetSN() {
     std::vector<Branch> graph;
-    for (auto &ptr : _F) {
+    for (auto &route : _F) {
         Branch newEdge = Branch::GetUnity();
-        newEdge.SetFirstNode(ptr->front());
-        newEdge.SetSecondNode(ptr->back());
+        newEdge.SetFirstNode(route.Ptr->front());
+        newEdge.SetSecondNode(route.Ptr->back());
+        newEdge.SetId(route.Id);
         graph.push_back(std::move(newEdge));
     }
 
     return graph;
-}
-
-bool H::EqualEdgeNodes(const std::vector<int>& firstEdge, const Branch& secondEdge) {
-    bool sameNodes = firstEdge.front() == secondEdge.GetFirstNode() && firstEdge.back() == secondEdge.GetSecondNode();
-    bool reversedNodes =
-            firstEdge.front() == secondEdge.GetSecondNode() && firstEdge.back() == secondEdge.GetFirstNode();
-    return sameNodes || reversedNodes;
 }
 
 void H::DFS(const int& node, std::vector<Node>& nodes, const std::vector<Branch>& graph) {
@@ -294,12 +289,12 @@ void H::RenumerateNodes(const int& firstNode, const int& secondNode) {
         }
     }
     // transforms F with RenumerateNodes
-    for (auto &row : _F) {
-        for (auto &cell : *row) {
-            if (cell == firstNode) {
-                cell = secondNode;
-            } else if (cell == secondNode) {
-                cell = firstNode;
+    for (auto &route : _F) {
+        for (auto &item : *route.Ptr) {
+            if (item == firstNode) {
+                item = secondNode;
+            } else if (item == secondNode) {
+                item = firstNode;
             }
         }
     }
@@ -333,7 +328,7 @@ void H::RemoveNodeFN(const int& node) {
 void H::RemoveNodeSN(const int& node) {
     for (int i = 0; i < _F.size(); i++) {
         bool deletedRow = false;
-        for(auto &item : *_F[i]) {
+        for(auto &item : *_F[i].Ptr) {
 //             удаляемая вершина оказалась в ребре
             if (item == node) {
                 _F.erase(_F.begin() + i--);
@@ -343,7 +338,7 @@ void H::RemoveNodeSN(const int& node) {
         }
         // decrease nodes after delete
         if (!deletedRow) {
-            for (auto &item : *_F[i]) {
+            for (auto &item : *_F[i].Ptr) {
                 if (item > node) {
                     item--;
                 }
@@ -354,13 +349,13 @@ void H::RemoveNodeSN(const int& node) {
     RemoveEmptyBranches();
 }
 
-bool H::IsSlightlyIncident(const int &node, const std::vector<int> &edge) {
-    bool containNode = std::find(edge.begin(), edge.end(), node) != edge.end();
-    return edge.front() != node && edge.back() != node && containNode;
+bool H::IsSlightlyIncident(const int &node, const Route &route) {
+    bool containNode = std::find(route.Ptr->begin(), route.Ptr->end(), node) != route.Ptr->end();
+    return route.Ptr->front() != node && route.Ptr->back() != node && containNode;
 }
 
-bool H::IsIncident(const int &node, const std::vector<int> &edge) {
-    return edge.front() == node || edge.back() == node;
+bool H::IsIncident(const int &node, const Route &route) {
+    return route.Ptr->front() == node || route.Ptr->back() == node;
 }
 
 bool H::IsIncident(const int &node, const Branch &branch) {
@@ -373,8 +368,8 @@ bool H::IsPivotNode(const int &node) {
 
 int H::GetBranchSaturation(Branch& branch) {
     int count = 0;
-    for(auto &edgePtr : branch.GetEdges()) {
-        if (!edgePtr->empty()) {
+    for(auto &route : branch.GetRoutes()) {
+        if (!route.Ptr->empty()) {
             count++;
         }
     }
@@ -428,9 +423,9 @@ void H::PrintHypernet() {
         item.PrintBranch();
     }
     std::cout << "F:" << std::endl;
-    for (auto &row : _F) {
-        for (auto &cell : *row) {
-            std::cout << cell << " ";
+    for (auto &route : _F) {
+        for (auto &item : *route.Ptr) {
+            std::cout << item << " ";
         }
         std::cout << std::endl;
     }
@@ -453,26 +448,26 @@ void H::RenumerateNodesForGen(const int& firstNode, const int& secondNode) {
     }
 }
 
-std::vector<std::vector<int>> H::GetEdgesF(){
+std::vector<std::vector<int>> H::GetRoutesF(){
     std::vector<std::vector<int>> edges;
-    for(auto &edgePtr : _F) {
-        if(edgePtr != nullptr) {
-            edges.push_back(*edgePtr);
+    for(auto &item : _F) {
+        if(item.Ptr != nullptr) {
+            edges.push_back(*item.Ptr);
         }
     }
     return edges;
 }
 
-std::vector<std::vector<std::vector<int>>> H::GetEdgesFN(){
-    std::vector<std::vector<std::vector<int>>> edgesByBranhes;
+std::vector<std::vector<std::vector<int>>> H::GetRoutesFN(){
+    std::vector<std::vector<std::vector<int>>> edgesByBranches;
     for(auto &branch : _FN) {
         std::vector<std::vector<int>> edges;
-        for(auto &edgePtr : branch.GetEdges()) {
-            if(edgePtr != nullptr) {
-                edges.push_back(*edgePtr);
+        for(auto &item : branch.GetRoutes()) {
+            if(item.Ptr != nullptr) {
+                edges.push_back(*item.Ptr);
             }
         }
-        edgesByBranhes.push_back(edges);
+        edgesByBranches.push_back(edges);
     }
-    return edgesByBranhes;
+    return edgesByBranches;
 }
