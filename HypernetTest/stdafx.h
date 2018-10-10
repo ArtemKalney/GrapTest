@@ -1,10 +1,10 @@
 #pragma once
 
-#include <stdio.h>
+#include <cstdio>
 #include <tchar.h>
 #include <fstream>
 #include <iomanip>
-#include <math.h>
+#include <cmath>
 #include <iostream>
 #include <vector>
 #include <algorithm>

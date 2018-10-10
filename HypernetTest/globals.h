@@ -5,8 +5,8 @@
 
 #define MAX_DIMENSIONAL 3
 
-extern std::vector<Branche> Bin;
+extern std::vector<Branch> Bin;
 extern int n, m, k;
-extern int ReliableHypernetsCount, UnconnectedHypernentsCount, TwoNodesHypernetsCount, ChainsReduced,
-        UnconnectedNodesReduced, PairConnectivityCalls, EdgesReduced;
+extern int ReliableHypernetsCount, UnconnectedHypernetsCount, TwoNodesHypernetsCount, ChainsReduced,
+        UnconnectedNodesReduced, PairConnectivityCalls, EdgesReduced, UnsimpleChains;
 

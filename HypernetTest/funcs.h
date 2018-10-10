@@ -3,8 +3,8 @@
 #include "Branch.h"
 #include "Hypernet.h"
 
-Branche PairConnectivity(H &H, Branche &pseudoEdge);
+Branch PairConnectivity(H &H, Branch &pseudoEdge);
+Branch SimplePairConnectivity(H &H, Branch &pseudoEdge);
 // debug
-void GenCombinations(const H& H, const std::vector<Branche>& branchList, Branche& sum, std::vector<int>& brancheMask,
+void GenCombinations(const H& H, const std::vector<Branch>& branchList, Branch& sum, std::vector<bool>& brancheMask,
                      int& curPos);
-Branche SimplePairConnectivity(H &H, Branche &pseudoEdge);

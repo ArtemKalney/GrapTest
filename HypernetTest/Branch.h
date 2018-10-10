@@ -1,37 +1,51 @@
 #pragma once
 
 #include "Stdafx.h"
+#include "Route.h"
 
-class Branche
+class Branch
 {
 private:
+    int _id;
     std::vector<double> _C;
+    std::vector<Route>  _routes;
     int _power;
     int _firstNode;
     int _secondNode;
-    int _simple;
     bool _isReliable;
 public:
-    Branche() {}
+    Branch() {}
 
-    Branche(std::vector<double> C, const int& power, const int& firstNode, const int& secondNode, const int& simple,
-            bool isReliable) :
+    Branch(const int& id, std::vector<double> C, std::vector<Route>& routes, const int& power,
+            const int& firstNode, const int& secondNode, bool isReliable) :
+            _id(id),
             _C(std::move(C)),
+            _routes(std::move(routes)),
             _power(power),
             _firstNode(firstNode),
             _secondNode(secondNode),
-            _simple(simple),
             _isReliable(isReliable)
     {}
-    //copy
-    Branche(const Branche& branch) :
+
+    Branch(const Branch& branch) :
+            _id(branch._id),
             _C(branch._C),
+            _routes(branch._routes),
             _power(branch._power),
             _firstNode(branch._firstNode),
             _secondNode(branch._secondNode),
-            _simple(branch._simple),
             _isReliable(branch._isReliable)
     {}
+
+    void SetId(const int& id)
+    {
+        _id = id;
+    }
+
+    int GetId() const
+    {
+        return _id;
+    }
 
     void SetC(const std::vector<double>& C)
     {
@@ -41,6 +55,16 @@ public:
     std::vector<double>& GetC()
     {
         return _C;
+    }
+
+    void SetRoutes(const std::vector<Route> &routes)
+    {
+        _routes = routes;
+    }
+
+    std::vector<Route>& GetRoutes()
+    {
+        return _routes;
     }
 
     void SetPower(const int& power)
@@ -73,16 +97,6 @@ public:
         return _secondNode;
     }
 
-    void SetSimple(const int& simple)
-    {
-        _simple = simple;
-    }
-
-    int GetSimple() const
-    {
-        return _simple;
-    }
-
     void SetIsReliable(bool isReliable)
     {
         _isReliable = isReliable;
@@ -92,25 +106,25 @@ public:
     {
         return _isReliable;
     }
-
-    static Branche GetBranch(const int& vectorSize, const int& power);
-    static Branche GetBranch(const int& power);
-    static Branche GetSimpleBranch(const int& firstNode, const int& secondNode);
-    static Branche GetZero();
-    static Branche GetUnity();
-    static bool EqualNodes(const Branche& firstBranche, const Branche& secondBranche);
-    static bool EqualNodes(const Branche& branche, const int& firstNode, const int& secondNode);
-    static bool EqualNodes(const int& firstBranchNode, const int& secondBranchNode, const int& firstNode,
-                            const int& secondNode);
-    static void ParallelReduction(Branche& branche);
-    static bool IsUnacceptableBranche(Branche& branche);
-    bool IsExisting() const;
+    //todo уменьшить static функкций
+    static Branch GetBranch(const int& vectorSize, const int& power);
+    static Branch GetBranch(const int& power);
+    static Branch GetSimpleBranch(const int& id, const int& firstNode, const int& secondNode);
+    static Branch GetZero();
+    static Branch GetUnity();
+    static bool EqualNodes(const Branch& firstBranch, const Branch& secondBranch);
+    static bool EqualNodes(const Branch& branch, const int& firstNode, const int& secondNode);
+    static bool IsUnacceptableBranch(Branch &branch);
+    bool IsZero() const;
     bool IsUnity();
     bool IsSimpleBranch();
-    void PrintBranche();
+    void PrintBranch();
+    bool operator <(const Branch& branch) const;
 };
 
-Branche operator *(Branche firstBranch, Branche secondBranch);
-Branche operator +(Branche firstBranch, Branche secondBranch);
-Branche operator -(Branche firstBranch, Branche secondBranch);
-Branche operator ~(Branche branche);
+Branch operator *(Branch firstBranch, Branch secondBranch);
+Branch operator +(Branch firstBranch, Branch secondBranch);
+Branch operator -(Branch firstBranch, Branch secondBranch);
+Branch operator ~(Branch branch);
+bool operator ==(Branch firstBranch, Branch secondBranch);
+bool operator !=(Branch firstBranch, Branch secondBranch);

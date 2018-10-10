@@ -2,61 +2,98 @@
 
 #include "Stdafx.h"
 #include "Branch.h"
+#include "Route.h"
+
+struct Node {
+    int NodeNumber;
+    bool IsVisited;
+
+    Node(const int& nodeNumber, bool isVisited) :
+            NodeNumber(nodeNumber),
+            IsVisited(isVisited)
+    {}
+};
 
 class H {
 private:
-    std::vector<std::vector<Branche>> _FN;
-    std::vector<std::vector<int>> _F;
+    std::vector<Branch> _FN;
+    std::vector<Node> _nodes;
+    std::vector<Route> _F;
 public:
-    H(std::vector<std::vector<Branche>> FN, std::vector<std::vector<int>> F) :
+    H(std::vector<Branch> FN, std::vector<Node> nodes, std::vector<Route> F) :
             _FN(std::move(FN)),
-            _F(std::move(F))
-    {}
+            _nodes(std::move(nodes)),
+            _F(std::move(F)) {}
+
     //copy
     H(const H &H) :
             _FN(H._FN),
+            _nodes(H._nodes),
             _F(H._F)
-    {}
-
-    void SetFN(const std::vector<std::vector<Branche>> &FN)
     {
+        // создаём новые вектора
+        for (auto &route : _F) {
+            auto vec = *route.Ptr;
+            auto ptr = std::make_shared<std::vector<int>>(vec);
+            route.Ptr = ptr;
+            for (auto &branch : _FN) {
+                for (auto &item : branch.GetRoutes()) {
+                    if (item == route) {
+                        item.Ptr = ptr;
+                    }
+                }
+            }
+        }
+    }
+
+    void SetFN(const std::vector<Branch> &FN) {
         _FN = FN;
     }
 
-    std::vector<std::vector<Branche>>& GetFN()
-    {
+    std::vector<Branch> &GetFN() {
         return _FN;
     }
 
-    void SetF(const std::vector<std::vector<int>> &F)
-    {
+    void SetNodes(const std::vector<Node> &nodes) {
+        _nodes = nodes;
+    }
+
+    std::vector<Node> &GetNodes() {
+        return _nodes;
+    }
+
+    void SetF(const std::vector<Route> &F) {
         _F = F;
     }
 
-    std::vector<std::vector<int>>& GetF()
-    {
+    std::vector<Route> &GetF() {
         return _F;
     }
 
-    static bool EqualEdgeNodes (const std::vector<int>& edge, const int& firstNode, const int& secondNode);
-    static void DFS(const int& node, std::vector<bool>& visitedNodes, const std::vector<std::vector<Branche>>& graph);
-    static std::vector<std::vector<Branche>> GetAdjacencyMatrix(std::vector<Branche>& BranchList, const int& size);
-    static std::vector<int> GetNodePowers(const std::vector<std::vector<Branche>>& graph);
+    //todo уменьшить static функкций
+    static void DFS(const int &node, std::vector<Node> &nodes, const std::vector<Branch> &graph);
+    static std::vector<int> GetNodePowers(const std::vector<Branch> &graph, const int &size);
+    static bool IsPivotNode(const int &node);
+    static int GetBranchSaturation(Branch &branch);
+    static bool IsSlightlyIncident(const int &node, const Route &route);
+    static bool IsIncident(const int &node, const Route &route);
+    static bool IsIncident(const int &node, const Branch &branch);
     bool IsSNconnected();
     bool HasReliablePath();
-    int GetBranchSaturation (const Branche& branche, const int& firstNode, const int& secondNode);
-    void RemoveBranch(const int& node1, const int& node2);
-    void RemoveNode(const int& node);
-    void RemoveNodeFN(const int& node);
-    void RemoveNodeSN(const int& node);
-    void MakeReliableBranch(const int& node1, const int& node2);
+    std::vector<Branch> GetHomogeneousChain(std::vector<int> &forbiddenNodes);
+    void RemoveBranch(const Branch &branch);
+    void RemoveNode(const int &node);
+    void RemoveNodeFN(const int &node);
+    void RemoveNodeSN(const int &node);
+    void MakeReliableBranch(const Branch &branch);
     void RemoveEmptyBranches();
-    void RenumerateNodes(const int& node1, const int& node2);
-    std::vector<std::vector<Branche>> GetSN();
-    std::vector<std::vector<bool>> GetCanDeleteMask(const std::vector<std::vector<Branche>> &SN,
-                                                    const std::vector<bool> &visitedNodes);
+    void RenumerateNodes(const int &firstNode, const int &secondNode);
+    std::vector<Branch> GetSN();
+    std::vector<bool> GetCanDeleteMask(const std::vector<Branch> &SN);
+    std::vector<int> GetNodesInChain(const std::vector<Branch> &chain);
     void PrintHypernet();
     // to debug
-    void RenumerateNodesForGen(const int& node1, const int& node2);
-    std::vector<Branche> GetBranchList();
+    void RenumerateNodesForGen(const int &firstNode, const int &secondNode);
+    std::vector<std::vector<int>> GetRoutesF();
+    std::vector<std::vector<std::vector<int>>> GetRoutesFN();
 };
