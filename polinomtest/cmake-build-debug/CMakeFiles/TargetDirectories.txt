@@ -1,3 +1,0 @@
-C:/Users/admin/.CLion2017.2/my_projects/polinomtest/cmake-build-debug/CMakeFiles/polinomtest.dir
-C:/Users/admin/.CLion2017.2/my_projects/polinomtest/cmake-build-debug/CMakeFiles/edit_cache.dir
-C:/Users/admin/.CLion2017.2/my_projects/polinomtest/cmake-build-debug/CMakeFiles/rebuild_cache.dir

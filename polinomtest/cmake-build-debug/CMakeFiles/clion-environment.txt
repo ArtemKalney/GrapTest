@@ -1,3 +1,0 @@
-ToolSet: w64 4.0@C:\Program Files (x86)\GCC\x86_64-w64-mingw32
-Options: 
-CMake: 3.8.2@C:\Program Files\JetBrains\CLion 2017.2\bin\cmake\bin\cmake.exe

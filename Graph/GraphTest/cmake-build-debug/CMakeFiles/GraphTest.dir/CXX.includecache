@@ -1,0 +1,82 @@
+#IncludeRegexLine: ^[ 	]*[#%][ 	]*(include|import)[ 	]*[<"]([^">]+)([">])
+
+#IncludeRegexScan: ^.*$
+
+#IncludeRegexComplain: ^$
+
+#IncludeRegexTransform: 
+
+E:/Projects/Git repositories/GraphTest/Graph/GraphTest/Cclass.cpp
+Stdafx.h
+E:/Projects/Git repositories/GraphTest/Graph/GraphTest/Stdafx.h
+Cclass.h
+E:/Projects/Git repositories/GraphTest/Graph/GraphTest/Cclass.h
+Globals.h
+E:/Projects/Git repositories/GraphTest/Graph/GraphTest/Globals.h
+
+E:/Projects/Git repositories/GraphTest/Graph/GraphTest/Cclass.h
+Stdafx.h
+E:/Projects/Git repositories/GraphTest/Graph/GraphTest/Stdafx.h
+
+E:/Projects/Git repositories/GraphTest/Graph/GraphTest/ChainReduction1.cpp
+Stdafx.h
+E:/Projects/Git repositories/GraphTest/Graph/GraphTest/Stdafx.h
+Funcs.h
+E:/Projects/Git repositories/GraphTest/Graph/GraphTest/Funcs.h
+Globals.h
+E:/Projects/Git repositories/GraphTest/Graph/GraphTest/Globals.h
+Cclass.h
+E:/Projects/Git repositories/GraphTest/Graph/GraphTest/Cclass.h
+
+E:/Projects/Git repositories/GraphTest/Graph/GraphTest/ChainReduction2.cpp
+Stdafx.h
+E:/Projects/Git repositories/GraphTest/Graph/GraphTest/Stdafx.h
+Funcs.h
+E:/Projects/Git repositories/GraphTest/Graph/GraphTest/Funcs.h
+Globals.h
+E:/Projects/Git repositories/GraphTest/Graph/GraphTest/Globals.h
+
+E:/Projects/Git repositories/GraphTest/Graph/GraphTest/Funcs.h
+Cclass.h
+E:/Projects/Git repositories/GraphTest/Graph/GraphTest/Cclass.h
+
+E:/Projects/Git repositories/GraphTest/Graph/GraphTest/Globals.h
+Cclass.h
+E:/Projects/Git repositories/GraphTest/Graph/GraphTest/Cclass.h
+
+E:/Projects/Git repositories/GraphTest/Graph/GraphTest/Main.cpp
+Funcs.h
+E:/Projects/Git repositories/GraphTest/Graph/GraphTest/Funcs.h
+Globals.h
+E:/Projects/Git repositories/GraphTest/Graph/GraphTest/Globals.h
+
+E:/Projects/Git repositories/GraphTest/Graph/GraphTest/PairConnection.cpp
+Stdafx.h
+E:/Projects/Git repositories/GraphTest/Graph/GraphTest/Stdafx.h
+Funcs.h
+E:/Projects/Git repositories/GraphTest/Graph/GraphTest/Funcs.h
+Globals.h
+E:/Projects/Git repositories/GraphTest/Graph/GraphTest/Globals.h
+
+E:/Projects/Git repositories/GraphTest/Graph/GraphTest/Stdafx.h
+stdio.h
+-
+tchar.h
+-
+fstream
+-
+iomanip
+-
+math.h
+-
+iostream
+-
+vector
+-
+algorithm
+-
+iterator
+-
+ctime
+-
+
