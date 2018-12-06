@@ -43,14 +43,6 @@ bool Branch::EqualNodes(const Branch& firstBranch, const Branch& secondBranch) {
     return sameNodes || reversedNodes;
 }
 
-bool Branch::EqualNodes(const Branch& branch, const int& firstNode, const int& secondNode){
-    auto sameNodes = branch.GetFirstNode() == firstNode &&
-            branch.GetSecondNode() == secondNode;
-    auto reversedNodes = branch.GetFirstNode() == secondNode &&
-            branch.GetSecondNode() == firstNode;
-    return sameNodes || reversedNodes;
-}
-
 bool Branch::IsUnacceptableBranch(Branch &branch) {
     int firstNode = branch.GetFirstNode(), secondNode = branch.GetSecondNode();
 
@@ -81,6 +73,32 @@ void Branch::PrintBranch() {
     } else {
         std::cout << "empty edge" << std::endl;
     }
+}
+
+double Branch::GetValue() {
+    double value = 0;
+    if (IsZero()) {
+        return value;
+    }
+    for (int i = 0; i <= _power; i++) {
+        value += _C[i] * pow(p, _power - i) * pow(z, i);
+    }
+
+    return value;
+}
+
+Branch Branch::ParallelReduction(std::vector<Branch> &branches) {
+    int size = branches.size();
+    branches.erase(std::remove_if(branches.begin(), branches.end(), [](Branch &item) ->
+            bool { return item.IsSimpleBranch(); }), branches.end());
+    int simpleBranchesCount = size - branches.size();
+    Branch parallelBranch = Bin[simpleBranchesCount];
+    parallelBranch.GetC()[simpleBranchesCount] = 0;
+    Branch result = parallelBranch;
+    for (auto &item : branches) {
+        result = item + result - item *result;
+    }
+    return result;
 }
 
 bool Branch::operator <(const Branch& branch) const {

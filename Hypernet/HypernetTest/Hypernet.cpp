@@ -114,7 +114,6 @@ std::vector<bool> H::GetCanDeleteMask(const std::vector<Branch> &SN) {
 std::vector<Branch> H::GetHomogeneousChain(std::vector<int>& forbiddenNodes) {
     auto nodePowers = H::GetNodePowers(_FN, _nodes.size());
     // Initializing a branch by an branch where there is a node of degree 2
-    // todo учесть всё
     auto it = std::find_if(_FN.begin(), _FN.end(), [this, nodePowers, forbiddenNodes](Branch &branch) -> bool {
         int firstNode = branch.GetFirstNode(), secondNode = branch.GetSecondNode();
         bool isPivotNodeInsideChain = IsPivotNode(firstNode) && nodePowers[firstNode] == 2 ||
@@ -163,8 +162,7 @@ std::vector<Branch> H::GetHomogeneousChain(std::vector<int>& forbiddenNodes) {
             it = std::find_if(_FN.begin(), _FN.end(),
                               [nodePowers, leftNode, leftBranch, rightNode, isReliableChain](Branch &item) -> bool {
                                   bool isHomogeneousChain = isReliableChain == item.GetIsReliable();
-                                  bool isLeftIncidentBranch =
-                                          IsIncident(leftNode, item) && item != leftBranch;
+                                  bool isLeftIncidentBranch = IsIncident(leftNode, item) && item != leftBranch;
                                   int incidentNode =
                                           item.GetFirstNode() == leftNode ? item.GetSecondNode() : item.GetFirstNode();
                                   return isLeftIncidentBranch && incidentNode != rightNode && isHomogeneousChain;
@@ -186,8 +184,7 @@ std::vector<Branch> H::GetHomogeneousChain(std::vector<int>& forbiddenNodes) {
             it = std::find_if(_FN.begin(), _FN.end(),
                               [nodePowers, rightNode, rightBranch, leftNode, isReliableChain](Branch &item) -> bool {
                                   bool isHomogeneousChain = isReliableChain == item.GetIsReliable();
-                                  bool isRightIncidentBranch =
-                                          IsIncident(rightNode, item) && item != rightBranch;
+                                  bool isRightIncidentBranch = IsIncident(rightNode, item) && item != rightBranch;
                                   int incidentNode =
                                           item.GetFirstNode() == rightNode ? item.GetSecondNode() : item.GetFirstNode();
                                   return isRightIncidentBranch && incidentNode != leftNode && isHomogeneousChain;
@@ -329,14 +326,14 @@ void H::RemoveNodeSN(const int& node) {
     for (int i = 0; i < _F.size(); i++) {
         bool deletedRow = false;
         for(auto &item : *_F[i].Ptr) {
-//             удаляемая вершина оказалась в ребре
+//            удаляемая вершина оказалась в ребре
             if (item == node) {
                 _F.erase(_F.begin() + i--);
                 deletedRow = true;
                 break;
             }
         }
-        // decrease nodes after delete
+//        decrease nodes after delete
         if (!deletedRow) {
             for (auto &item : *_F[i].Ptr) {
                 if (item > node) {
@@ -376,38 +373,50 @@ int H::GetBranchSaturation(Branch& branch) {
 
     return count;
 }
-
+// todo попробывать вынести в отедльный метод условие окончания добавления вершины в цепь
+// важна правильная последовательность вершин, т.к. в ChainReduction проходимся по ней
 std::vector<int> H::GetNodesInChain(const std::vector<Branch>& chain) {
-    auto FNnodepowers = GetNodePowers(_FN, _nodes.size());
     std::vector<int> nodesInChain;
-    for (auto &item : chain) {
-        for (auto &node : _nodes) {
-            if (H::IsIncident(node.NodeNumber, item)) {
-                auto it = std::find(nodesInChain.begin(), nodesInChain.end(), node.NodeNumber);
-                if (it == nodesInChain.end()) {
-                    if (item == chain.front() || item == chain.back()) {
-                        bool isTerminalNode = FNnodepowers[node.NodeNumber] != 2 || H::IsPivotNode(node.NodeNumber);
-                        Node incidentNode = node.NodeNumber == item.GetFirstNode() ? _nodes[item.GetSecondNode()]
-                                                                              : _nodes[item.GetFirstNode()];
-                        if (item == chain.front()) {
-                            if (isTerminalNode) {
-                                nodesInChain.push_back(node.NodeNumber);
-                                nodesInChain.push_back(incidentNode.NodeNumber);
-                            } else {
-                                nodesInChain.push_back(incidentNode.NodeNumber);
-                                nodesInChain.push_back(node.NodeNumber);
-                            }
+    auto FNnodepowers = GetNodePowers(_FN, _nodes.size());
+    for (auto &branch : chain) {
+        std::vector<int> branchNodes{branch.GetFirstNode(), branch.GetSecondNode()};
+        for (auto &node : branchNodes) {
+            auto nodesIt = std::find(nodesInChain.begin(), nodesInChain.end(), node);
+            if (nodesIt == nodesInChain.end()) {
+                if (branch == chain.front() || branch == chain.back()) {
+                    int incidentNode = node == branch.GetFirstNode() ? branch.GetSecondNode() : branch.GetFirstNode();
+                    bool isTerminalNode = FNnodepowers[node] != 2 || IsPivotNode(node);
+                    if (!isTerminalNode && FNnodepowers[node] > 1) {
+                        auto it = std::find_if(_FN.begin(), _FN.end(), [node, branch](Branch &item) -> bool {
+                            return IsIncident(node, item) && item != branch;
+                        });
+                        Branch incidentBranch = _FN[it - _FN.begin()];
+                        isTerminalNode = incidentBranch.GetIsReliable() != branch.GetIsReliable();
+                        int incidentBranchNode = node == incidentBranch.GetFirstNode() ? incidentBranch.GetSecondNode()
+                                                                                       : incidentBranch.GetFirstNode();
+                        if (!isTerminalNode &&!nodesInChain.empty()) {
+                            isTerminalNode = incidentBranchNode == nodesInChain.front();
                         }
-                        if (item == chain.back()) {
-                            if (isTerminalNode) {
-                                nodesInChain.push_back(node.NodeNumber);
-                            } else {
-                                nodesInChain.push_back(incidentNode.NodeNumber);
-                            }
-                        }
-                    } else {
-                        nodesInChain.push_back(node.NodeNumber);
                     }
+
+                    if (branch == chain.front()) {
+                        if (isTerminalNode) {
+                            nodesInChain.push_back(node);
+                            nodesInChain.push_back(incidentNode);
+                        } else {
+                            nodesInChain.push_back(incidentNode);
+                            nodesInChain.push_back(node);
+                        }
+                    }
+                    if (branch == chain.back()) {
+                        if (isTerminalNode) {
+                            nodesInChain.push_back(node);
+                        } else {
+                            nodesInChain.push_back(incidentNode);
+                        }
+                    }
+                } else {
+                    nodesInChain.push_back(node);
                 }
             }
         }

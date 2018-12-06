@@ -10,7 +10,7 @@ The output was:
 
 Compilation of the C compiler identification source "CMakeCCompilerId.c" produced "a.exe"
 
-The C compiler identification is GNU, found in "E:/Projects/Git repositories/GraphTest/Hypernet/HypernetTest/cmake-build-debug/CMakeFiles/3.9.6/CompilerIdC/a.exe"
+The C compiler identification is GNU, found in "E:/Projects/Git repositories/Tests/Hypernet/HypernetTest/cmake-build-debug/CMakeFiles/3.9.6/CompilerIdC/a.exe"
 
 Compiling the CXX compiler identification source file "CMakeCXXCompilerId.cpp" succeeded.
 Compiler: E:/MingGW/mingw64/bin/g++.exe 
@@ -23,37 +23,37 @@ The output was:
 
 Compilation of the CXX compiler identification source "CMakeCXXCompilerId.cpp" produced "a.exe"
 
-The CXX compiler identification is GNU, found in "E:/Projects/Git repositories/GraphTest/Hypernet/HypernetTest/cmake-build-debug/CMakeFiles/3.9.6/CompilerIdCXX/a.exe"
+The CXX compiler identification is GNU, found in "E:/Projects/Git repositories/Tests/Hypernet/HypernetTest/cmake-build-debug/CMakeFiles/3.9.6/CompilerIdCXX/a.exe"
 
 Determining if the C compiler works passed with the following output:
-Change Dir: E:/Projects/Git repositories/GraphTest/Hypernet/HypernetTest/cmake-build-debug/CMakeFiles/CMakeTmp
+Change Dir: E:/Projects/Git repositories/Tests/Hypernet/HypernetTest/cmake-build-debug/CMakeFiles/CMakeTmp
 
-Run Build Command:"E:/MingGW/mingw64/bin/mingw32-make.exe" "cmTC_fa4b5/fast"
-E:/MingGW/mingw64/bin/mingw32-make.exe -f CMakeFiles\cmTC_fa4b5.dir\build.make CMakeFiles/cmTC_fa4b5.dir/build
-mingw32-make.exe[1]: Entering directory 'E:/Projects/Git repositories/GraphTest/Hypernet/HypernetTest/cmake-build-debug/CMakeFiles/CMakeTmp'
-Building C object CMakeFiles/cmTC_fa4b5.dir/testCCompiler.c.obj
-E:\MingGW\mingw64\bin\gcc.exe    -o CMakeFiles\cmTC_fa4b5.dir\testCCompiler.c.obj   -c "E:\Projects\Git repositories\GraphTest\Hypernet\HypernetTest\cmake-build-debug\CMakeFiles\CMakeTmp\testCCompiler.c"
-Linking C executable cmTC_fa4b5.exe
-"C:\Program Files\JetBrains\CLion 2017.3.4\bin\cmake\bin\cmake.exe" -E cmake_link_script CMakeFiles\cmTC_fa4b5.dir\link.txt --verbose=1
-"C:\Program Files\JetBrains\CLion 2017.3.4\bin\cmake\bin\cmake.exe" -E remove -f CMakeFiles\cmTC_fa4b5.dir/objects.a
-E:\MingGW\mingw64\bin\ar.exe cr CMakeFiles\cmTC_fa4b5.dir/objects.a @CMakeFiles\cmTC_fa4b5.dir\objects1.rsp
-E:\MingGW\mingw64\bin\gcc.exe      -Wl,--whole-archive CMakeFiles\cmTC_fa4b5.dir/objects.a -Wl,--no-whole-archive  -o cmTC_fa4b5.exe -Wl,--out-implib,libcmTC_fa4b5.dll.a -Wl,--major-image-version,0,--minor-image-version,0 @CMakeFiles\cmTC_fa4b5.dir\linklibs.rsp
-mingw32-make.exe[1]: Leaving directory 'E:/Projects/Git repositories/GraphTest/Hypernet/HypernetTest/cmake-build-debug/CMakeFiles/CMakeTmp'
+Run Build Command:"E:/MingGW/mingw64/bin/mingw32-make.exe" "cmTC_e04d4/fast"
+E:/MingGW/mingw64/bin/mingw32-make.exe -f CMakeFiles\cmTC_e04d4.dir\build.make CMakeFiles/cmTC_e04d4.dir/build
+mingw32-make.exe[1]: Entering directory 'E:/Projects/Git repositories/Tests/Hypernet/HypernetTest/cmake-build-debug/CMakeFiles/CMakeTmp'
+Building C object CMakeFiles/cmTC_e04d4.dir/testCCompiler.c.obj
+E:\MingGW\mingw64\bin\gcc.exe    -o CMakeFiles\cmTC_e04d4.dir\testCCompiler.c.obj   -c "E:\Projects\Git repositories\Tests\Hypernet\HypernetTest\cmake-build-debug\CMakeFiles\CMakeTmp\testCCompiler.c"
+Linking C executable cmTC_e04d4.exe
+"C:\Program Files\JetBrains\CLion 2017.3.4\bin\cmake\bin\cmake.exe" -E cmake_link_script CMakeFiles\cmTC_e04d4.dir\link.txt --verbose=1
+"C:\Program Files\JetBrains\CLion 2017.3.4\bin\cmake\bin\cmake.exe" -E remove -f CMakeFiles\cmTC_e04d4.dir/objects.a
+E:\MingGW\mingw64\bin\ar.exe cr CMakeFiles\cmTC_e04d4.dir/objects.a @CMakeFiles\cmTC_e04d4.dir\objects1.rsp
+E:\MingGW\mingw64\bin\gcc.exe      -Wl,--whole-archive CMakeFiles\cmTC_e04d4.dir/objects.a -Wl,--no-whole-archive  -o cmTC_e04d4.exe -Wl,--out-implib,libcmTC_e04d4.dll.a -Wl,--major-image-version,0,--minor-image-version,0 @CMakeFiles\cmTC_e04d4.dir\linklibs.rsp
+mingw32-make.exe[1]: Leaving directory 'E:/Projects/Git repositories/Tests/Hypernet/HypernetTest/cmake-build-debug/CMakeFiles/CMakeTmp'
 
 
 Detecting C compiler ABI info compiled with the following output:
-Change Dir: E:/Projects/Git repositories/GraphTest/Hypernet/HypernetTest/cmake-build-debug/CMakeFiles/CMakeTmp
+Change Dir: E:/Projects/Git repositories/Tests/Hypernet/HypernetTest/cmake-build-debug/CMakeFiles/CMakeTmp
 
-Run Build Command:"E:/MingGW/mingw64/bin/mingw32-make.exe" "cmTC_a11c3/fast"
-E:/MingGW/mingw64/bin/mingw32-make.exe -f CMakeFiles\cmTC_a11c3.dir\build.make CMakeFiles/cmTC_a11c3.dir/build
-mingw32-make.exe[1]: Entering directory 'E:/Projects/Git repositories/GraphTest/Hypernet/HypernetTest/cmake-build-debug/CMakeFiles/CMakeTmp'
-Building C object CMakeFiles/cmTC_a11c3.dir/CMakeCCompilerABI.c.obj
-E:\MingGW\mingw64\bin\gcc.exe    -o CMakeFiles\cmTC_a11c3.dir\CMakeCCompilerABI.c.obj   -c "C:\Program Files\JetBrains\CLion 2017.3.4\bin\cmake\share\cmake-3.9\Modules\CMakeCCompilerABI.c"
-Linking C executable cmTC_a11c3.exe
-"C:\Program Files\JetBrains\CLion 2017.3.4\bin\cmake\bin\cmake.exe" -E cmake_link_script CMakeFiles\cmTC_a11c3.dir\link.txt --verbose=1
-"C:\Program Files\JetBrains\CLion 2017.3.4\bin\cmake\bin\cmake.exe" -E remove -f CMakeFiles\cmTC_a11c3.dir/objects.a
-E:\MingGW\mingw64\bin\ar.exe cr CMakeFiles\cmTC_a11c3.dir/objects.a @CMakeFiles\cmTC_a11c3.dir\objects1.rsp
-E:\MingGW\mingw64\bin\gcc.exe     -v -Wl,--whole-archive CMakeFiles\cmTC_a11c3.dir/objects.a -Wl,--no-whole-archive  -o cmTC_a11c3.exe -Wl,--out-implib,libcmTC_a11c3.dll.a -Wl,--major-image-version,0,--minor-image-version,0 
+Run Build Command:"E:/MingGW/mingw64/bin/mingw32-make.exe" "cmTC_8aaab/fast"
+E:/MingGW/mingw64/bin/mingw32-make.exe -f CMakeFiles\cmTC_8aaab.dir\build.make CMakeFiles/cmTC_8aaab.dir/build
+mingw32-make.exe[1]: Entering directory 'E:/Projects/Git repositories/Tests/Hypernet/HypernetTest/cmake-build-debug/CMakeFiles/CMakeTmp'
+Building C object CMakeFiles/cmTC_8aaab.dir/CMakeCCompilerABI.c.obj
+E:\MingGW\mingw64\bin\gcc.exe    -o CMakeFiles\cmTC_8aaab.dir\CMakeCCompilerABI.c.obj   -c "C:\Program Files\JetBrains\CLion 2017.3.4\bin\cmake\share\cmake-3.9\Modules\CMakeCCompilerABI.c"
+Linking C executable cmTC_8aaab.exe
+"C:\Program Files\JetBrains\CLion 2017.3.4\bin\cmake\bin\cmake.exe" -E cmake_link_script CMakeFiles\cmTC_8aaab.dir\link.txt --verbose=1
+"C:\Program Files\JetBrains\CLion 2017.3.4\bin\cmake\bin\cmake.exe" -E remove -f CMakeFiles\cmTC_8aaab.dir/objects.a
+E:\MingGW\mingw64\bin\ar.exe cr CMakeFiles\cmTC_8aaab.dir/objects.a @CMakeFiles\cmTC_8aaab.dir\objects1.rsp
+E:\MingGW\mingw64\bin\gcc.exe     -v -Wl,--whole-archive CMakeFiles\cmTC_8aaab.dir/objects.a -Wl,--no-whole-archive  -o cmTC_8aaab.exe -Wl,--out-implib,libcmTC_8aaab.dll.a -Wl,--major-image-version,0,--minor-image-version,0 
 Using built-in specs.
 COLLECT_GCC=E:\MingGW\mingw64\bin\gcc.exe
 COLLECT_LTO_WRAPPER=E:/MingGW/mingw64/bin/../libexec/gcc/x86_64-w64-mingw32/7.2.0/lto-wrapper.exe
@@ -63,26 +63,26 @@ Thread model: posix
 gcc version 7.2.0 (x86_64-posix-seh-rev1, Built by MinGW-W64 project) 
 COMPILER_PATH=E:/MingGW/mingw64/bin/../libexec/gcc/x86_64-w64-mingw32/7.2.0/;E:/MingGW/mingw64/bin/../libexec/gcc/;E:/MingGW/mingw64/bin/../lib/gcc/x86_64-w64-mingw32/7.2.0/../../../../x86_64-w64-mingw32/bin/
 LIBRARY_PATH=E:/MingGW/mingw64/bin/../lib/gcc/x86_64-w64-mingw32/7.2.0/;E:/MingGW/mingw64/bin/../lib/gcc/;E:/MingGW/mingw64/bin/../lib/gcc/x86_64-w64-mingw32/7.2.0/../../../../x86_64-w64-mingw32/lib/../lib/;E:/MingGW/mingw64/bin/../lib/gcc/x86_64-w64-mingw32/7.2.0/../../../../lib/;E:/MingGW/mingw64/bin/../lib/gcc/x86_64-w64-mingw32/7.2.0/../../../../x86_64-w64-mingw32/lib/;E:/MingGW/mingw64/bin/../lib/gcc/x86_64-w64-mingw32/7.2.0/../../../
-COLLECT_GCC_OPTIONS='-v' '-o' 'cmTC_a11c3.exe' '-mtune=core2' '-march=nocona'
- E:/MingGW/mingw64/bin/../libexec/gcc/x86_64-w64-mingw32/7.2.0/collect2.exe -plugin E:/MingGW/mingw64/bin/../libexec/gcc/x86_64-w64-mingw32/7.2.0/liblto_plugin-0.dll -plugin-opt=E:/MingGW/mingw64/bin/../libexec/gcc/x86_64-w64-mingw32/7.2.0/lto-wrapper.exe -plugin-opt=-fresolution=C:\Users\COMPUC~1\AppData\Local\Temp\ccjXXadV.res -plugin-opt=-pass-through=-lmingw32 -plugin-opt=-pass-through=-lgcc -plugin-opt=-pass-through=-lgcc_eh -plugin-opt=-pass-through=-lmoldname -plugin-opt=-pass-through=-lmingwex -plugin-opt=-pass-through=-lmsvcrt -plugin-opt=-pass-through=-lpthread -plugin-opt=-pass-through=-ladvapi32 -plugin-opt=-pass-through=-lshell32 -plugin-opt=-pass-through=-luser32 -plugin-opt=-pass-through=-lkernel32 -plugin-opt=-pass-through=-liconv -plugin-opt=-pass-through=-lmingw32 -plugin-opt=-pass-through=-lgcc -plugin-opt=-pass-through=-lgcc_eh -plugin-opt=-pass-through=-lmoldname -plugin-opt=-pass-through=-lmingwex -plugin-opt=-pass-through=-lmsvcrt --sysroot=C:/mingw720/x86_64-720-posix-seh-rt_v5-rev1/mingw64 -m i386pep -Bdynamic -o cmTC_a11c3.exe E:/MingGW/mingw64/bin/../lib/gcc/x86_64-w64-mingw32/7.2.0/../../../../x86_64-w64-mingw32/lib/../lib/crt2.o E:/MingGW/mingw64/bin/../lib/gcc/x86_64-w64-mingw32/7.2.0/crtbegin.o -LE:/MingGW/mingw64/bin/../lib/gcc/x86_64-w64-mingw32/7.2.0 -LE:/MingGW/mingw64/bin/../lib/gcc -LE:/MingGW/mingw64/bin/../lib/gcc/x86_64-w64-mingw32/7.2.0/../../../../x86_64-w64-mingw32/lib/../lib -LE:/MingGW/mingw64/bin/../lib/gcc/x86_64-w64-mingw32/7.2.0/../../../../lib -LE:/MingGW/mingw64/bin/../lib/gcc/x86_64-w64-mingw32/7.2.0/../../../../x86_64-w64-mingw32/lib -LE:/MingGW/mingw64/bin/../lib/gcc/x86_64-w64-mingw32/7.2.0/../../.. --whole-archive CMakeFiles\cmTC_a11c3.dir/objects.a --no-whole-archive --out-implib libcmTC_a11c3.dll.a --major-image-version 0 --minor-image-version 0 -lmingw32 -lgcc -lgcc_eh -lmoldname -lmingwex -lmsvcrt -lpthread -ladvapi32 -lshell32 -luser32 -lkernel32 -liconv -lmingw32 -lgcc -lgcc_eh -lmoldname -lmingwex -lmsvcrt E:/MingGW/mingw64/bin/../lib/gcc/x86_64-w64-mingw32/7.2.0/crtend.o
-COLLECT_GCC_OPTIONS='-v' '-o' 'cmTC_a11c3.exe' '-mtune=core2' '-march=nocona'
-mingw32-make.exe[1]: Leaving directory 'E:/Projects/Git repositories/GraphTest/Hypernet/HypernetTest/cmake-build-debug/CMakeFiles/CMakeTmp'
+COLLECT_GCC_OPTIONS='-v' '-o' 'cmTC_8aaab.exe' '-mtune=core2' '-march=nocona'
+ E:/MingGW/mingw64/bin/../libexec/gcc/x86_64-w64-mingw32/7.2.0/collect2.exe -plugin E:/MingGW/mingw64/bin/../libexec/gcc/x86_64-w64-mingw32/7.2.0/liblto_plugin-0.dll -plugin-opt=E:/MingGW/mingw64/bin/../libexec/gcc/x86_64-w64-mingw32/7.2.0/lto-wrapper.exe -plugin-opt=-fresolution=C:\Users\COMPUC~1\AppData\Local\Temp\ccr0eC1N.res -plugin-opt=-pass-through=-lmingw32 -plugin-opt=-pass-through=-lgcc -plugin-opt=-pass-through=-lgcc_eh -plugin-opt=-pass-through=-lmoldname -plugin-opt=-pass-through=-lmingwex -plugin-opt=-pass-through=-lmsvcrt -plugin-opt=-pass-through=-lpthread -plugin-opt=-pass-through=-ladvapi32 -plugin-opt=-pass-through=-lshell32 -plugin-opt=-pass-through=-luser32 -plugin-opt=-pass-through=-lkernel32 -plugin-opt=-pass-through=-liconv -plugin-opt=-pass-through=-lmingw32 -plugin-opt=-pass-through=-lgcc -plugin-opt=-pass-through=-lgcc_eh -plugin-opt=-pass-through=-lmoldname -plugin-opt=-pass-through=-lmingwex -plugin-opt=-pass-through=-lmsvcrt --sysroot=C:/mingw720/x86_64-720-posix-seh-rt_v5-rev1/mingw64 -m i386pep -Bdynamic -o cmTC_8aaab.exe E:/MingGW/mingw64/bin/../lib/gcc/x86_64-w64-mingw32/7.2.0/../../../../x86_64-w64-mingw32/lib/../lib/crt2.o E:/MingGW/mingw64/bin/../lib/gcc/x86_64-w64-mingw32/7.2.0/crtbegin.o -LE:/MingGW/mingw64/bin/../lib/gcc/x86_64-w64-mingw32/7.2.0 -LE:/MingGW/mingw64/bin/../lib/gcc -LE:/MingGW/mingw64/bin/../lib/gcc/x86_64-w64-mingw32/7.2.0/../../../../x86_64-w64-mingw32/lib/../lib -LE:/MingGW/mingw64/bin/../lib/gcc/x86_64-w64-mingw32/7.2.0/../../../../lib -LE:/MingGW/mingw64/bin/../lib/gcc/x86_64-w64-mingw32/7.2.0/../../../../x86_64-w64-mingw32/lib -LE:/MingGW/mingw64/bin/../lib/gcc/x86_64-w64-mingw32/7.2.0/../../.. --whole-archive CMakeFiles\cmTC_8aaab.dir/objects.a --no-whole-archive --out-implib libcmTC_8aaab.dll.a --major-image-version 0 --minor-image-version 0 -lmingw32 -lgcc -lgcc_eh -lmoldname -lmingwex -lmsvcrt -lpthread -ladvapi32 -lshell32 -luser32 -lkernel32 -liconv -lmingw32 -lgcc -lgcc_eh -lmoldname -lmingwex -lmsvcrt E:/MingGW/mingw64/bin/../lib/gcc/x86_64-w64-mingw32/7.2.0/crtend.o
+COLLECT_GCC_OPTIONS='-v' '-o' 'cmTC_8aaab.exe' '-mtune=core2' '-march=nocona'
+mingw32-make.exe[1]: Leaving directory 'E:/Projects/Git repositories/Tests/Hypernet/HypernetTest/cmake-build-debug/CMakeFiles/CMakeTmp'
 
 
 Parsed C implicit link information from above output:
   link line regex: [^( *|.*[/\])(ld\.exe|CMAKE_LINK_STARTFILE-NOTFOUND|([^/\]+-)?ld|collect2)[^/\]*( |$)]
-  ignore line: [Change Dir: E:/Projects/Git repositories/GraphTest/Hypernet/HypernetTest/cmake-build-debug/CMakeFiles/CMakeTmp]
+  ignore line: [Change Dir: E:/Projects/Git repositories/Tests/Hypernet/HypernetTest/cmake-build-debug/CMakeFiles/CMakeTmp]
   ignore line: []
-  ignore line: [Run Build Command:"E:/MingGW/mingw64/bin/mingw32-make.exe" "cmTC_a11c3/fast"]
-  ignore line: [E:/MingGW/mingw64/bin/mingw32-make.exe -f CMakeFiles\cmTC_a11c3.dir\build.make CMakeFiles/cmTC_a11c3.dir/build]
-  ignore line: [mingw32-make.exe[1]: Entering directory 'E:/Projects/Git repositories/GraphTest/Hypernet/HypernetTest/cmake-build-debug/CMakeFiles/CMakeTmp']
-  ignore line: [Building C object CMakeFiles/cmTC_a11c3.dir/CMakeCCompilerABI.c.obj]
-  ignore line: [E:\MingGW\mingw64\bin\gcc.exe    -o CMakeFiles\cmTC_a11c3.dir\CMakeCCompilerABI.c.obj   -c "C:\Program Files\JetBrains\CLion 2017.3.4\bin\cmake\share\cmake-3.9\Modules\CMakeCCompilerABI.c"]
-  ignore line: [Linking C executable cmTC_a11c3.exe]
-  ignore line: ["C:\Program Files\JetBrains\CLion 2017.3.4\bin\cmake\bin\cmake.exe" -E cmake_link_script CMakeFiles\cmTC_a11c3.dir\link.txt --verbose=1]
-  ignore line: ["C:\Program Files\JetBrains\CLion 2017.3.4\bin\cmake\bin\cmake.exe" -E remove -f CMakeFiles\cmTC_a11c3.dir/objects.a]
-  ignore line: [E:\MingGW\mingw64\bin\ar.exe cr CMakeFiles\cmTC_a11c3.dir/objects.a @CMakeFiles\cmTC_a11c3.dir\objects1.rsp]
-  ignore line: [E:\MingGW\mingw64\bin\gcc.exe     -v -Wl,--whole-archive CMakeFiles\cmTC_a11c3.dir/objects.a -Wl,--no-whole-archive  -o cmTC_a11c3.exe -Wl,--out-implib,libcmTC_a11c3.dll.a -Wl,--major-image-version,0,--minor-image-version,0 ]
+  ignore line: [Run Build Command:"E:/MingGW/mingw64/bin/mingw32-make.exe" "cmTC_8aaab/fast"]
+  ignore line: [E:/MingGW/mingw64/bin/mingw32-make.exe -f CMakeFiles\cmTC_8aaab.dir\build.make CMakeFiles/cmTC_8aaab.dir/build]
+  ignore line: [mingw32-make.exe[1]: Entering directory 'E:/Projects/Git repositories/Tests/Hypernet/HypernetTest/cmake-build-debug/CMakeFiles/CMakeTmp']
+  ignore line: [Building C object CMakeFiles/cmTC_8aaab.dir/CMakeCCompilerABI.c.obj]
+  ignore line: [E:\MingGW\mingw64\bin\gcc.exe    -o CMakeFiles\cmTC_8aaab.dir\CMakeCCompilerABI.c.obj   -c "C:\Program Files\JetBrains\CLion 2017.3.4\bin\cmake\share\cmake-3.9\Modules\CMakeCCompilerABI.c"]
+  ignore line: [Linking C executable cmTC_8aaab.exe]
+  ignore line: ["C:\Program Files\JetBrains\CLion 2017.3.4\bin\cmake\bin\cmake.exe" -E cmake_link_script CMakeFiles\cmTC_8aaab.dir\link.txt --verbose=1]
+  ignore line: ["C:\Program Files\JetBrains\CLion 2017.3.4\bin\cmake\bin\cmake.exe" -E remove -f CMakeFiles\cmTC_8aaab.dir/objects.a]
+  ignore line: [E:\MingGW\mingw64\bin\ar.exe cr CMakeFiles\cmTC_8aaab.dir/objects.a @CMakeFiles\cmTC_8aaab.dir\objects1.rsp]
+  ignore line: [E:\MingGW\mingw64\bin\gcc.exe     -v -Wl,--whole-archive CMakeFiles\cmTC_8aaab.dir/objects.a -Wl,--no-whole-archive  -o cmTC_8aaab.exe -Wl,--out-implib,libcmTC_8aaab.dll.a -Wl,--major-image-version,0,--minor-image-version,0 ]
   ignore line: [Using built-in specs.]
   ignore line: [COLLECT_GCC=E:\MingGW\mingw64\bin\gcc.exe]
   ignore line: [COLLECT_LTO_WRAPPER=E:/MingGW/mingw64/bin/../libexec/gcc/x86_64-w64-mingw32/7.2.0/lto-wrapper.exe]
@@ -99,13 +99,13 @@ Parsed C implicit link information from above output:
   ignore line: [E:/MingGW/mingw64/bin/../lib/gcc/x86_64-w64-mingw32/7.2.0/../../../../lib/]
   ignore line: [E:/MingGW/mingw64/bin/../lib/gcc/x86_64-w64-mingw32/7.2.0/../../../../x86_64-w64-mingw32/lib/]
   ignore line: [E:/MingGW/mingw64/bin/../lib/gcc/x86_64-w64-mingw32/7.2.0/../../../]
-  ignore line: [COLLECT_GCC_OPTIONS='-v' '-o' 'cmTC_a11c3.exe' '-mtune=core2' '-march=nocona']
-  link line: [ E:/MingGW/mingw64/bin/../libexec/gcc/x86_64-w64-mingw32/7.2.0/collect2.exe -plugin E:/MingGW/mingw64/bin/../libexec/gcc/x86_64-w64-mingw32/7.2.0/liblto_plugin-0.dll -plugin-opt=E:/MingGW/mingw64/bin/../libexec/gcc/x86_64-w64-mingw32/7.2.0/lto-wrapper.exe -plugin-opt=-fresolution=C:\Users\COMPUC~1\AppData\Local\Temp\ccjXXadV.res -plugin-opt=-pass-through=-lmingw32 -plugin-opt=-pass-through=-lgcc -plugin-opt=-pass-through=-lgcc_eh -plugin-opt=-pass-through=-lmoldname -plugin-opt=-pass-through=-lmingwex -plugin-opt=-pass-through=-lmsvcrt -plugin-opt=-pass-through=-lpthread -plugin-opt=-pass-through=-ladvapi32 -plugin-opt=-pass-through=-lshell32 -plugin-opt=-pass-through=-luser32 -plugin-opt=-pass-through=-lkernel32 -plugin-opt=-pass-through=-liconv -plugin-opt=-pass-through=-lmingw32 -plugin-opt=-pass-through=-lgcc -plugin-opt=-pass-through=-lgcc_eh -plugin-opt=-pass-through=-lmoldname -plugin-opt=-pass-through=-lmingwex -plugin-opt=-pass-through=-lmsvcrt --sysroot=C:/mingw720/x86_64-720-posix-seh-rt_v5-rev1/mingw64 -m i386pep -Bdynamic -o cmTC_a11c3.exe E:/MingGW/mingw64/bin/../lib/gcc/x86_64-w64-mingw32/7.2.0/../../../../x86_64-w64-mingw32/lib/../lib/crt2.o E:/MingGW/mingw64/bin/../lib/gcc/x86_64-w64-mingw32/7.2.0/crtbegin.o -LE:/MingGW/mingw64/bin/../lib/gcc/x86_64-w64-mingw32/7.2.0 -LE:/MingGW/mingw64/bin/../lib/gcc -LE:/MingGW/mingw64/bin/../lib/gcc/x86_64-w64-mingw32/7.2.0/../../../../x86_64-w64-mingw32/lib/../lib -LE:/MingGW/mingw64/bin/../lib/gcc/x86_64-w64-mingw32/7.2.0/../../../../lib -LE:/MingGW/mingw64/bin/../lib/gcc/x86_64-w64-mingw32/7.2.0/../../../../x86_64-w64-mingw32/lib -LE:/MingGW/mingw64/bin/../lib/gcc/x86_64-w64-mingw32/7.2.0/../../.. --whole-archive CMakeFiles\cmTC_a11c3.dir/objects.a --no-whole-archive --out-implib libcmTC_a11c3.dll.a --major-image-version 0 --minor-image-version 0 -lmingw32 -lgcc -lgcc_eh -lmoldname -lmingwex -lmsvcrt -lpthread -ladvapi32 -lshell32 -luser32 -lkernel32 -liconv -lmingw32 -lgcc -lgcc_eh -lmoldname -lmingwex -lmsvcrt E:/MingGW/mingw64/bin/../lib/gcc/x86_64-w64-mingw32/7.2.0/crtend.o]
+  ignore line: [COLLECT_GCC_OPTIONS='-v' '-o' 'cmTC_8aaab.exe' '-mtune=core2' '-march=nocona']
+  link line: [ E:/MingGW/mingw64/bin/../libexec/gcc/x86_64-w64-mingw32/7.2.0/collect2.exe -plugin E:/MingGW/mingw64/bin/../libexec/gcc/x86_64-w64-mingw32/7.2.0/liblto_plugin-0.dll -plugin-opt=E:/MingGW/mingw64/bin/../libexec/gcc/x86_64-w64-mingw32/7.2.0/lto-wrapper.exe -plugin-opt=-fresolution=C:\Users\COMPUC~1\AppData\Local\Temp\ccr0eC1N.res -plugin-opt=-pass-through=-lmingw32 -plugin-opt=-pass-through=-lgcc -plugin-opt=-pass-through=-lgcc_eh -plugin-opt=-pass-through=-lmoldname -plugin-opt=-pass-through=-lmingwex -plugin-opt=-pass-through=-lmsvcrt -plugin-opt=-pass-through=-lpthread -plugin-opt=-pass-through=-ladvapi32 -plugin-opt=-pass-through=-lshell32 -plugin-opt=-pass-through=-luser32 -plugin-opt=-pass-through=-lkernel32 -plugin-opt=-pass-through=-liconv -plugin-opt=-pass-through=-lmingw32 -plugin-opt=-pass-through=-lgcc -plugin-opt=-pass-through=-lgcc_eh -plugin-opt=-pass-through=-lmoldname -plugin-opt=-pass-through=-lmingwex -plugin-opt=-pass-through=-lmsvcrt --sysroot=C:/mingw720/x86_64-720-posix-seh-rt_v5-rev1/mingw64 -m i386pep -Bdynamic -o cmTC_8aaab.exe E:/MingGW/mingw64/bin/../lib/gcc/x86_64-w64-mingw32/7.2.0/../../../../x86_64-w64-mingw32/lib/../lib/crt2.o E:/MingGW/mingw64/bin/../lib/gcc/x86_64-w64-mingw32/7.2.0/crtbegin.o -LE:/MingGW/mingw64/bin/../lib/gcc/x86_64-w64-mingw32/7.2.0 -LE:/MingGW/mingw64/bin/../lib/gcc -LE:/MingGW/mingw64/bin/../lib/gcc/x86_64-w64-mingw32/7.2.0/../../../../x86_64-w64-mingw32/lib/../lib -LE:/MingGW/mingw64/bin/../lib/gcc/x86_64-w64-mingw32/7.2.0/../../../../lib -LE:/MingGW/mingw64/bin/../lib/gcc/x86_64-w64-mingw32/7.2.0/../../../../x86_64-w64-mingw32/lib -LE:/MingGW/mingw64/bin/../lib/gcc/x86_64-w64-mingw32/7.2.0/../../.. --whole-archive CMakeFiles\cmTC_8aaab.dir/objects.a --no-whole-archive --out-implib libcmTC_8aaab.dll.a --major-image-version 0 --minor-image-version 0 -lmingw32 -lgcc -lgcc_eh -lmoldname -lmingwex -lmsvcrt -lpthread -ladvapi32 -lshell32 -luser32 -lkernel32 -liconv -lmingw32 -lgcc -lgcc_eh -lmoldname -lmingwex -lmsvcrt E:/MingGW/mingw64/bin/../lib/gcc/x86_64-w64-mingw32/7.2.0/crtend.o]
     arg [E:/MingGW/mingw64/bin/../libexec/gcc/x86_64-w64-mingw32/7.2.0/collect2.exe] ==> ignore
     arg [-plugin] ==> ignore
     arg [E:/MingGW/mingw64/bin/../libexec/gcc/x86_64-w64-mingw32/7.2.0/liblto_plugin-0.dll] ==> ignore
     arg [-plugin-opt=E:/MingGW/mingw64/bin/../libexec/gcc/x86_64-w64-mingw32/7.2.0/lto-wrapper.exe] ==> ignore
-    arg [-plugin-opt=-fresolution=C:\Users\COMPUC~1\AppData\Local\Temp\ccjXXadV.res] ==> ignore
+    arg [-plugin-opt=-fresolution=C:\Users\COMPUC~1\AppData\Local\Temp\ccr0eC1N.res] ==> ignore
     arg [-plugin-opt=-pass-through=-lmingw32] ==> ignore
     arg [-plugin-opt=-pass-through=-lgcc] ==> ignore
     arg [-plugin-opt=-pass-through=-lgcc_eh] ==> ignore
@@ -129,7 +129,7 @@ Parsed C implicit link information from above output:
     arg [i386pep] ==> ignore
     arg [-Bdynamic] ==> ignore
     arg [-o] ==> ignore
-    arg [cmTC_a11c3.exe] ==> ignore
+    arg [cmTC_8aaab.exe] ==> ignore
     arg [E:/MingGW/mingw64/bin/../lib/gcc/x86_64-w64-mingw32/7.2.0/../../../../x86_64-w64-mingw32/lib/../lib/crt2.o] ==> ignore
     arg [E:/MingGW/mingw64/bin/../lib/gcc/x86_64-w64-mingw32/7.2.0/crtbegin.o] ==> ignore
     arg [-LE:/MingGW/mingw64/bin/../lib/gcc/x86_64-w64-mingw32/7.2.0] ==> dir [E:/MingGW/mingw64/bin/../lib/gcc/x86_64-w64-mingw32/7.2.0]
@@ -139,10 +139,10 @@ Parsed C implicit link information from above output:
     arg [-LE:/MingGW/mingw64/bin/../lib/gcc/x86_64-w64-mingw32/7.2.0/../../../../x86_64-w64-mingw32/lib] ==> dir [E:/MingGW/mingw64/bin/../lib/gcc/x86_64-w64-mingw32/7.2.0/../../../../x86_64-w64-mingw32/lib]
     arg [-LE:/MingGW/mingw64/bin/../lib/gcc/x86_64-w64-mingw32/7.2.0/../../..] ==> dir [E:/MingGW/mingw64/bin/../lib/gcc/x86_64-w64-mingw32/7.2.0/../../..]
     arg [--whole-archive] ==> ignore
-    arg [CMakeFiles\cmTC_a11c3.dir/objects.a] ==> ignore
+    arg [CMakeFiles\cmTC_8aaab.dir/objects.a] ==> ignore
     arg [--no-whole-archive] ==> ignore
     arg [--out-implib] ==> ignore
-    arg [libcmTC_a11c3.dll.a] ==> ignore
+    arg [libcmTC_8aaab.dll.a] ==> ignore
     arg [--major-image-version] ==> ignore
     arg [0] ==> ignore
     arg [--minor-image-version] ==> ignore
@@ -184,19 +184,19 @@ Parsed C implicit link information from above output:
 
 
 Detecting C [-std=c11] compiler features compiled with the following output:
-Change Dir: E:/Projects/Git repositories/GraphTest/Hypernet/HypernetTest/cmake-build-debug/CMakeFiles/CMakeTmp
+Change Dir: E:/Projects/Git repositories/Tests/Hypernet/HypernetTest/cmake-build-debug/CMakeFiles/CMakeTmp
 
-Run Build Command:"E:/MingGW/mingw64/bin/mingw32-make.exe" "cmTC_1e803/fast"
-E:/MingGW/mingw64/bin/mingw32-make.exe -f CMakeFiles\cmTC_1e803.dir\build.make CMakeFiles/cmTC_1e803.dir/build
-mingw32-make.exe[1]: Entering directory 'E:/Projects/Git repositories/GraphTest/Hypernet/HypernetTest/cmake-build-debug/CMakeFiles/CMakeTmp'
-Building C object CMakeFiles/cmTC_1e803.dir/feature_tests.c.obj
-E:\MingGW\mingw64\bin\gcc.exe   -std=c11 -o CMakeFiles\cmTC_1e803.dir\feature_tests.c.obj   -c "E:\Projects\Git repositories\GraphTest\Hypernet\HypernetTest\cmake-build-debug\CMakeFiles\feature_tests.c"
-Linking C executable cmTC_1e803.exe
-"C:\Program Files\JetBrains\CLion 2017.3.4\bin\cmake\bin\cmake.exe" -E cmake_link_script CMakeFiles\cmTC_1e803.dir\link.txt --verbose=1
-"C:\Program Files\JetBrains\CLion 2017.3.4\bin\cmake\bin\cmake.exe" -E remove -f CMakeFiles\cmTC_1e803.dir/objects.a
-E:\MingGW\mingw64\bin\ar.exe cr CMakeFiles\cmTC_1e803.dir/objects.a @CMakeFiles\cmTC_1e803.dir\objects1.rsp
-E:\MingGW\mingw64\bin\gcc.exe      -Wl,--whole-archive CMakeFiles\cmTC_1e803.dir/objects.a -Wl,--no-whole-archive  -o cmTC_1e803.exe -Wl,--out-implib,libcmTC_1e803.dll.a -Wl,--major-image-version,0,--minor-image-version,0 @CMakeFiles\cmTC_1e803.dir\linklibs.rsp
-mingw32-make.exe[1]: Leaving directory 'E:/Projects/Git repositories/GraphTest/Hypernet/HypernetTest/cmake-build-debug/CMakeFiles/CMakeTmp'
+Run Build Command:"E:/MingGW/mingw64/bin/mingw32-make.exe" "cmTC_31f87/fast"
+E:/MingGW/mingw64/bin/mingw32-make.exe -f CMakeFiles\cmTC_31f87.dir\build.make CMakeFiles/cmTC_31f87.dir/build
+mingw32-make.exe[1]: Entering directory 'E:/Projects/Git repositories/Tests/Hypernet/HypernetTest/cmake-build-debug/CMakeFiles/CMakeTmp'
+Building C object CMakeFiles/cmTC_31f87.dir/feature_tests.c.obj
+E:\MingGW\mingw64\bin\gcc.exe   -std=c11 -o CMakeFiles\cmTC_31f87.dir\feature_tests.c.obj   -c "E:\Projects\Git repositories\Tests\Hypernet\HypernetTest\cmake-build-debug\CMakeFiles\feature_tests.c"
+Linking C executable cmTC_31f87.exe
+"C:\Program Files\JetBrains\CLion 2017.3.4\bin\cmake\bin\cmake.exe" -E cmake_link_script CMakeFiles\cmTC_31f87.dir\link.txt --verbose=1
+"C:\Program Files\JetBrains\CLion 2017.3.4\bin\cmake\bin\cmake.exe" -E remove -f CMakeFiles\cmTC_31f87.dir/objects.a
+E:\MingGW\mingw64\bin\ar.exe cr CMakeFiles\cmTC_31f87.dir/objects.a @CMakeFiles\cmTC_31f87.dir\objects1.rsp
+E:\MingGW\mingw64\bin\gcc.exe      -Wl,--whole-archive CMakeFiles\cmTC_31f87.dir/objects.a -Wl,--no-whole-archive  -o cmTC_31f87.exe -Wl,--out-implib,libcmTC_31f87.dll.a -Wl,--major-image-version,0,--minor-image-version,0 @CMakeFiles\cmTC_31f87.dir\linklibs.rsp
+mingw32-make.exe[1]: Leaving directory 'E:/Projects/Git repositories/Tests/Hypernet/HypernetTest/cmake-build-debug/CMakeFiles/CMakeTmp'
 
 
     Feature record: C_FEATURE:1c_function_prototypes
@@ -206,19 +206,19 @@ mingw32-make.exe[1]: Leaving directory 'E:/Projects/Git repositories/GraphTest/H
 
 
 Detecting C [-std=c99] compiler features compiled with the following output:
-Change Dir: E:/Projects/Git repositories/GraphTest/Hypernet/HypernetTest/cmake-build-debug/CMakeFiles/CMakeTmp
+Change Dir: E:/Projects/Git repositories/Tests/Hypernet/HypernetTest/cmake-build-debug/CMakeFiles/CMakeTmp
 
-Run Build Command:"E:/MingGW/mingw64/bin/mingw32-make.exe" "cmTC_2f4d8/fast"
-E:/MingGW/mingw64/bin/mingw32-make.exe -f CMakeFiles\cmTC_2f4d8.dir\build.make CMakeFiles/cmTC_2f4d8.dir/build
-mingw32-make.exe[1]: Entering directory 'E:/Projects/Git repositories/GraphTest/Hypernet/HypernetTest/cmake-build-debug/CMakeFiles/CMakeTmp'
-Building C object CMakeFiles/cmTC_2f4d8.dir/feature_tests.c.obj
-E:\MingGW\mingw64\bin\gcc.exe   -std=c99 -o CMakeFiles\cmTC_2f4d8.dir\feature_tests.c.obj   -c "E:\Projects\Git repositories\GraphTest\Hypernet\HypernetTest\cmake-build-debug\CMakeFiles\feature_tests.c"
-Linking C executable cmTC_2f4d8.exe
-"C:\Program Files\JetBrains\CLion 2017.3.4\bin\cmake\bin\cmake.exe" -E cmake_link_script CMakeFiles\cmTC_2f4d8.dir\link.txt --verbose=1
-"C:\Program Files\JetBrains\CLion 2017.3.4\bin\cmake\bin\cmake.exe" -E remove -f CMakeFiles\cmTC_2f4d8.dir/objects.a
-E:\MingGW\mingw64\bin\ar.exe cr CMakeFiles\cmTC_2f4d8.dir/objects.a @CMakeFiles\cmTC_2f4d8.dir\objects1.rsp
-E:\MingGW\mingw64\bin\gcc.exe      -Wl,--whole-archive CMakeFiles\cmTC_2f4d8.dir/objects.a -Wl,--no-whole-archive  -o cmTC_2f4d8.exe -Wl,--out-implib,libcmTC_2f4d8.dll.a -Wl,--major-image-version,0,--minor-image-version,0 @CMakeFiles\cmTC_2f4d8.dir\linklibs.rsp
-mingw32-make.exe[1]: Leaving directory 'E:/Projects/Git repositories/GraphTest/Hypernet/HypernetTest/cmake-build-debug/CMakeFiles/CMakeTmp'
+Run Build Command:"E:/MingGW/mingw64/bin/mingw32-make.exe" "cmTC_2155d/fast"
+E:/MingGW/mingw64/bin/mingw32-make.exe -f CMakeFiles\cmTC_2155d.dir\build.make CMakeFiles/cmTC_2155d.dir/build
+mingw32-make.exe[1]: Entering directory 'E:/Projects/Git repositories/Tests/Hypernet/HypernetTest/cmake-build-debug/CMakeFiles/CMakeTmp'
+Building C object CMakeFiles/cmTC_2155d.dir/feature_tests.c.obj
+E:\MingGW\mingw64\bin\gcc.exe   -std=c99 -o CMakeFiles\cmTC_2155d.dir\feature_tests.c.obj   -c "E:\Projects\Git repositories\Tests\Hypernet\HypernetTest\cmake-build-debug\CMakeFiles\feature_tests.c"
+Linking C executable cmTC_2155d.exe
+"C:\Program Files\JetBrains\CLion 2017.3.4\bin\cmake\bin\cmake.exe" -E cmake_link_script CMakeFiles\cmTC_2155d.dir\link.txt --verbose=1
+"C:\Program Files\JetBrains\CLion 2017.3.4\bin\cmake\bin\cmake.exe" -E remove -f CMakeFiles\cmTC_2155d.dir/objects.a
+E:\MingGW\mingw64\bin\ar.exe cr CMakeFiles\cmTC_2155d.dir/objects.a @CMakeFiles\cmTC_2155d.dir\objects1.rsp
+E:\MingGW\mingw64\bin\gcc.exe      -Wl,--whole-archive CMakeFiles\cmTC_2155d.dir/objects.a -Wl,--no-whole-archive  -o cmTC_2155d.exe -Wl,--out-implib,libcmTC_2155d.dll.a -Wl,--major-image-version,0,--minor-image-version,0 @CMakeFiles\cmTC_2155d.dir\linklibs.rsp
+mingw32-make.exe[1]: Leaving directory 'E:/Projects/Git repositories/Tests/Hypernet/HypernetTest/cmake-build-debug/CMakeFiles/CMakeTmp'
 
 
     Feature record: C_FEATURE:1c_function_prototypes
@@ -228,19 +228,19 @@ mingw32-make.exe[1]: Leaving directory 'E:/Projects/Git repositories/GraphTest/H
 
 
 Detecting C [-std=c90] compiler features compiled with the following output:
-Change Dir: E:/Projects/Git repositories/GraphTest/Hypernet/HypernetTest/cmake-build-debug/CMakeFiles/CMakeTmp
+Change Dir: E:/Projects/Git repositories/Tests/Hypernet/HypernetTest/cmake-build-debug/CMakeFiles/CMakeTmp
 
-Run Build Command:"E:/MingGW/mingw64/bin/mingw32-make.exe" "cmTC_fa455/fast"
-E:/MingGW/mingw64/bin/mingw32-make.exe -f CMakeFiles\cmTC_fa455.dir\build.make CMakeFiles/cmTC_fa455.dir/build
-mingw32-make.exe[1]: Entering directory 'E:/Projects/Git repositories/GraphTest/Hypernet/HypernetTest/cmake-build-debug/CMakeFiles/CMakeTmp'
-Building C object CMakeFiles/cmTC_fa455.dir/feature_tests.c.obj
-E:\MingGW\mingw64\bin\gcc.exe   -std=c90 -o CMakeFiles\cmTC_fa455.dir\feature_tests.c.obj   -c "E:\Projects\Git repositories\GraphTest\Hypernet\HypernetTest\cmake-build-debug\CMakeFiles\feature_tests.c"
-Linking C executable cmTC_fa455.exe
-"C:\Program Files\JetBrains\CLion 2017.3.4\bin\cmake\bin\cmake.exe" -E cmake_link_script CMakeFiles\cmTC_fa455.dir\link.txt --verbose=1
-"C:\Program Files\JetBrains\CLion 2017.3.4\bin\cmake\bin\cmake.exe" -E remove -f CMakeFiles\cmTC_fa455.dir/objects.a
-E:\MingGW\mingw64\bin\ar.exe cr CMakeFiles\cmTC_fa455.dir/objects.a @CMakeFiles\cmTC_fa455.dir\objects1.rsp
-E:\MingGW\mingw64\bin\gcc.exe      -Wl,--whole-archive CMakeFiles\cmTC_fa455.dir/objects.a -Wl,--no-whole-archive  -o cmTC_fa455.exe -Wl,--out-implib,libcmTC_fa455.dll.a -Wl,--major-image-version,0,--minor-image-version,0 @CMakeFiles\cmTC_fa455.dir\linklibs.rsp
-mingw32-make.exe[1]: Leaving directory 'E:/Projects/Git repositories/GraphTest/Hypernet/HypernetTest/cmake-build-debug/CMakeFiles/CMakeTmp'
+Run Build Command:"E:/MingGW/mingw64/bin/mingw32-make.exe" "cmTC_577a5/fast"
+E:/MingGW/mingw64/bin/mingw32-make.exe -f CMakeFiles\cmTC_577a5.dir\build.make CMakeFiles/cmTC_577a5.dir/build
+mingw32-make.exe[1]: Entering directory 'E:/Projects/Git repositories/Tests/Hypernet/HypernetTest/cmake-build-debug/CMakeFiles/CMakeTmp'
+Building C object CMakeFiles/cmTC_577a5.dir/feature_tests.c.obj
+E:\MingGW\mingw64\bin\gcc.exe   -std=c90 -o CMakeFiles\cmTC_577a5.dir\feature_tests.c.obj   -c "E:\Projects\Git repositories\Tests\Hypernet\HypernetTest\cmake-build-debug\CMakeFiles\feature_tests.c"
+Linking C executable cmTC_577a5.exe
+"C:\Program Files\JetBrains\CLion 2017.3.4\bin\cmake\bin\cmake.exe" -E cmake_link_script CMakeFiles\cmTC_577a5.dir\link.txt --verbose=1
+"C:\Program Files\JetBrains\CLion 2017.3.4\bin\cmake\bin\cmake.exe" -E remove -f CMakeFiles\cmTC_577a5.dir/objects.a
+E:\MingGW\mingw64\bin\ar.exe cr CMakeFiles\cmTC_577a5.dir/objects.a @CMakeFiles\cmTC_577a5.dir\objects1.rsp
+E:\MingGW\mingw64\bin\gcc.exe      -Wl,--whole-archive CMakeFiles\cmTC_577a5.dir/objects.a -Wl,--no-whole-archive  -o cmTC_577a5.exe -Wl,--out-implib,libcmTC_577a5.dll.a -Wl,--major-image-version,0,--minor-image-version,0 @CMakeFiles\cmTC_577a5.dir\linklibs.rsp
+mingw32-make.exe[1]: Leaving directory 'E:/Projects/Git repositories/Tests/Hypernet/HypernetTest/cmake-build-debug/CMakeFiles/CMakeTmp'
 
 
     Feature record: C_FEATURE:1c_function_prototypes
@@ -248,34 +248,34 @@ mingw32-make.exe[1]: Leaving directory 'E:/Projects/Git repositories/GraphTest/H
     Feature record: C_FEATURE:0c_static_assert
     Feature record: C_FEATURE:0c_variadic_macros
 Determining if the CXX compiler works passed with the following output:
-Change Dir: E:/Projects/Git repositories/GraphTest/Hypernet/HypernetTest/cmake-build-debug/CMakeFiles/CMakeTmp
+Change Dir: E:/Projects/Git repositories/Tests/Hypernet/HypernetTest/cmake-build-debug/CMakeFiles/CMakeTmp
 
-Run Build Command:"E:/MingGW/mingw64/bin/mingw32-make.exe" "cmTC_1a35b/fast"
-E:/MingGW/mingw64/bin/mingw32-make.exe -f CMakeFiles\cmTC_1a35b.dir\build.make CMakeFiles/cmTC_1a35b.dir/build
-mingw32-make.exe[1]: Entering directory 'E:/Projects/Git repositories/GraphTest/Hypernet/HypernetTest/cmake-build-debug/CMakeFiles/CMakeTmp'
-Building CXX object CMakeFiles/cmTC_1a35b.dir/testCXXCompiler.cxx.obj
-E:\MingGW\mingw64\bin\g++.exe     -o CMakeFiles\cmTC_1a35b.dir\testCXXCompiler.cxx.obj -c "E:\Projects\Git repositories\GraphTest\Hypernet\HypernetTest\cmake-build-debug\CMakeFiles\CMakeTmp\testCXXCompiler.cxx"
-Linking CXX executable cmTC_1a35b.exe
-"C:\Program Files\JetBrains\CLion 2017.3.4\bin\cmake\bin\cmake.exe" -E cmake_link_script CMakeFiles\cmTC_1a35b.dir\link.txt --verbose=1
-"C:\Program Files\JetBrains\CLion 2017.3.4\bin\cmake\bin\cmake.exe" -E remove -f CMakeFiles\cmTC_1a35b.dir/objects.a
-E:\MingGW\mingw64\bin\ar.exe cr CMakeFiles\cmTC_1a35b.dir/objects.a @CMakeFiles\cmTC_1a35b.dir\objects1.rsp
-E:\MingGW\mingw64\bin\g++.exe      -Wl,--whole-archive CMakeFiles\cmTC_1a35b.dir/objects.a -Wl,--no-whole-archive  -o cmTC_1a35b.exe -Wl,--out-implib,libcmTC_1a35b.dll.a -Wl,--major-image-version,0,--minor-image-version,0 @CMakeFiles\cmTC_1a35b.dir\linklibs.rsp
-mingw32-make.exe[1]: Leaving directory 'E:/Projects/Git repositories/GraphTest/Hypernet/HypernetTest/cmake-build-debug/CMakeFiles/CMakeTmp'
+Run Build Command:"E:/MingGW/mingw64/bin/mingw32-make.exe" "cmTC_55362/fast"
+E:/MingGW/mingw64/bin/mingw32-make.exe -f CMakeFiles\cmTC_55362.dir\build.make CMakeFiles/cmTC_55362.dir/build
+mingw32-make.exe[1]: Entering directory 'E:/Projects/Git repositories/Tests/Hypernet/HypernetTest/cmake-build-debug/CMakeFiles/CMakeTmp'
+Building CXX object CMakeFiles/cmTC_55362.dir/testCXXCompiler.cxx.obj
+E:\MingGW\mingw64\bin\g++.exe     -o CMakeFiles\cmTC_55362.dir\testCXXCompiler.cxx.obj -c "E:\Projects\Git repositories\Tests\Hypernet\HypernetTest\cmake-build-debug\CMakeFiles\CMakeTmp\testCXXCompiler.cxx"
+Linking CXX executable cmTC_55362.exe
+"C:\Program Files\JetBrains\CLion 2017.3.4\bin\cmake\bin\cmake.exe" -E cmake_link_script CMakeFiles\cmTC_55362.dir\link.txt --verbose=1
+"C:\Program Files\JetBrains\CLion 2017.3.4\bin\cmake\bin\cmake.exe" -E remove -f CMakeFiles\cmTC_55362.dir/objects.a
+E:\MingGW\mingw64\bin\ar.exe cr CMakeFiles\cmTC_55362.dir/objects.a @CMakeFiles\cmTC_55362.dir\objects1.rsp
+E:\MingGW\mingw64\bin\g++.exe      -Wl,--whole-archive CMakeFiles\cmTC_55362.dir/objects.a -Wl,--no-whole-archive  -o cmTC_55362.exe -Wl,--out-implib,libcmTC_55362.dll.a -Wl,--major-image-version,0,--minor-image-version,0 @CMakeFiles\cmTC_55362.dir\linklibs.rsp
+mingw32-make.exe[1]: Leaving directory 'E:/Projects/Git repositories/Tests/Hypernet/HypernetTest/cmake-build-debug/CMakeFiles/CMakeTmp'
 
 
 Detecting CXX compiler ABI info compiled with the following output:
-Change Dir: E:/Projects/Git repositories/GraphTest/Hypernet/HypernetTest/cmake-build-debug/CMakeFiles/CMakeTmp
+Change Dir: E:/Projects/Git repositories/Tests/Hypernet/HypernetTest/cmake-build-debug/CMakeFiles/CMakeTmp
 
-Run Build Command:"E:/MingGW/mingw64/bin/mingw32-make.exe" "cmTC_60c73/fast"
-E:/MingGW/mingw64/bin/mingw32-make.exe -f CMakeFiles\cmTC_60c73.dir\build.make CMakeFiles/cmTC_60c73.dir/build
-mingw32-make.exe[1]: Entering directory 'E:/Projects/Git repositories/GraphTest/Hypernet/HypernetTest/cmake-build-debug/CMakeFiles/CMakeTmp'
-Building CXX object CMakeFiles/cmTC_60c73.dir/CMakeCXXCompilerABI.cpp.obj
-E:\MingGW\mingw64\bin\g++.exe     -o CMakeFiles\cmTC_60c73.dir\CMakeCXXCompilerABI.cpp.obj -c "C:\Program Files\JetBrains\CLion 2017.3.4\bin\cmake\share\cmake-3.9\Modules\CMakeCXXCompilerABI.cpp"
-Linking CXX executable cmTC_60c73.exe
-"C:\Program Files\JetBrains\CLion 2017.3.4\bin\cmake\bin\cmake.exe" -E cmake_link_script CMakeFiles\cmTC_60c73.dir\link.txt --verbose=1
-"C:\Program Files\JetBrains\CLion 2017.3.4\bin\cmake\bin\cmake.exe" -E remove -f CMakeFiles\cmTC_60c73.dir/objects.a
-E:\MingGW\mingw64\bin\ar.exe cr CMakeFiles\cmTC_60c73.dir/objects.a @CMakeFiles\cmTC_60c73.dir\objects1.rsp
-E:\MingGW\mingw64\bin\g++.exe     -v -Wl,--whole-archive CMakeFiles\cmTC_60c73.dir/objects.a -Wl,--no-whole-archive  -o cmTC_60c73.exe -Wl,--out-implib,libcmTC_60c73.dll.a -Wl,--major-image-version,0,--minor-image-version,0 
+Run Build Command:"E:/MingGW/mingw64/bin/mingw32-make.exe" "cmTC_78b98/fast"
+E:/MingGW/mingw64/bin/mingw32-make.exe -f CMakeFiles\cmTC_78b98.dir\build.make CMakeFiles/cmTC_78b98.dir/build
+mingw32-make.exe[1]: Entering directory 'E:/Projects/Git repositories/Tests/Hypernet/HypernetTest/cmake-build-debug/CMakeFiles/CMakeTmp'
+Building CXX object CMakeFiles/cmTC_78b98.dir/CMakeCXXCompilerABI.cpp.obj
+E:\MingGW\mingw64\bin\g++.exe     -o CMakeFiles\cmTC_78b98.dir\CMakeCXXCompilerABI.cpp.obj -c "C:\Program Files\JetBrains\CLion 2017.3.4\bin\cmake\share\cmake-3.9\Modules\CMakeCXXCompilerABI.cpp"
+Linking CXX executable cmTC_78b98.exe
+"C:\Program Files\JetBrains\CLion 2017.3.4\bin\cmake\bin\cmake.exe" -E cmake_link_script CMakeFiles\cmTC_78b98.dir\link.txt --verbose=1
+"C:\Program Files\JetBrains\CLion 2017.3.4\bin\cmake\bin\cmake.exe" -E remove -f CMakeFiles\cmTC_78b98.dir/objects.a
+E:\MingGW\mingw64\bin\ar.exe cr CMakeFiles\cmTC_78b98.dir/objects.a @CMakeFiles\cmTC_78b98.dir\objects1.rsp
+E:\MingGW\mingw64\bin\g++.exe     -v -Wl,--whole-archive CMakeFiles\cmTC_78b98.dir/objects.a -Wl,--no-whole-archive  -o cmTC_78b98.exe -Wl,--out-implib,libcmTC_78b98.dll.a -Wl,--major-image-version,0,--minor-image-version,0 
 Using built-in specs.
 COLLECT_GCC=E:\MingGW\mingw64\bin\g++.exe
 COLLECT_LTO_WRAPPER=E:/MingGW/mingw64/bin/../libexec/gcc/x86_64-w64-mingw32/7.2.0/lto-wrapper.exe
@@ -285,26 +285,26 @@ Thread model: posix
 gcc version 7.2.0 (x86_64-posix-seh-rev1, Built by MinGW-W64 project) 
 COMPILER_PATH=E:/MingGW/mingw64/bin/../libexec/gcc/x86_64-w64-mingw32/7.2.0/;E:/MingGW/mingw64/bin/../libexec/gcc/;E:/MingGW/mingw64/bin/../lib/gcc/x86_64-w64-mingw32/7.2.0/../../../../x86_64-w64-mingw32/bin/
 LIBRARY_PATH=E:/MingGW/mingw64/bin/../lib/gcc/x86_64-w64-mingw32/7.2.0/;E:/MingGW/mingw64/bin/../lib/gcc/;E:/MingGW/mingw64/bin/../lib/gcc/x86_64-w64-mingw32/7.2.0/../../../../x86_64-w64-mingw32/lib/../lib/;E:/MingGW/mingw64/bin/../lib/gcc/x86_64-w64-mingw32/7.2.0/../../../../lib/;E:/MingGW/mingw64/bin/../lib/gcc/x86_64-w64-mingw32/7.2.0/../../../../x86_64-w64-mingw32/lib/;E:/MingGW/mingw64/bin/../lib/gcc/x86_64-w64-mingw32/7.2.0/../../../
-COLLECT_GCC_OPTIONS='-v' '-o' 'cmTC_60c73.exe' '-shared-libgcc' '-mtune=core2' '-march=nocona'
- E:/MingGW/mingw64/bin/../libexec/gcc/x86_64-w64-mingw32/7.2.0/collect2.exe -plugin E:/MingGW/mingw64/bin/../libexec/gcc/x86_64-w64-mingw32/7.2.0/liblto_plugin-0.dll -plugin-opt=E:/MingGW/mingw64/bin/../libexec/gcc/x86_64-w64-mingw32/7.2.0/lto-wrapper.exe -plugin-opt=-fresolution=C:\Users\COMPUC~1\AppData\Local\Temp\ccwD8dkk.res -plugin-opt=-pass-through=-lmingw32 -plugin-opt=-pass-through=-lgcc_s -plugin-opt=-pass-through=-lgcc -plugin-opt=-pass-through=-lmoldname -plugin-opt=-pass-through=-lmingwex -plugin-opt=-pass-through=-lmsvcrt -plugin-opt=-pass-through=-lpthread -plugin-opt=-pass-through=-ladvapi32 -plugin-opt=-pass-through=-lshell32 -plugin-opt=-pass-through=-luser32 -plugin-opt=-pass-through=-lkernel32 -plugin-opt=-pass-through=-liconv -plugin-opt=-pass-through=-lmingw32 -plugin-opt=-pass-through=-lgcc_s -plugin-opt=-pass-through=-lgcc -plugin-opt=-pass-through=-lmoldname -plugin-opt=-pass-through=-lmingwex -plugin-opt=-pass-through=-lmsvcrt --sysroot=C:/mingw720/x86_64-720-posix-seh-rt_v5-rev1/mingw64 -m i386pep -Bdynamic -o cmTC_60c73.exe E:/MingGW/mingw64/bin/../lib/gcc/x86_64-w64-mingw32/7.2.0/../../../../x86_64-w64-mingw32/lib/../lib/crt2.o E:/MingGW/mingw64/bin/../lib/gcc/x86_64-w64-mingw32/7.2.0/crtbegin.o -LE:/MingGW/mingw64/bin/../lib/gcc/x86_64-w64-mingw32/7.2.0 -LE:/MingGW/mingw64/bin/../lib/gcc -LE:/MingGW/mingw64/bin/../lib/gcc/x86_64-w64-mingw32/7.2.0/../../../../x86_64-w64-mingw32/lib/../lib -LE:/MingGW/mingw64/bin/../lib/gcc/x86_64-w64-mingw32/7.2.0/../../../../lib -LE:/MingGW/mingw64/bin/../lib/gcc/x86_64-w64-mingw32/7.2.0/../../../../x86_64-w64-mingw32/lib -LE:/MingGW/mingw64/bin/../lib/gcc/x86_64-w64-mingw32/7.2.0/../../.. --whole-archive CMakeFiles\cmTC_60c73.dir/objects.a --no-whole-archive --out-implib libcmTC_60c73.dll.a --major-image-version 0 --minor-image-version 0 -lstdc++ -lmingw32 -lgcc_s -lgcc -lmoldname -lmingwex -lmsvcrt -lpthread -ladvapi32 -lshell32 -luser32 -lkernel32 -liconv -lmingw32 -lgcc_s -lgcc -lmoldname -lmingwex -lmsvcrt E:/MingGW/mingw64/bin/../lib/gcc/x86_64-w64-mingw32/7.2.0/crtend.o
-COLLECT_GCC_OPTIONS='-v' '-o' 'cmTC_60c73.exe' '-shared-libgcc' '-mtune=core2' '-march=nocona'
-mingw32-make.exe[1]: Leaving directory 'E:/Projects/Git repositories/GraphTest/Hypernet/HypernetTest/cmake-build-debug/CMakeFiles/CMakeTmp'
+COLLECT_GCC_OPTIONS='-v' '-o' 'cmTC_78b98.exe' '-shared-libgcc' '-mtune=core2' '-march=nocona'
+ E:/MingGW/mingw64/bin/../libexec/gcc/x86_64-w64-mingw32/7.2.0/collect2.exe -plugin E:/MingGW/mingw64/bin/../libexec/gcc/x86_64-w64-mingw32/7.2.0/liblto_plugin-0.dll -plugin-opt=E:/MingGW/mingw64/bin/../libexec/gcc/x86_64-w64-mingw32/7.2.0/lto-wrapper.exe -plugin-opt=-fresolution=C:\Users\COMPUC~1\AppData\Local\Temp\ccYBEqDg.res -plugin-opt=-pass-through=-lmingw32 -plugin-opt=-pass-through=-lgcc_s -plugin-opt=-pass-through=-lgcc -plugin-opt=-pass-through=-lmoldname -plugin-opt=-pass-through=-lmingwex -plugin-opt=-pass-through=-lmsvcrt -plugin-opt=-pass-through=-lpthread -plugin-opt=-pass-through=-ladvapi32 -plugin-opt=-pass-through=-lshell32 -plugin-opt=-pass-through=-luser32 -plugin-opt=-pass-through=-lkernel32 -plugin-opt=-pass-through=-liconv -plugin-opt=-pass-through=-lmingw32 -plugin-opt=-pass-through=-lgcc_s -plugin-opt=-pass-through=-lgcc -plugin-opt=-pass-through=-lmoldname -plugin-opt=-pass-through=-lmingwex -plugin-opt=-pass-through=-lmsvcrt --sysroot=C:/mingw720/x86_64-720-posix-seh-rt_v5-rev1/mingw64 -m i386pep -Bdynamic -o cmTC_78b98.exe E:/MingGW/mingw64/bin/../lib/gcc/x86_64-w64-mingw32/7.2.0/../../../../x86_64-w64-mingw32/lib/../lib/crt2.o E:/MingGW/mingw64/bin/../lib/gcc/x86_64-w64-mingw32/7.2.0/crtbegin.o -LE:/MingGW/mingw64/bin/../lib/gcc/x86_64-w64-mingw32/7.2.0 -LE:/MingGW/mingw64/bin/../lib/gcc -LE:/MingGW/mingw64/bin/../lib/gcc/x86_64-w64-mingw32/7.2.0/../../../../x86_64-w64-mingw32/lib/../lib -LE:/MingGW/mingw64/bin/../lib/gcc/x86_64-w64-mingw32/7.2.0/../../../../lib -LE:/MingGW/mingw64/bin/../lib/gcc/x86_64-w64-mingw32/7.2.0/../../../../x86_64-w64-mingw32/lib -LE:/MingGW/mingw64/bin/../lib/gcc/x86_64-w64-mingw32/7.2.0/../../.. --whole-archive CMakeFiles\cmTC_78b98.dir/objects.a --no-whole-archive --out-implib libcmTC_78b98.dll.a --major-image-version 0 --minor-image-version 0 -lstdc++ -lmingw32 -lgcc_s -lgcc -lmoldname -lmingwex -lmsvcrt -lpthread -ladvapi32 -lshell32 -luser32 -lkernel32 -liconv -lmingw32 -lgcc_s -lgcc -lmoldname -lmingwex -lmsvcrt E:/MingGW/mingw64/bin/../lib/gcc/x86_64-w64-mingw32/7.2.0/crtend.o
+COLLECT_GCC_OPTIONS='-v' '-o' 'cmTC_78b98.exe' '-shared-libgcc' '-mtune=core2' '-march=nocona'
+mingw32-make.exe[1]: Leaving directory 'E:/Projects/Git repositories/Tests/Hypernet/HypernetTest/cmake-build-debug/CMakeFiles/CMakeTmp'
 
 
 Parsed CXX implicit link information from above output:
   link line regex: [^( *|.*[/\])(ld\.exe|CMAKE_LINK_STARTFILE-NOTFOUND|([^/\]+-)?ld|collect2)[^/\]*( |$)]
-  ignore line: [Change Dir: E:/Projects/Git repositories/GraphTest/Hypernet/HypernetTest/cmake-build-debug/CMakeFiles/CMakeTmp]
+  ignore line: [Change Dir: E:/Projects/Git repositories/Tests/Hypernet/HypernetTest/cmake-build-debug/CMakeFiles/CMakeTmp]
   ignore line: []
-  ignore line: [Run Build Command:"E:/MingGW/mingw64/bin/mingw32-make.exe" "cmTC_60c73/fast"]
-  ignore line: [E:/MingGW/mingw64/bin/mingw32-make.exe -f CMakeFiles\cmTC_60c73.dir\build.make CMakeFiles/cmTC_60c73.dir/build]
-  ignore line: [mingw32-make.exe[1]: Entering directory 'E:/Projects/Git repositories/GraphTest/Hypernet/HypernetTest/cmake-build-debug/CMakeFiles/CMakeTmp']
-  ignore line: [Building CXX object CMakeFiles/cmTC_60c73.dir/CMakeCXXCompilerABI.cpp.obj]
-  ignore line: [E:\MingGW\mingw64\bin\g++.exe     -o CMakeFiles\cmTC_60c73.dir\CMakeCXXCompilerABI.cpp.obj -c "C:\Program Files\JetBrains\CLion 2017.3.4\bin\cmake\share\cmake-3.9\Modules\CMakeCXXCompilerABI.cpp"]
-  ignore line: [Linking CXX executable cmTC_60c73.exe]
-  ignore line: ["C:\Program Files\JetBrains\CLion 2017.3.4\bin\cmake\bin\cmake.exe" -E cmake_link_script CMakeFiles\cmTC_60c73.dir\link.txt --verbose=1]
-  ignore line: ["C:\Program Files\JetBrains\CLion 2017.3.4\bin\cmake\bin\cmake.exe" -E remove -f CMakeFiles\cmTC_60c73.dir/objects.a]
-  ignore line: [E:\MingGW\mingw64\bin\ar.exe cr CMakeFiles\cmTC_60c73.dir/objects.a @CMakeFiles\cmTC_60c73.dir\objects1.rsp]
-  ignore line: [E:\MingGW\mingw64\bin\g++.exe     -v -Wl,--whole-archive CMakeFiles\cmTC_60c73.dir/objects.a -Wl,--no-whole-archive  -o cmTC_60c73.exe -Wl,--out-implib,libcmTC_60c73.dll.a -Wl,--major-image-version,0,--minor-image-version,0 ]
+  ignore line: [Run Build Command:"E:/MingGW/mingw64/bin/mingw32-make.exe" "cmTC_78b98/fast"]
+  ignore line: [E:/MingGW/mingw64/bin/mingw32-make.exe -f CMakeFiles\cmTC_78b98.dir\build.make CMakeFiles/cmTC_78b98.dir/build]
+  ignore line: [mingw32-make.exe[1]: Entering directory 'E:/Projects/Git repositories/Tests/Hypernet/HypernetTest/cmake-build-debug/CMakeFiles/CMakeTmp']
+  ignore line: [Building CXX object CMakeFiles/cmTC_78b98.dir/CMakeCXXCompilerABI.cpp.obj]
+  ignore line: [E:\MingGW\mingw64\bin\g++.exe     -o CMakeFiles\cmTC_78b98.dir\CMakeCXXCompilerABI.cpp.obj -c "C:\Program Files\JetBrains\CLion 2017.3.4\bin\cmake\share\cmake-3.9\Modules\CMakeCXXCompilerABI.cpp"]
+  ignore line: [Linking CXX executable cmTC_78b98.exe]
+  ignore line: ["C:\Program Files\JetBrains\CLion 2017.3.4\bin\cmake\bin\cmake.exe" -E cmake_link_script CMakeFiles\cmTC_78b98.dir\link.txt --verbose=1]
+  ignore line: ["C:\Program Files\JetBrains\CLion 2017.3.4\bin\cmake\bin\cmake.exe" -E remove -f CMakeFiles\cmTC_78b98.dir/objects.a]
+  ignore line: [E:\MingGW\mingw64\bin\ar.exe cr CMakeFiles\cmTC_78b98.dir/objects.a @CMakeFiles\cmTC_78b98.dir\objects1.rsp]
+  ignore line: [E:\MingGW\mingw64\bin\g++.exe     -v -Wl,--whole-archive CMakeFiles\cmTC_78b98.dir/objects.a -Wl,--no-whole-archive  -o cmTC_78b98.exe -Wl,--out-implib,libcmTC_78b98.dll.a -Wl,--major-image-version,0,--minor-image-version,0 ]
   ignore line: [Using built-in specs.]
   ignore line: [COLLECT_GCC=E:\MingGW\mingw64\bin\g++.exe]
   ignore line: [COLLECT_LTO_WRAPPER=E:/MingGW/mingw64/bin/../libexec/gcc/x86_64-w64-mingw32/7.2.0/lto-wrapper.exe]
@@ -321,13 +321,13 @@ Parsed CXX implicit link information from above output:
   ignore line: [E:/MingGW/mingw64/bin/../lib/gcc/x86_64-w64-mingw32/7.2.0/../../../../lib/]
   ignore line: [E:/MingGW/mingw64/bin/../lib/gcc/x86_64-w64-mingw32/7.2.0/../../../../x86_64-w64-mingw32/lib/]
   ignore line: [E:/MingGW/mingw64/bin/../lib/gcc/x86_64-w64-mingw32/7.2.0/../../../]
-  ignore line: [COLLECT_GCC_OPTIONS='-v' '-o' 'cmTC_60c73.exe' '-shared-libgcc' '-mtune=core2' '-march=nocona']
-  link line: [ E:/MingGW/mingw64/bin/../libexec/gcc/x86_64-w64-mingw32/7.2.0/collect2.exe -plugin E:/MingGW/mingw64/bin/../libexec/gcc/x86_64-w64-mingw32/7.2.0/liblto_plugin-0.dll -plugin-opt=E:/MingGW/mingw64/bin/../libexec/gcc/x86_64-w64-mingw32/7.2.0/lto-wrapper.exe -plugin-opt=-fresolution=C:\Users\COMPUC~1\AppData\Local\Temp\ccwD8dkk.res -plugin-opt=-pass-through=-lmingw32 -plugin-opt=-pass-through=-lgcc_s -plugin-opt=-pass-through=-lgcc -plugin-opt=-pass-through=-lmoldname -plugin-opt=-pass-through=-lmingwex -plugin-opt=-pass-through=-lmsvcrt -plugin-opt=-pass-through=-lpthread -plugin-opt=-pass-through=-ladvapi32 -plugin-opt=-pass-through=-lshell32 -plugin-opt=-pass-through=-luser32 -plugin-opt=-pass-through=-lkernel32 -plugin-opt=-pass-through=-liconv -plugin-opt=-pass-through=-lmingw32 -plugin-opt=-pass-through=-lgcc_s -plugin-opt=-pass-through=-lgcc -plugin-opt=-pass-through=-lmoldname -plugin-opt=-pass-through=-lmingwex -plugin-opt=-pass-through=-lmsvcrt --sysroot=C:/mingw720/x86_64-720-posix-seh-rt_v5-rev1/mingw64 -m i386pep -Bdynamic -o cmTC_60c73.exe E:/MingGW/mingw64/bin/../lib/gcc/x86_64-w64-mingw32/7.2.0/../../../../x86_64-w64-mingw32/lib/../lib/crt2.o E:/MingGW/mingw64/bin/../lib/gcc/x86_64-w64-mingw32/7.2.0/crtbegin.o -LE:/MingGW/mingw64/bin/../lib/gcc/x86_64-w64-mingw32/7.2.0 -LE:/MingGW/mingw64/bin/../lib/gcc -LE:/MingGW/mingw64/bin/../lib/gcc/x86_64-w64-mingw32/7.2.0/../../../../x86_64-w64-mingw32/lib/../lib -LE:/MingGW/mingw64/bin/../lib/gcc/x86_64-w64-mingw32/7.2.0/../../../../lib -LE:/MingGW/mingw64/bin/../lib/gcc/x86_64-w64-mingw32/7.2.0/../../../../x86_64-w64-mingw32/lib -LE:/MingGW/mingw64/bin/../lib/gcc/x86_64-w64-mingw32/7.2.0/../../.. --whole-archive CMakeFiles\cmTC_60c73.dir/objects.a --no-whole-archive --out-implib libcmTC_60c73.dll.a --major-image-version 0 --minor-image-version 0 -lstdc++ -lmingw32 -lgcc_s -lgcc -lmoldname -lmingwex -lmsvcrt -lpthread -ladvapi32 -lshell32 -luser32 -lkernel32 -liconv -lmingw32 -lgcc_s -lgcc -lmoldname -lmingwex -lmsvcrt E:/MingGW/mingw64/bin/../lib/gcc/x86_64-w64-mingw32/7.2.0/crtend.o]
+  ignore line: [COLLECT_GCC_OPTIONS='-v' '-o' 'cmTC_78b98.exe' '-shared-libgcc' '-mtune=core2' '-march=nocona']
+  link line: [ E:/MingGW/mingw64/bin/../libexec/gcc/x86_64-w64-mingw32/7.2.0/collect2.exe -plugin E:/MingGW/mingw64/bin/../libexec/gcc/x86_64-w64-mingw32/7.2.0/liblto_plugin-0.dll -plugin-opt=E:/MingGW/mingw64/bin/../libexec/gcc/x86_64-w64-mingw32/7.2.0/lto-wrapper.exe -plugin-opt=-fresolution=C:\Users\COMPUC~1\AppData\Local\Temp\ccYBEqDg.res -plugin-opt=-pass-through=-lmingw32 -plugin-opt=-pass-through=-lgcc_s -plugin-opt=-pass-through=-lgcc -plugin-opt=-pass-through=-lmoldname -plugin-opt=-pass-through=-lmingwex -plugin-opt=-pass-through=-lmsvcrt -plugin-opt=-pass-through=-lpthread -plugin-opt=-pass-through=-ladvapi32 -plugin-opt=-pass-through=-lshell32 -plugin-opt=-pass-through=-luser32 -plugin-opt=-pass-through=-lkernel32 -plugin-opt=-pass-through=-liconv -plugin-opt=-pass-through=-lmingw32 -plugin-opt=-pass-through=-lgcc_s -plugin-opt=-pass-through=-lgcc -plugin-opt=-pass-through=-lmoldname -plugin-opt=-pass-through=-lmingwex -plugin-opt=-pass-through=-lmsvcrt --sysroot=C:/mingw720/x86_64-720-posix-seh-rt_v5-rev1/mingw64 -m i386pep -Bdynamic -o cmTC_78b98.exe E:/MingGW/mingw64/bin/../lib/gcc/x86_64-w64-mingw32/7.2.0/../../../../x86_64-w64-mingw32/lib/../lib/crt2.o E:/MingGW/mingw64/bin/../lib/gcc/x86_64-w64-mingw32/7.2.0/crtbegin.o -LE:/MingGW/mingw64/bin/../lib/gcc/x86_64-w64-mingw32/7.2.0 -LE:/MingGW/mingw64/bin/../lib/gcc -LE:/MingGW/mingw64/bin/../lib/gcc/x86_64-w64-mingw32/7.2.0/../../../../x86_64-w64-mingw32/lib/../lib -LE:/MingGW/mingw64/bin/../lib/gcc/x86_64-w64-mingw32/7.2.0/../../../../lib -LE:/MingGW/mingw64/bin/../lib/gcc/x86_64-w64-mingw32/7.2.0/../../../../x86_64-w64-mingw32/lib -LE:/MingGW/mingw64/bin/../lib/gcc/x86_64-w64-mingw32/7.2.0/../../.. --whole-archive CMakeFiles\cmTC_78b98.dir/objects.a --no-whole-archive --out-implib libcmTC_78b98.dll.a --major-image-version 0 --minor-image-version 0 -lstdc++ -lmingw32 -lgcc_s -lgcc -lmoldname -lmingwex -lmsvcrt -lpthread -ladvapi32 -lshell32 -luser32 -lkernel32 -liconv -lmingw32 -lgcc_s -lgcc -lmoldname -lmingwex -lmsvcrt E:/MingGW/mingw64/bin/../lib/gcc/x86_64-w64-mingw32/7.2.0/crtend.o]
     arg [E:/MingGW/mingw64/bin/../libexec/gcc/x86_64-w64-mingw32/7.2.0/collect2.exe] ==> ignore
     arg [-plugin] ==> ignore
     arg [E:/MingGW/mingw64/bin/../libexec/gcc/x86_64-w64-mingw32/7.2.0/liblto_plugin-0.dll] ==> ignore
     arg [-plugin-opt=E:/MingGW/mingw64/bin/../libexec/gcc/x86_64-w64-mingw32/7.2.0/lto-wrapper.exe] ==> ignore
-    arg [-plugin-opt=-fresolution=C:\Users\COMPUC~1\AppData\Local\Temp\ccwD8dkk.res] ==> ignore
+    arg [-plugin-opt=-fresolution=C:\Users\COMPUC~1\AppData\Local\Temp\ccYBEqDg.res] ==> ignore
     arg [-plugin-opt=-pass-through=-lmingw32] ==> ignore
     arg [-plugin-opt=-pass-through=-lgcc_s] ==> ignore
     arg [-plugin-opt=-pass-through=-lgcc] ==> ignore
@@ -351,7 +351,7 @@ Parsed CXX implicit link information from above output:
     arg [i386pep] ==> ignore
     arg [-Bdynamic] ==> ignore
     arg [-o] ==> ignore
-    arg [cmTC_60c73.exe] ==> ignore
+    arg [cmTC_78b98.exe] ==> ignore
     arg [E:/MingGW/mingw64/bin/../lib/gcc/x86_64-w64-mingw32/7.2.0/../../../../x86_64-w64-mingw32/lib/../lib/crt2.o] ==> ignore
     arg [E:/MingGW/mingw64/bin/../lib/gcc/x86_64-w64-mingw32/7.2.0/crtbegin.o] ==> ignore
     arg [-LE:/MingGW/mingw64/bin/../lib/gcc/x86_64-w64-mingw32/7.2.0] ==> dir [E:/MingGW/mingw64/bin/../lib/gcc/x86_64-w64-mingw32/7.2.0]
@@ -361,10 +361,10 @@ Parsed CXX implicit link information from above output:
     arg [-LE:/MingGW/mingw64/bin/../lib/gcc/x86_64-w64-mingw32/7.2.0/../../../../x86_64-w64-mingw32/lib] ==> dir [E:/MingGW/mingw64/bin/../lib/gcc/x86_64-w64-mingw32/7.2.0/../../../../x86_64-w64-mingw32/lib]
     arg [-LE:/MingGW/mingw64/bin/../lib/gcc/x86_64-w64-mingw32/7.2.0/../../..] ==> dir [E:/MingGW/mingw64/bin/../lib/gcc/x86_64-w64-mingw32/7.2.0/../../..]
     arg [--whole-archive] ==> ignore
-    arg [CMakeFiles\cmTC_60c73.dir/objects.a] ==> ignore
+    arg [CMakeFiles\cmTC_78b98.dir/objects.a] ==> ignore
     arg [--no-whole-archive] ==> ignore
     arg [--out-implib] ==> ignore
-    arg [libcmTC_60c73.dll.a] ==> ignore
+    arg [libcmTC_78b98.dll.a] ==> ignore
     arg [--major-image-version] ==> ignore
     arg [0] ==> ignore
     arg [--minor-image-version] ==> ignore
@@ -405,19 +405,19 @@ Parsed CXX implicit link information from above output:
 
 
 Detecting CXX [-std=c++1z] compiler features compiled with the following output:
-Change Dir: E:/Projects/Git repositories/GraphTest/Hypernet/HypernetTest/cmake-build-debug/CMakeFiles/CMakeTmp
+Change Dir: E:/Projects/Git repositories/Tests/Hypernet/HypernetTest/cmake-build-debug/CMakeFiles/CMakeTmp
 
-Run Build Command:"E:/MingGW/mingw64/bin/mingw32-make.exe" "cmTC_81f57/fast"
-E:/MingGW/mingw64/bin/mingw32-make.exe -f CMakeFiles\cmTC_81f57.dir\build.make CMakeFiles/cmTC_81f57.dir/build
-mingw32-make.exe[1]: Entering directory 'E:/Projects/Git repositories/GraphTest/Hypernet/HypernetTest/cmake-build-debug/CMakeFiles/CMakeTmp'
-Building CXX object CMakeFiles/cmTC_81f57.dir/feature_tests.cxx.obj
-E:\MingGW\mingw64\bin\g++.exe    -std=c++1z -o CMakeFiles\cmTC_81f57.dir\feature_tests.cxx.obj -c "E:\Projects\Git repositories\GraphTest\Hypernet\HypernetTest\cmake-build-debug\CMakeFiles\feature_tests.cxx"
-Linking CXX executable cmTC_81f57.exe
-"C:\Program Files\JetBrains\CLion 2017.3.4\bin\cmake\bin\cmake.exe" -E cmake_link_script CMakeFiles\cmTC_81f57.dir\link.txt --verbose=1
-"C:\Program Files\JetBrains\CLion 2017.3.4\bin\cmake\bin\cmake.exe" -E remove -f CMakeFiles\cmTC_81f57.dir/objects.a
-E:\MingGW\mingw64\bin\ar.exe cr CMakeFiles\cmTC_81f57.dir/objects.a @CMakeFiles\cmTC_81f57.dir\objects1.rsp
-E:\MingGW\mingw64\bin\g++.exe      -Wl,--whole-archive CMakeFiles\cmTC_81f57.dir/objects.a -Wl,--no-whole-archive  -o cmTC_81f57.exe -Wl,--out-implib,libcmTC_81f57.dll.a -Wl,--major-image-version,0,--minor-image-version,0 @CMakeFiles\cmTC_81f57.dir\linklibs.rsp
-mingw32-make.exe[1]: Leaving directory 'E:/Projects/Git repositories/GraphTest/Hypernet/HypernetTest/cmake-build-debug/CMakeFiles/CMakeTmp'
+Run Build Command:"E:/MingGW/mingw64/bin/mingw32-make.exe" "cmTC_105ef/fast"
+E:/MingGW/mingw64/bin/mingw32-make.exe -f CMakeFiles\cmTC_105ef.dir\build.make CMakeFiles/cmTC_105ef.dir/build
+mingw32-make.exe[1]: Entering directory 'E:/Projects/Git repositories/Tests/Hypernet/HypernetTest/cmake-build-debug/CMakeFiles/CMakeTmp'
+Building CXX object CMakeFiles/cmTC_105ef.dir/feature_tests.cxx.obj
+E:\MingGW\mingw64\bin\g++.exe    -std=c++1z -o CMakeFiles\cmTC_105ef.dir\feature_tests.cxx.obj -c "E:\Projects\Git repositories\Tests\Hypernet\HypernetTest\cmake-build-debug\CMakeFiles\feature_tests.cxx"
+Linking CXX executable cmTC_105ef.exe
+"C:\Program Files\JetBrains\CLion 2017.3.4\bin\cmake\bin\cmake.exe" -E cmake_link_script CMakeFiles\cmTC_105ef.dir\link.txt --verbose=1
+"C:\Program Files\JetBrains\CLion 2017.3.4\bin\cmake\bin\cmake.exe" -E remove -f CMakeFiles\cmTC_105ef.dir/objects.a
+E:\MingGW\mingw64\bin\ar.exe cr CMakeFiles\cmTC_105ef.dir/objects.a @CMakeFiles\cmTC_105ef.dir\objects1.rsp
+E:\MingGW\mingw64\bin\g++.exe      -Wl,--whole-archive CMakeFiles\cmTC_105ef.dir/objects.a -Wl,--no-whole-archive  -o cmTC_105ef.exe -Wl,--out-implib,libcmTC_105ef.dll.a -Wl,--major-image-version,0,--minor-image-version,0 @CMakeFiles\cmTC_105ef.dir\linklibs.rsp
+mingw32-make.exe[1]: Leaving directory 'E:/Projects/Git repositories/Tests/Hypernet/HypernetTest/cmake-build-debug/CMakeFiles/CMakeTmp'
 
 
     Feature record: CXX_FEATURE:1cxx_aggregate_default_initializers
@@ -480,19 +480,19 @@ mingw32-make.exe[1]: Leaving directory 'E:/Projects/Git repositories/GraphTest/H
 
 
 Detecting CXX [-std=c++14] compiler features compiled with the following output:
-Change Dir: E:/Projects/Git repositories/GraphTest/Hypernet/HypernetTest/cmake-build-debug/CMakeFiles/CMakeTmp
+Change Dir: E:/Projects/Git repositories/Tests/Hypernet/HypernetTest/cmake-build-debug/CMakeFiles/CMakeTmp
 
-Run Build Command:"E:/MingGW/mingw64/bin/mingw32-make.exe" "cmTC_cb663/fast"
-E:/MingGW/mingw64/bin/mingw32-make.exe -f CMakeFiles\cmTC_cb663.dir\build.make CMakeFiles/cmTC_cb663.dir/build
-mingw32-make.exe[1]: Entering directory 'E:/Projects/Git repositories/GraphTest/Hypernet/HypernetTest/cmake-build-debug/CMakeFiles/CMakeTmp'
-Building CXX object CMakeFiles/cmTC_cb663.dir/feature_tests.cxx.obj
-E:\MingGW\mingw64\bin\g++.exe    -std=c++14 -o CMakeFiles\cmTC_cb663.dir\feature_tests.cxx.obj -c "E:\Projects\Git repositories\GraphTest\Hypernet\HypernetTest\cmake-build-debug\CMakeFiles\feature_tests.cxx"
-Linking CXX executable cmTC_cb663.exe
-"C:\Program Files\JetBrains\CLion 2017.3.4\bin\cmake\bin\cmake.exe" -E cmake_link_script CMakeFiles\cmTC_cb663.dir\link.txt --verbose=1
-"C:\Program Files\JetBrains\CLion 2017.3.4\bin\cmake\bin\cmake.exe" -E remove -f CMakeFiles\cmTC_cb663.dir/objects.a
-E:\MingGW\mingw64\bin\ar.exe cr CMakeFiles\cmTC_cb663.dir/objects.a @CMakeFiles\cmTC_cb663.dir\objects1.rsp
-E:\MingGW\mingw64\bin\g++.exe      -Wl,--whole-archive CMakeFiles\cmTC_cb663.dir/objects.a -Wl,--no-whole-archive  -o cmTC_cb663.exe -Wl,--out-implib,libcmTC_cb663.dll.a -Wl,--major-image-version,0,--minor-image-version,0 @CMakeFiles\cmTC_cb663.dir\linklibs.rsp
-mingw32-make.exe[1]: Leaving directory 'E:/Projects/Git repositories/GraphTest/Hypernet/HypernetTest/cmake-build-debug/CMakeFiles/CMakeTmp'
+Run Build Command:"E:/MingGW/mingw64/bin/mingw32-make.exe" "cmTC_7cd8a/fast"
+E:/MingGW/mingw64/bin/mingw32-make.exe -f CMakeFiles\cmTC_7cd8a.dir\build.make CMakeFiles/cmTC_7cd8a.dir/build
+mingw32-make.exe[1]: Entering directory 'E:/Projects/Git repositories/Tests/Hypernet/HypernetTest/cmake-build-debug/CMakeFiles/CMakeTmp'
+Building CXX object CMakeFiles/cmTC_7cd8a.dir/feature_tests.cxx.obj
+E:\MingGW\mingw64\bin\g++.exe    -std=c++14 -o CMakeFiles\cmTC_7cd8a.dir\feature_tests.cxx.obj -c "E:\Projects\Git repositories\Tests\Hypernet\HypernetTest\cmake-build-debug\CMakeFiles\feature_tests.cxx"
+Linking CXX executable cmTC_7cd8a.exe
+"C:\Program Files\JetBrains\CLion 2017.3.4\bin\cmake\bin\cmake.exe" -E cmake_link_script CMakeFiles\cmTC_7cd8a.dir\link.txt --verbose=1
+"C:\Program Files\JetBrains\CLion 2017.3.4\bin\cmake\bin\cmake.exe" -E remove -f CMakeFiles\cmTC_7cd8a.dir/objects.a
+E:\MingGW\mingw64\bin\ar.exe cr CMakeFiles\cmTC_7cd8a.dir/objects.a @CMakeFiles\cmTC_7cd8a.dir\objects1.rsp
+E:\MingGW\mingw64\bin\g++.exe      -Wl,--whole-archive CMakeFiles\cmTC_7cd8a.dir/objects.a -Wl,--no-whole-archive  -o cmTC_7cd8a.exe -Wl,--out-implib,libcmTC_7cd8a.dll.a -Wl,--major-image-version,0,--minor-image-version,0 @CMakeFiles\cmTC_7cd8a.dir\linklibs.rsp
+mingw32-make.exe[1]: Leaving directory 'E:/Projects/Git repositories/Tests/Hypernet/HypernetTest/cmake-build-debug/CMakeFiles/CMakeTmp'
 
 
     Feature record: CXX_FEATURE:1cxx_aggregate_default_initializers
@@ -555,19 +555,19 @@ mingw32-make.exe[1]: Leaving directory 'E:/Projects/Git repositories/GraphTest/H
 
 
 Detecting CXX [-std=c++11] compiler features compiled with the following output:
-Change Dir: E:/Projects/Git repositories/GraphTest/Hypernet/HypernetTest/cmake-build-debug/CMakeFiles/CMakeTmp
+Change Dir: E:/Projects/Git repositories/Tests/Hypernet/HypernetTest/cmake-build-debug/CMakeFiles/CMakeTmp
 
-Run Build Command:"E:/MingGW/mingw64/bin/mingw32-make.exe" "cmTC_2519a/fast"
-E:/MingGW/mingw64/bin/mingw32-make.exe -f CMakeFiles\cmTC_2519a.dir\build.make CMakeFiles/cmTC_2519a.dir/build
-mingw32-make.exe[1]: Entering directory 'E:/Projects/Git repositories/GraphTest/Hypernet/HypernetTest/cmake-build-debug/CMakeFiles/CMakeTmp'
-Building CXX object CMakeFiles/cmTC_2519a.dir/feature_tests.cxx.obj
-E:\MingGW\mingw64\bin\g++.exe    -std=c++11 -o CMakeFiles\cmTC_2519a.dir\feature_tests.cxx.obj -c "E:\Projects\Git repositories\GraphTest\Hypernet\HypernetTest\cmake-build-debug\CMakeFiles\feature_tests.cxx"
-Linking CXX executable cmTC_2519a.exe
-"C:\Program Files\JetBrains\CLion 2017.3.4\bin\cmake\bin\cmake.exe" -E cmake_link_script CMakeFiles\cmTC_2519a.dir\link.txt --verbose=1
-"C:\Program Files\JetBrains\CLion 2017.3.4\bin\cmake\bin\cmake.exe" -E remove -f CMakeFiles\cmTC_2519a.dir/objects.a
-E:\MingGW\mingw64\bin\ar.exe cr CMakeFiles\cmTC_2519a.dir/objects.a @CMakeFiles\cmTC_2519a.dir\objects1.rsp
-E:\MingGW\mingw64\bin\g++.exe      -Wl,--whole-archive CMakeFiles\cmTC_2519a.dir/objects.a -Wl,--no-whole-archive  -o cmTC_2519a.exe -Wl,--out-implib,libcmTC_2519a.dll.a -Wl,--major-image-version,0,--minor-image-version,0 @CMakeFiles\cmTC_2519a.dir\linklibs.rsp
-mingw32-make.exe[1]: Leaving directory 'E:/Projects/Git repositories/GraphTest/Hypernet/HypernetTest/cmake-build-debug/CMakeFiles/CMakeTmp'
+Run Build Command:"E:/MingGW/mingw64/bin/mingw32-make.exe" "cmTC_0199e/fast"
+E:/MingGW/mingw64/bin/mingw32-make.exe -f CMakeFiles\cmTC_0199e.dir\build.make CMakeFiles/cmTC_0199e.dir/build
+mingw32-make.exe[1]: Entering directory 'E:/Projects/Git repositories/Tests/Hypernet/HypernetTest/cmake-build-debug/CMakeFiles/CMakeTmp'
+Building CXX object CMakeFiles/cmTC_0199e.dir/feature_tests.cxx.obj
+E:\MingGW\mingw64\bin\g++.exe    -std=c++11 -o CMakeFiles\cmTC_0199e.dir\feature_tests.cxx.obj -c "E:\Projects\Git repositories\Tests\Hypernet\HypernetTest\cmake-build-debug\CMakeFiles\feature_tests.cxx"
+Linking CXX executable cmTC_0199e.exe
+"C:\Program Files\JetBrains\CLion 2017.3.4\bin\cmake\bin\cmake.exe" -E cmake_link_script CMakeFiles\cmTC_0199e.dir\link.txt --verbose=1
+"C:\Program Files\JetBrains\CLion 2017.3.4\bin\cmake\bin\cmake.exe" -E remove -f CMakeFiles\cmTC_0199e.dir/objects.a
+E:\MingGW\mingw64\bin\ar.exe cr CMakeFiles\cmTC_0199e.dir/objects.a @CMakeFiles\cmTC_0199e.dir\objects1.rsp
+E:\MingGW\mingw64\bin\g++.exe      -Wl,--whole-archive CMakeFiles\cmTC_0199e.dir/objects.a -Wl,--no-whole-archive  -o cmTC_0199e.exe -Wl,--out-implib,libcmTC_0199e.dll.a -Wl,--major-image-version,0,--minor-image-version,0 @CMakeFiles\cmTC_0199e.dir\linklibs.rsp
+mingw32-make.exe[1]: Leaving directory 'E:/Projects/Git repositories/Tests/Hypernet/HypernetTest/cmake-build-debug/CMakeFiles/CMakeTmp'
 
 
     Feature record: CXX_FEATURE:0cxx_aggregate_default_initializers
@@ -630,19 +630,19 @@ mingw32-make.exe[1]: Leaving directory 'E:/Projects/Git repositories/GraphTest/H
 
 
 Detecting CXX [-std=c++98] compiler features compiled with the following output:
-Change Dir: E:/Projects/Git repositories/GraphTest/Hypernet/HypernetTest/cmake-build-debug/CMakeFiles/CMakeTmp
+Change Dir: E:/Projects/Git repositories/Tests/Hypernet/HypernetTest/cmake-build-debug/CMakeFiles/CMakeTmp
 
-Run Build Command:"E:/MingGW/mingw64/bin/mingw32-make.exe" "cmTC_dbde7/fast"
-E:/MingGW/mingw64/bin/mingw32-make.exe -f CMakeFiles\cmTC_dbde7.dir\build.make CMakeFiles/cmTC_dbde7.dir/build
-mingw32-make.exe[1]: Entering directory 'E:/Projects/Git repositories/GraphTest/Hypernet/HypernetTest/cmake-build-debug/CMakeFiles/CMakeTmp'
-Building CXX object CMakeFiles/cmTC_dbde7.dir/feature_tests.cxx.obj
-E:\MingGW\mingw64\bin\g++.exe    -std=c++98 -o CMakeFiles\cmTC_dbde7.dir\feature_tests.cxx.obj -c "E:\Projects\Git repositories\GraphTest\Hypernet\HypernetTest\cmake-build-debug\CMakeFiles\feature_tests.cxx"
-Linking CXX executable cmTC_dbde7.exe
-"C:\Program Files\JetBrains\CLion 2017.3.4\bin\cmake\bin\cmake.exe" -E cmake_link_script CMakeFiles\cmTC_dbde7.dir\link.txt --verbose=1
-"C:\Program Files\JetBrains\CLion 2017.3.4\bin\cmake\bin\cmake.exe" -E remove -f CMakeFiles\cmTC_dbde7.dir/objects.a
-E:\MingGW\mingw64\bin\ar.exe cr CMakeFiles\cmTC_dbde7.dir/objects.a @CMakeFiles\cmTC_dbde7.dir\objects1.rsp
-E:\MingGW\mingw64\bin\g++.exe      -Wl,--whole-archive CMakeFiles\cmTC_dbde7.dir/objects.a -Wl,--no-whole-archive  -o cmTC_dbde7.exe -Wl,--out-implib,libcmTC_dbde7.dll.a -Wl,--major-image-version,0,--minor-image-version,0 @CMakeFiles\cmTC_dbde7.dir\linklibs.rsp
-mingw32-make.exe[1]: Leaving directory 'E:/Projects/Git repositories/GraphTest/Hypernet/HypernetTest/cmake-build-debug/CMakeFiles/CMakeTmp'
+Run Build Command:"E:/MingGW/mingw64/bin/mingw32-make.exe" "cmTC_06ad0/fast"
+E:/MingGW/mingw64/bin/mingw32-make.exe -f CMakeFiles\cmTC_06ad0.dir\build.make CMakeFiles/cmTC_06ad0.dir/build
+mingw32-make.exe[1]: Entering directory 'E:/Projects/Git repositories/Tests/Hypernet/HypernetTest/cmake-build-debug/CMakeFiles/CMakeTmp'
+Building CXX object CMakeFiles/cmTC_06ad0.dir/feature_tests.cxx.obj
+E:\MingGW\mingw64\bin\g++.exe    -std=c++98 -o CMakeFiles\cmTC_06ad0.dir\feature_tests.cxx.obj -c "E:\Projects\Git repositories\Tests\Hypernet\HypernetTest\cmake-build-debug\CMakeFiles\feature_tests.cxx"
+Linking CXX executable cmTC_06ad0.exe
+"C:\Program Files\JetBrains\CLion 2017.3.4\bin\cmake\bin\cmake.exe" -E cmake_link_script CMakeFiles\cmTC_06ad0.dir\link.txt --verbose=1
+"C:\Program Files\JetBrains\CLion 2017.3.4\bin\cmake\bin\cmake.exe" -E remove -f CMakeFiles\cmTC_06ad0.dir/objects.a
+E:\MingGW\mingw64\bin\ar.exe cr CMakeFiles\cmTC_06ad0.dir/objects.a @CMakeFiles\cmTC_06ad0.dir\objects1.rsp
+E:\MingGW\mingw64\bin\g++.exe      -Wl,--whole-archive CMakeFiles\cmTC_06ad0.dir/objects.a -Wl,--no-whole-archive  -o cmTC_06ad0.exe -Wl,--out-implib,libcmTC_06ad0.dll.a -Wl,--major-image-version,0,--minor-image-version,0 @CMakeFiles\cmTC_06ad0.dir\linklibs.rsp
+mingw32-make.exe[1]: Leaving directory 'E:/Projects/Git repositories/Tests/Hypernet/HypernetTest/cmake-build-debug/CMakeFiles/CMakeTmp'
 
 
     Feature record: CXX_FEATURE:0cxx_aggregate_default_initializers

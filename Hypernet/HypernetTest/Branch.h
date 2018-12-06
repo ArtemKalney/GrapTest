@@ -2,8 +2,9 @@
 
 #include "Stdafx.h"
 #include "Route.h"
+#include "IIdentity.h"
 
-class Branch
+class Branch : public IIdentity
 {
 private:
     int _id;
@@ -42,8 +43,7 @@ public:
         _id = id;
     }
 
-    int GetId() const
-    {
+    int GetId() const override {
         return _id;
     }
 
@@ -113,13 +113,14 @@ public:
     static Branch GetZero();
     static Branch GetUnity();
     static bool EqualNodes(const Branch& firstBranch, const Branch& secondBranch);
-    static bool EqualNodes(const Branch& branch, const int& firstNode, const int& secondNode);
     static bool IsUnacceptableBranch(Branch &branch);
+    static Branch ParallelReduction(std::vector<Branch> &branches);
     bool IsZero() const;
     bool IsUnity();
     bool IsSimpleBranch();
     void PrintBranch();
     bool operator <(const Branch& branch) const;
+    double GetValue();
 };
 
 Branch operator *(Branch firstBranch, Branch secondBranch);

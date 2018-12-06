@@ -2,9 +2,9 @@
 #include "Funcs.h"
 #include "Globals.h"
 
+//todo сделать проще - заменяем в FN ссылки соответсвующие ptr на новое ребро
 // Chain replacement by edge
-void ChainReduction(H& H) {
-    std::vector<int> forbiddenNodes;
+void ChainReduction(H& H, std::vector<int> &forbiddenNodes) {
     auto chain = H.GetHomogeneousChain(forbiddenNodes);
     if (chain.empty()) {
         return;
@@ -58,7 +58,6 @@ void ChainReduction(H& H) {
                     // объединяем рёбра
                     ptrToInsert->insert(ptrToInsert->end(), ptr->begin(), ptr->end());
                     // заменяем в FN ссылки соответсвующие ptr на новое ребро
-                    //todo сделать проще
                     int idToInsert = H.GetF()[it - H.GetF().begin()].Id;
                     for (auto &branch : H.GetFN()) {
                         for (auto &item : branch.GetRoutes()) {
@@ -118,7 +117,7 @@ void ChainReduction(H& H) {
         newBranch.SetSecondNode(nodesFN.back());
         H.GetFN().push_back(newBranch);
 
-        return ChainReduction(H);
+        return ChainReduction(H, forbiddenNodes);
     } else {
         UnsimpleChains++;
         for (auto &item : nodesInChain) {
@@ -127,7 +126,9 @@ void ChainReduction(H& H) {
             }
         }
 
-        return ChainReduction(H);
+//        auto routesF = H.GetRoutesF();
+//        auto routesFN = H.GetRoutesFN();
+        return ChainReduction(H, forbiddenNodes);
     }
 }
 // Removes the connectivity component, where both pivot nodes do not lie and returns true,
@@ -201,43 +202,46 @@ Branch GetAllowingBranch(H& H)
     return allowingBranch;
 }
 
-Branch SimpleCase (const std::vector<Branch>& FN, const Branch& pseudoBranch) {
+Branch SimpleCase (std::vector<Branch>& FN, const Branch& pseudoBranch) {
     TwoNodesHypernetsCount++;
     if (FN.size() == 1) {
         return FN.front().GetIsReliable() ? pseudoBranch : pseudoBranch * FN.front();
     } else {
-        Branch result = Branch::GetZero();
-        for (int i = 0; i < FN.size() - 1; i++) {
-            result = result + (FN[i] + FN[i + 1] - FN[i] * FN[i + 1]);
-        }
-        return result;
+        FN.erase(std::remove_if(FN.begin(), FN.end(), [](Branch &item) ->
+                bool { return item.GetIsReliable(); }), FN.end());
+        return Branch::ParallelReduction(FN);
     }
 }
 
 Branch PairConnectivity(H &H, Branch &pseudoBranch) {
     PairConnectivityCalls++;
 
-    if (BridgeReduction(H)) {
+    if(ENABLE_BRIDGE_REDUCTION == 1 && BridgeReduction(H)) {
         return Branch::GetZero();
     }
-    if (H.GetNodes().size() < MAX_DIMENSIONAL) {
+    if(ENABLE_SIMPLE_CASE == 1 && H.GetNodes().size() < MAX_DIMENSIONAL) {
         return SimpleCase(H.GetFN(), pseudoBranch);
     }
 
-    EdgeReduction(H);
-    if (BridgeReduction(H)) {
-        return Branch::GetZero();
-    }
-    if (H.GetNodes().size() < MAX_DIMENSIONAL) {
-        return SimpleCase(H.GetFN(), pseudoBranch);
+    if(ENABLE_EDGE_REDUCTION == 1) {
+        EdgeReduction(H);
+        if (ENABLE_BRIDGE_REDUCTION == 1 && BridgeReduction(H)) {
+            return Branch::GetZero();
+        }
+        if (ENABLE_SIMPLE_CASE == 1 && H.GetNodes().size() < MAX_DIMENSIONAL) {
+            return SimpleCase(H.GetFN(), pseudoBranch);
+        }
     }
 
-    ChainReduction(H);
-    if (BridgeReduction(H)) {
-        return Branch::GetZero();
-    }
-    if (H.GetNodes().size() < MAX_DIMENSIONAL) {
-        return SimpleCase(H.GetFN(), pseudoBranch);
+    if(ENABLE_CHAIN_REDUCTION == 1) {
+        std::vector<int> forbiddenNodes;
+        ChainReduction(H, forbiddenNodes);
+        if (ENABLE_BRIDGE_REDUCTION == 1 && BridgeReduction(H)) {
+            return Branch::GetZero();
+        }
+        if (ENABLE_SIMPLE_CASE == 1 && H.GetNodes().size() < MAX_DIMENSIONAL) {
+            return SimpleCase(H.GetFN(), pseudoBranch);
+        }
     }
 
     Branch allowingBranch = GetAllowingBranch(H);
@@ -277,49 +281,6 @@ Branch PairConnectivity(H &H, Branch &pseudoBranch) {
         } else {
             return PairConnectivity(HwithReliableBranch, pseudoBranch1) +
                    PairConnectivity(HwithRemovedBranch, pseudoBranch2);
-        }
-    }
-}
-
-Branch SimplePairConnectivity(H &H, Branch &pseudoBranch) {
-    PairConnectivityCalls++;
-    Branch allowingBranch = GetAllowingBranch(H);
-    if (Branch::IsUnacceptableBranch(allowingBranch)) {
-        throw "SimplePairConnectivity: strange allowingBranch";
-    }
-
-    Branch pseudoBranch1, pseudoBranch2;
-    if (allowingBranch.IsSimpleBranch()) {
-        pseudoBranch1 = pseudoBranch;
-        pseudoBranch1.SetPower(pseudoBranch1.GetPower() + 1);
-        pseudoBranch2 = pseudoBranch;
-        pseudoBranch2.SetPower(pseudoBranch2.GetPower() + 1);
-        pseudoBranch2.GetC().insert(pseudoBranch2.GetC().begin(), 0);
-        pseudoBranch2.GetC().pop_back();
-    } else {
-        pseudoBranch1 = pseudoBranch * allowingBranch;
-        pseudoBranch2 = pseudoBranch * ~allowingBranch;
-    }
-
-    auto HwithReliableBranch = H, HwithRemovedBranch = H;
-    HwithReliableBranch.MakeReliableBranch(allowingBranch);
-    HwithRemovedBranch.RemoveBranch(allowingBranch);
-
-    if (!HwithRemovedBranch.IsSNconnected()) {
-        UnconnectedHypernetsCount++;
-        if (HwithReliableBranch.HasReliablePath()) {
-            ReliableHypernetsCount++;
-            return pseudoBranch1*Branch::GetUnity();
-        } else {
-            return SimplePairConnectivity(HwithReliableBranch, pseudoBranch1);
-        }
-    } else {
-        if (HwithReliableBranch.HasReliablePath()) {
-            ReliableHypernetsCount++;
-            return pseudoBranch1*Branch::GetUnity() + SimplePairConnectivity(HwithRemovedBranch, pseudoBranch2);
-        } else {
-            return SimplePairConnectivity(HwithReliableBranch, pseudoBranch1) +
-                    SimplePairConnectivity(HwithRemovedBranch, pseudoBranch2);
         }
     }
 }

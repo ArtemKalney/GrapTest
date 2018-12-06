@@ -8,28 +8,28 @@
 		<Option virtualFolders="CMake Files\;"/>
 		<Build>
 			<Target title="all">
-				<Option working_dir="E:/Projects/Git repositories/GraphTest/Hypernet/HypernetTest/cmake-build-debug"/>
+				<Option working_dir="E:/Projects/Git repositories/Tests/Hypernet/HypernetTest/cmake-build-debug"/>
 				<Option type="4"/>
 				<MakeCommands>
-					<Build command="E:/MingGW/mingw64/bin/mingw32-make.exe -f &quot;E:/Projects/Git repositories/GraphTest/Hypernet/HypernetTest/cmake-build-debug/Makefile&quot;  VERBOSE=1 all"/>
-					<CompileFile command="E:/MingGW/mingw64/bin/mingw32-make.exe -f &quot;E:/Projects/Git repositories/GraphTest/Hypernet/HypernetTest/cmake-build-debug/Makefile&quot;  VERBOSE=1 &quot;$file&quot;"/>
-					<Clean command="E:/MingGW/mingw64/bin/mingw32-make.exe -f &quot;E:/Projects/Git repositories/GraphTest/Hypernet/HypernetTest/cmake-build-debug/Makefile&quot;  VERBOSE=1 clean"/>
-					<DistClean command="E:/MingGW/mingw64/bin/mingw32-make.exe -f &quot;E:/Projects/Git repositories/GraphTest/Hypernet/HypernetTest/cmake-build-debug/Makefile&quot;  VERBOSE=1 clean"/>
+					<Build command="E:/MingGW/mingw64/bin/mingw32-make.exe -f &quot;E:/Projects/Git repositories/Tests/Hypernet/HypernetTest/cmake-build-debug/Makefile&quot;  VERBOSE=1 all"/>
+					<CompileFile command="E:/MingGW/mingw64/bin/mingw32-make.exe -f &quot;E:/Projects/Git repositories/Tests/Hypernet/HypernetTest/cmake-build-debug/Makefile&quot;  VERBOSE=1 &quot;$file&quot;"/>
+					<Clean command="E:/MingGW/mingw64/bin/mingw32-make.exe -f &quot;E:/Projects/Git repositories/Tests/Hypernet/HypernetTest/cmake-build-debug/Makefile&quot;  VERBOSE=1 clean"/>
+					<DistClean command="E:/MingGW/mingw64/bin/mingw32-make.exe -f &quot;E:/Projects/Git repositories/Tests/Hypernet/HypernetTest/cmake-build-debug/Makefile&quot;  VERBOSE=1 clean"/>
 				</MakeCommands>
 			</Target>
 			<Target title="edit_cache">
-				<Option working_dir="E:/Projects/Git repositories/GraphTest/Hypernet/HypernetTest/cmake-build-debug"/>
+				<Option working_dir="E:/Projects/Git repositories/Tests/Hypernet/HypernetTest/cmake-build-debug"/>
 				<Option type="4"/>
 				<MakeCommands>
-					<Build command="E:/MingGW/mingw64/bin/mingw32-make.exe -f &quot;E:/Projects/Git repositories/GraphTest/Hypernet/HypernetTest/cmake-build-debug/Makefile&quot;  VERBOSE=1 edit_cache"/>
-					<CompileFile command="E:/MingGW/mingw64/bin/mingw32-make.exe -f &quot;E:/Projects/Git repositories/GraphTest/Hypernet/HypernetTest/cmake-build-debug/Makefile&quot;  VERBOSE=1 &quot;$file&quot;"/>
-					<Clean command="E:/MingGW/mingw64/bin/mingw32-make.exe -f &quot;E:/Projects/Git repositories/GraphTest/Hypernet/HypernetTest/cmake-build-debug/Makefile&quot;  VERBOSE=1 clean"/>
-					<DistClean command="E:/MingGW/mingw64/bin/mingw32-make.exe -f &quot;E:/Projects/Git repositories/GraphTest/Hypernet/HypernetTest/cmake-build-debug/Makefile&quot;  VERBOSE=1 clean"/>
+					<Build command="E:/MingGW/mingw64/bin/mingw32-make.exe -f &quot;E:/Projects/Git repositories/Tests/Hypernet/HypernetTest/cmake-build-debug/Makefile&quot;  VERBOSE=1 edit_cache"/>
+					<CompileFile command="E:/MingGW/mingw64/bin/mingw32-make.exe -f &quot;E:/Projects/Git repositories/Tests/Hypernet/HypernetTest/cmake-build-debug/Makefile&quot;  VERBOSE=1 &quot;$file&quot;"/>
+					<Clean command="E:/MingGW/mingw64/bin/mingw32-make.exe -f &quot;E:/Projects/Git repositories/Tests/Hypernet/HypernetTest/cmake-build-debug/Makefile&quot;  VERBOSE=1 clean"/>
+					<DistClean command="E:/MingGW/mingw64/bin/mingw32-make.exe -f &quot;E:/Projects/Git repositories/Tests/Hypernet/HypernetTest/cmake-build-debug/Makefile&quot;  VERBOSE=1 clean"/>
 				</MakeCommands>
 			</Target>
 			<Target title="HypernetTest">
-				<Option output="E:/Projects/Git repositories/GraphTest/Hypernet/HypernetTest/cmake-build-debug/HypernetTest.exe" prefix_auto="0" extension_auto="0"/>
-				<Option working_dir="E:/Projects/Git repositories/GraphTest/Hypernet/HypernetTest/cmake-build-debug"/>
+				<Option output="E:/Projects/Git repositories/Tests/Hypernet/HypernetTest/cmake-build-debug/HypernetTest.exe" prefix_auto="0" extension_auto="0"/>
+				<Option working_dir="E:/Projects/Git repositories/Tests/Hypernet/HypernetTest/cmake-build-debug"/>
 				<Option object_output="./"/>
 				<Option type="1"/>
 				<Option compiler="gcc"/>
@@ -42,15 +42,15 @@
 					<Add directory="E:/MingGW/mingw64/bin/../lib/gcc/x86_64-w64-mingw32/7.2.0/../../../../x86_64-w64-mingw32/include"/>
 				</Compiler>
 				<MakeCommands>
-					<Build command="E:/MingGW/mingw64/bin/mingw32-make.exe -f &quot;E:/Projects/Git repositories/GraphTest/Hypernet/HypernetTest/cmake-build-debug/Makefile&quot;  VERBOSE=1 HypernetTest"/>
-					<CompileFile command="E:/MingGW/mingw64/bin/mingw32-make.exe -f &quot;E:/Projects/Git repositories/GraphTest/Hypernet/HypernetTest/cmake-build-debug/Makefile&quot;  VERBOSE=1 &quot;$file&quot;"/>
-					<Clean command="E:/MingGW/mingw64/bin/mingw32-make.exe -f &quot;E:/Projects/Git repositories/GraphTest/Hypernet/HypernetTest/cmake-build-debug/Makefile&quot;  VERBOSE=1 clean"/>
-					<DistClean command="E:/MingGW/mingw64/bin/mingw32-make.exe -f &quot;E:/Projects/Git repositories/GraphTest/Hypernet/HypernetTest/cmake-build-debug/Makefile&quot;  VERBOSE=1 clean"/>
+					<Build command="E:/MingGW/mingw64/bin/mingw32-make.exe -f &quot;E:/Projects/Git repositories/Tests/Hypernet/HypernetTest/cmake-build-debug/Makefile&quot;  VERBOSE=1 HypernetTest"/>
+					<CompileFile command="E:/MingGW/mingw64/bin/mingw32-make.exe -f &quot;E:/Projects/Git repositories/Tests/Hypernet/HypernetTest/cmake-build-debug/Makefile&quot;  VERBOSE=1 &quot;$file&quot;"/>
+					<Clean command="E:/MingGW/mingw64/bin/mingw32-make.exe -f &quot;E:/Projects/Git repositories/Tests/Hypernet/HypernetTest/cmake-build-debug/Makefile&quot;  VERBOSE=1 clean"/>
+					<DistClean command="E:/MingGW/mingw64/bin/mingw32-make.exe -f &quot;E:/Projects/Git repositories/Tests/Hypernet/HypernetTest/cmake-build-debug/Makefile&quot;  VERBOSE=1 clean"/>
 				</MakeCommands>
 			</Target>
 			<Target title="HypernetTest/fast">
-				<Option output="E:/Projects/Git repositories/GraphTest/Hypernet/HypernetTest/cmake-build-debug/HypernetTest.exe" prefix_auto="0" extension_auto="0"/>
-				<Option working_dir="E:/Projects/Git repositories/GraphTest/Hypernet/HypernetTest/cmake-build-debug"/>
+				<Option output="E:/Projects/Git repositories/Tests/Hypernet/HypernetTest/cmake-build-debug/HypernetTest.exe" prefix_auto="0" extension_auto="0"/>
+				<Option working_dir="E:/Projects/Git repositories/Tests/Hypernet/HypernetTest/cmake-build-debug"/>
 				<Option object_output="./"/>
 				<Option type="1"/>
 				<Option compiler="gcc"/>
@@ -63,60 +63,63 @@
 					<Add directory="E:/MingGW/mingw64/bin/../lib/gcc/x86_64-w64-mingw32/7.2.0/../../../../x86_64-w64-mingw32/include"/>
 				</Compiler>
 				<MakeCommands>
-					<Build command="E:/MingGW/mingw64/bin/mingw32-make.exe -f &quot;E:/Projects/Git repositories/GraphTest/Hypernet/HypernetTest/cmake-build-debug/Makefile&quot;  VERBOSE=1 HypernetTest/fast"/>
-					<CompileFile command="E:/MingGW/mingw64/bin/mingw32-make.exe -f &quot;E:/Projects/Git repositories/GraphTest/Hypernet/HypernetTest/cmake-build-debug/Makefile&quot;  VERBOSE=1 &quot;$file&quot;"/>
-					<Clean command="E:/MingGW/mingw64/bin/mingw32-make.exe -f &quot;E:/Projects/Git repositories/GraphTest/Hypernet/HypernetTest/cmake-build-debug/Makefile&quot;  VERBOSE=1 clean"/>
-					<DistClean command="E:/MingGW/mingw64/bin/mingw32-make.exe -f &quot;E:/Projects/Git repositories/GraphTest/Hypernet/HypernetTest/cmake-build-debug/Makefile&quot;  VERBOSE=1 clean"/>
+					<Build command="E:/MingGW/mingw64/bin/mingw32-make.exe -f &quot;E:/Projects/Git repositories/Tests/Hypernet/HypernetTest/cmake-build-debug/Makefile&quot;  VERBOSE=1 HypernetTest/fast"/>
+					<CompileFile command="E:/MingGW/mingw64/bin/mingw32-make.exe -f &quot;E:/Projects/Git repositories/Tests/Hypernet/HypernetTest/cmake-build-debug/Makefile&quot;  VERBOSE=1 &quot;$file&quot;"/>
+					<Clean command="E:/MingGW/mingw64/bin/mingw32-make.exe -f &quot;E:/Projects/Git repositories/Tests/Hypernet/HypernetTest/cmake-build-debug/Makefile&quot;  VERBOSE=1 clean"/>
+					<DistClean command="E:/MingGW/mingw64/bin/mingw32-make.exe -f &quot;E:/Projects/Git repositories/Tests/Hypernet/HypernetTest/cmake-build-debug/Makefile&quot;  VERBOSE=1 clean"/>
 				</MakeCommands>
 			</Target>
 			<Target title="rebuild_cache">
-				<Option working_dir="E:/Projects/Git repositories/GraphTest/Hypernet/HypernetTest/cmake-build-debug"/>
+				<Option working_dir="E:/Projects/Git repositories/Tests/Hypernet/HypernetTest/cmake-build-debug"/>
 				<Option type="4"/>
 				<MakeCommands>
-					<Build command="E:/MingGW/mingw64/bin/mingw32-make.exe -f &quot;E:/Projects/Git repositories/GraphTest/Hypernet/HypernetTest/cmake-build-debug/Makefile&quot;  VERBOSE=1 rebuild_cache"/>
-					<CompileFile command="E:/MingGW/mingw64/bin/mingw32-make.exe -f &quot;E:/Projects/Git repositories/GraphTest/Hypernet/HypernetTest/cmake-build-debug/Makefile&quot;  VERBOSE=1 &quot;$file&quot;"/>
-					<Clean command="E:/MingGW/mingw64/bin/mingw32-make.exe -f &quot;E:/Projects/Git repositories/GraphTest/Hypernet/HypernetTest/cmake-build-debug/Makefile&quot;  VERBOSE=1 clean"/>
-					<DistClean command="E:/MingGW/mingw64/bin/mingw32-make.exe -f &quot;E:/Projects/Git repositories/GraphTest/Hypernet/HypernetTest/cmake-build-debug/Makefile&quot;  VERBOSE=1 clean"/>
+					<Build command="E:/MingGW/mingw64/bin/mingw32-make.exe -f &quot;E:/Projects/Git repositories/Tests/Hypernet/HypernetTest/cmake-build-debug/Makefile&quot;  VERBOSE=1 rebuild_cache"/>
+					<CompileFile command="E:/MingGW/mingw64/bin/mingw32-make.exe -f &quot;E:/Projects/Git repositories/Tests/Hypernet/HypernetTest/cmake-build-debug/Makefile&quot;  VERBOSE=1 &quot;$file&quot;"/>
+					<Clean command="E:/MingGW/mingw64/bin/mingw32-make.exe -f &quot;E:/Projects/Git repositories/Tests/Hypernet/HypernetTest/cmake-build-debug/Makefile&quot;  VERBOSE=1 clean"/>
+					<DistClean command="E:/MingGW/mingw64/bin/mingw32-make.exe -f &quot;E:/Projects/Git repositories/Tests/Hypernet/HypernetTest/cmake-build-debug/Makefile&quot;  VERBOSE=1 clean"/>
 				</MakeCommands>
 			</Target>
 		</Build>
-		<Unit filename="E:/Projects/Git repositories/GraphTest/Hypernet/HypernetTest/Branch.cpp">
+		<Unit filename="E:/Projects/Git repositories/Tests/Hypernet/HypernetTest/Branch.cpp">
 			<Option target="HypernetTest"/>
 		</Unit>
-		<Unit filename="E:/Projects/Git repositories/GraphTest/Hypernet/HypernetTest/Branch.h">
+		<Unit filename="E:/Projects/Git repositories/Tests/Hypernet/HypernetTest/Branch.h">
 			<Option target="HypernetTest"/>
 		</Unit>
-		<Unit filename="E:/Projects/Git repositories/GraphTest/Hypernet/HypernetTest/Funcs.h">
+		<Unit filename="E:/Projects/Git repositories/Tests/Hypernet/HypernetTest/Funcs.h">
 			<Option target="HypernetTest"/>
 		</Unit>
-		<Unit filename="E:/Projects/Git repositories/GraphTest/Hypernet/HypernetTest/GenCombinations.cpp">
+		<Unit filename="E:/Projects/Git repositories/Tests/Hypernet/HypernetTest/GenCombinations.cpp">
 			<Option target="HypernetTest"/>
 		</Unit>
-		<Unit filename="E:/Projects/Git repositories/GraphTest/Hypernet/HypernetTest/Globals.h">
+		<Unit filename="E:/Projects/Git repositories/Tests/Hypernet/HypernetTest/Globals.h">
 			<Option target="HypernetTest"/>
 		</Unit>
-		<Unit filename="E:/Projects/Git repositories/GraphTest/Hypernet/HypernetTest/Hypernet.cpp">
+		<Unit filename="E:/Projects/Git repositories/Tests/Hypernet/HypernetTest/Hypernet.cpp">
 			<Option target="HypernetTest"/>
 		</Unit>
-		<Unit filename="E:/Projects/Git repositories/GraphTest/Hypernet/HypernetTest/Hypernet.h">
+		<Unit filename="E:/Projects/Git repositories/Tests/Hypernet/HypernetTest/Hypernet.h">
 			<Option target="HypernetTest"/>
 		</Unit>
-		<Unit filename="E:/Projects/Git repositories/GraphTest/Hypernet/HypernetTest/Main.cpp">
+		<Unit filename="E:/Projects/Git repositories/Tests/Hypernet/HypernetTest/IIdentity.h">
 			<Option target="HypernetTest"/>
 		</Unit>
-		<Unit filename="E:/Projects/Git repositories/GraphTest/Hypernet/HypernetTest/PairConnectivity.cpp">
+		<Unit filename="E:/Projects/Git repositories/Tests/Hypernet/HypernetTest/Main.cpp">
 			<Option target="HypernetTest"/>
 		</Unit>
-		<Unit filename="E:/Projects/Git repositories/GraphTest/Hypernet/HypernetTest/Rote.cpp">
+		<Unit filename="E:/Projects/Git repositories/Tests/Hypernet/HypernetTest/PairConnectivity.cpp">
 			<Option target="HypernetTest"/>
 		</Unit>
-		<Unit filename="E:/Projects/Git repositories/GraphTest/Hypernet/HypernetTest/Route.h">
+		<Unit filename="E:/Projects/Git repositories/Tests/Hypernet/HypernetTest/Rote.cpp">
 			<Option target="HypernetTest"/>
 		</Unit>
-		<Unit filename="E:/Projects/Git repositories/GraphTest/Hypernet/HypernetTest/Stdafx.h">
+		<Unit filename="E:/Projects/Git repositories/Tests/Hypernet/HypernetTest/Route.h">
 			<Option target="HypernetTest"/>
 		</Unit>
-		<Unit filename="E:/Projects/Git repositories/GraphTest/Hypernet/HypernetTest/CMakeLists.txt">
+		<Unit filename="E:/Projects/Git repositories/Tests/Hypernet/HypernetTest/Stdafx.h">
+			<Option target="HypernetTest"/>
+		</Unit>
+		<Unit filename="E:/Projects/Git repositories/Tests/Hypernet/HypernetTest/CMakeLists.txt">
 			<Option virtualFolder="CMake Files\"/>
 		</Unit>
 	</Project>

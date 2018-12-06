@@ -2,23 +2,23 @@
 #include "Funcs.h"
 #include "Globals.h"
 
-void GenCombinations(const H& H, const std::vector<Branch>& branchList, Branch& sum, std::vector<bool>& brancheMask,
+void GenCombinations(const H& H, const std::vector<Branch>& branchList, Branch& sum, std::vector<bool>& branchMask,
                      int& curPos){
     if (curPos == branchList.size()) {
         auto hypernet = H;
-        for (int i = 0; i < brancheMask.size(); i++) {
-            Branch branche = branchList[i];
-            if (!brancheMask[i]) {
-                hypernet.RemoveBranch(branche);
+        for (int i = 0; i < branchMask.size(); i++) {
+            Branch branch = branchList[i];
+            if (!branchMask[i]) {
+                hypernet.RemoveBranch(branch);
             } else {
-                hypernet.MakeReliableBranch(branche);
+                hypernet.MakeReliableBranch(branch);
             }
         }
 
         if (hypernet.IsSNconnected()) {
             ReliableHypernetsCount++;
             Branch result = Branch::GetBranch(0);
-            for (bool item : brancheMask) {
+            for (bool item : branchMask) {
                 if (item) {
                     result.SetPower(result.GetPower() + 1);
                 } else {
@@ -37,10 +37,10 @@ void GenCombinations(const H& H, const std::vector<Branch>& branchList, Branch& 
         }
     }
     else{
-        brancheMask[curPos] = false;
+        branchMask[curPos] = false;
         int increasedPos = curPos + 1;
-        GenCombinations(H, branchList, sum, brancheMask, increasedPos);
-        brancheMask[curPos] = true;
-        GenCombinations(H, branchList, sum, brancheMask, increasedPos);
+        GenCombinations(H, branchList, sum, branchMask, increasedPos);
+        branchMask[curPos] = true;
+        GenCombinations(H, branchList, sum, branchMask, increasedPos);
     }
 }

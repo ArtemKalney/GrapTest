@@ -69,7 +69,6 @@ public:
     std::vector<Route> &GetF() {
         return _F;
     }
-
     //todo уменьшить static функкций
     static void DFS(const int &node, std::vector<Node> &nodes, const std::vector<Branch> &graph);
     static std::vector<int> GetNodePowers(const std::vector<Branch> &graph, const int &size);

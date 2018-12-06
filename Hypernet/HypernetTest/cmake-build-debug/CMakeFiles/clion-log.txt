@@ -1,4 +1,4 @@
-"C:\Program Files\JetBrains\CLion 2017.3.4\bin\cmake\bin\cmake.exe" -DCMAKE_BUILD_TYPE=Debug -G "CodeBlocks - MinGW Makefiles" "E:\Projects\Git repositories\GraphTest\Hypernet\HypernetTest"
+"C:\Program Files\JetBrains\CLion 2017.3.4\bin\cmake\bin\cmake.exe" -DCMAKE_BUILD_TYPE=Debug -G "CodeBlocks - MinGW Makefiles" "E:\Projects\Git repositories\Tests\Hypernet\HypernetTest"
 -- The C compiler identification is GNU 7.2.0
 -- The CXX compiler identification is GNU 7.2.0
 -- Check for working C compiler: E:/MingGW/mingw64/bin/gcc.exe
@@ -15,4 +15,4 @@
 -- Detecting CXX compile features - done
 -- Configuring done
 -- Generating done
--- Build files have been written to: E:/Projects/Git repositories/GraphTest/Hypernet/HypernetTest/cmake-build-debug
+-- Build files have been written to: E:/Projects/Git repositories/Tests/Hypernet/HypernetTest/cmake-build-debug
