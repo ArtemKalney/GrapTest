@@ -1,3 +1,0 @@
-"C:\Program Files\JetBrains\CLion 2017.3.4\bin\cmake\bin\cmake.exe" -E remove -f CMakeFiles\PolinomTest.dir/objects.a
-E:\MingGW\mingw64\bin\ar.exe cr CMakeFiles\PolinomTest.dir/objects.a @CMakeFiles\PolinomTest.dir\objects1.rsp
-E:\MingGW\mingw64\bin\g++.exe -g   -Wl,--whole-archive CMakeFiles\PolinomTest.dir/objects.a -Wl,--no-whole-archive  -o PolinomTest.exe -Wl,--out-implib,libPolinomTest.dll.a -Wl,--major-image-version,0,--minor-image-version,0 @CMakeFiles\PolinomTest.dir\linklibs.rsp
