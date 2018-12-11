@@ -1,0 +1,102 @@
+#IncludeRegexLine: ^[ 	]*[#%][ 	]*(include|import)[ 	]*[<"]([^">]+)([">])
+
+#IncludeRegexScan: ^.*$
+
+#IncludeRegexComplain: ^$
+
+#IncludeRegexTransform: 
+
+C:/Program Files (x86)/Microsoft SDKs/MPI/include/mpi.h
+stdint.h
+-
+sal.h
+-
+
+E:/Projects/Git repositories/GraphTest/MPIGraphTest/Cclass.cpp
+stdafx.h
+E:/Projects/Git repositories/GraphTest/MPIGraphTest/stdafx.h
+Cclass.h
+E:/Projects/Git repositories/GraphTest/MPIGraphTest/Cclass.h
+globals.h
+E:/Projects/Git repositories/GraphTest/MPIGraphTest/globals.h
+
+E:/Projects/Git repositories/GraphTest/MPIGraphTest/Cclass.h
+stdafx.h
+E:/Projects/Git repositories/GraphTest/MPIGraphTest/stdafx.h
+
+E:/Projects/Git repositories/GraphTest/MPIGraphTest/ChainReduction1.cpp
+stdafx.h
+E:/Projects/Git repositories/GraphTest/MPIGraphTest/stdafx.h
+funcs.h
+E:/Projects/Git repositories/GraphTest/MPIGraphTest/funcs.h
+globals.h
+E:/Projects/Git repositories/GraphTest/MPIGraphTest/globals.h
+
+E:/Projects/Git repositories/GraphTest/MPIGraphTest/ChainReduction2.cpp
+stdafx.h
+E:/Projects/Git repositories/GraphTest/MPIGraphTest/stdafx.h
+funcs.h
+E:/Projects/Git repositories/GraphTest/MPIGraphTest/funcs.h
+globals.h
+E:/Projects/Git repositories/GraphTest/MPIGraphTest/globals.h
+
+E:/Projects/Git repositories/GraphTest/MPIGraphTest/MPI_pack.cpp
+stdafx.h
+E:/Projects/Git repositories/GraphTest/MPIGraphTest/stdafx.h
+Cclass.h
+E:/Projects/Git repositories/GraphTest/MPIGraphTest/Cclass.h
+
+E:/Projects/Git repositories/GraphTest/MPIGraphTest/Main.cpp
+stdafx.h
+E:/Projects/Git repositories/GraphTest/MPIGraphTest/stdafx.h
+funcs.h
+E:/Projects/Git repositories/GraphTest/MPIGraphTest/funcs.h
+globals.h
+E:/Projects/Git repositories/GraphTest/MPIGraphTest/globals.h
+
+E:/Projects/Git repositories/GraphTest/MPIGraphTest/PairConnection.cpp
+stdafx.h
+E:/Projects/Git repositories/GraphTest/MPIGraphTest/stdafx.h
+funcs.h
+E:/Projects/Git repositories/GraphTest/MPIGraphTest/funcs.h
+globals.h
+E:/Projects/Git repositories/GraphTest/MPIGraphTest/globals.h
+Cclass.h
+E:/Projects/Git repositories/GraphTest/MPIGraphTest/Cclass.h
+
+E:/Projects/Git repositories/GraphTest/MPIGraphTest/funcs.h
+stdafx.h
+E:/Projects/Git repositories/GraphTest/MPIGraphTest/stdafx.h
+Cclass.h
+E:/Projects/Git repositories/GraphTest/MPIGraphTest/Cclass.h
+
+E:/Projects/Git repositories/GraphTest/MPIGraphTest/globals.h
+stdafx.h
+E:/Projects/Git repositories/GraphTest/MPIGraphTest/stdafx.h
+Cclass.h
+E:/Projects/Git repositories/GraphTest/MPIGraphTest/Cclass.h
+
+E:/Projects/Git repositories/GraphTest/MPIGraphTest/stdafx.h
+cstdio
+-
+mpi.h
+-
+tchar.h
+-
+fstream
+-
+iomanip
+-
+cmath
+-
+iostream
+-
+vector
+-
+algorithm
+-
+iterator
+-
+stack
+-
+

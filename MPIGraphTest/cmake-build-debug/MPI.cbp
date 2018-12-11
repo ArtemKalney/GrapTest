@@ -1,0 +1,119 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CodeBlocks_project_file>
+	<FileVersion major="1" minor="6"/>
+	<Project>
+		<Option title="MPI"/>
+		<Option makefile_is_custom="1"/>
+		<Option compiler="gcc"/>
+		<Option virtualFolders="CMake Files\;"/>
+		<Build>
+			<Target title="all">
+				<Option working_dir="E:/Projects/Clion/Science work/Graph/MPIpt/cmake-build-debug"/>
+				<Option type="4"/>
+				<MakeCommands>
+					<Build command="E:/MingGW/mingw64/bin/mingw32-make.exe -f &quot;E:/Projects/Clion/Science work/Graph/MPIpt/cmake-build-debug/Makefile&quot;  VERBOSE=1 all"/>
+					<CompileFile command="E:/MingGW/mingw64/bin/mingw32-make.exe -f &quot;E:/Projects/Clion/Science work/Graph/MPIpt/cmake-build-debug/Makefile&quot;  VERBOSE=1 &quot;$file&quot;"/>
+					<Clean command="E:/MingGW/mingw64/bin/mingw32-make.exe -f &quot;E:/Projects/Clion/Science work/Graph/MPIpt/cmake-build-debug/Makefile&quot;  VERBOSE=1 clean"/>
+					<DistClean command="E:/MingGW/mingw64/bin/mingw32-make.exe -f &quot;E:/Projects/Clion/Science work/Graph/MPIpt/cmake-build-debug/Makefile&quot;  VERBOSE=1 clean"/>
+				</MakeCommands>
+			</Target>
+			<Target title="MPIpt">
+				<Option output="E:/Projects/Clion/Science work/Graph/MPIpt/cmake-build-debug/MPIpt.exe" prefix_auto="0" extension_auto="0"/>
+				<Option working_dir="E:/Projects/Clion/Science work/Graph/MPIpt/cmake-build-debug"/>
+				<Option object_output="./"/>
+				<Option type="1"/>
+				<Option compiler="gcc"/>
+				<Compiler>
+					<Add directory="C:/Program Files (x86)/Microsoft SDKs/MPI/include"/>
+					<Add directory="E:/MingGW/mingw64/bin/../lib/gcc/x86_64-w64-mingw32/7.2.0/include/c++"/>
+					<Add directory="E:/MingGW/mingw64/bin/../lib/gcc/x86_64-w64-mingw32/7.2.0/include/c++/x86_64-w64-mingw32"/>
+					<Add directory="E:/MingGW/mingw64/bin/../lib/gcc/x86_64-w64-mingw32/7.2.0/include/c++/backward"/>
+					<Add directory="E:/MingGW/mingw64/bin/../lib/gcc/x86_64-w64-mingw32/7.2.0/include"/>
+					<Add directory="E:/MingGW/mingw64/bin/../lib/gcc/x86_64-w64-mingw32/7.2.0/include-fixed"/>
+					<Add directory="E:/MingGW/mingw64/bin/../lib/gcc/x86_64-w64-mingw32/7.2.0/../../../../x86_64-w64-mingw32/include"/>
+				</Compiler>
+				<MakeCommands>
+					<Build command="E:/MingGW/mingw64/bin/mingw32-make.exe -f &quot;E:/Projects/Clion/Science work/Graph/MPIpt/cmake-build-debug/Makefile&quot;  VERBOSE=1 MPIpt"/>
+					<CompileFile command="E:/MingGW/mingw64/bin/mingw32-make.exe -f &quot;E:/Projects/Clion/Science work/Graph/MPIpt/cmake-build-debug/Makefile&quot;  VERBOSE=1 &quot;$file&quot;"/>
+					<Clean command="E:/MingGW/mingw64/bin/mingw32-make.exe -f &quot;E:/Projects/Clion/Science work/Graph/MPIpt/cmake-build-debug/Makefile&quot;  VERBOSE=1 clean"/>
+					<DistClean command="E:/MingGW/mingw64/bin/mingw32-make.exe -f &quot;E:/Projects/Clion/Science work/Graph/MPIpt/cmake-build-debug/Makefile&quot;  VERBOSE=1 clean"/>
+				</MakeCommands>
+			</Target>
+			<Target title="MPIpt/fast">
+				<Option output="E:/Projects/Clion/Science work/Graph/MPIpt/cmake-build-debug/MPIpt.exe" prefix_auto="0" extension_auto="0"/>
+				<Option working_dir="E:/Projects/Clion/Science work/Graph/MPIpt/cmake-build-debug"/>
+				<Option object_output="./"/>
+				<Option type="1"/>
+				<Option compiler="gcc"/>
+				<Compiler>
+					<Add directory="C:/Program Files (x86)/Microsoft SDKs/MPI/include"/>
+					<Add directory="E:/MingGW/mingw64/bin/../lib/gcc/x86_64-w64-mingw32/7.2.0/include/c++"/>
+					<Add directory="E:/MingGW/mingw64/bin/../lib/gcc/x86_64-w64-mingw32/7.2.0/include/c++/x86_64-w64-mingw32"/>
+					<Add directory="E:/MingGW/mingw64/bin/../lib/gcc/x86_64-w64-mingw32/7.2.0/include/c++/backward"/>
+					<Add directory="E:/MingGW/mingw64/bin/../lib/gcc/x86_64-w64-mingw32/7.2.0/include"/>
+					<Add directory="E:/MingGW/mingw64/bin/../lib/gcc/x86_64-w64-mingw32/7.2.0/include-fixed"/>
+					<Add directory="E:/MingGW/mingw64/bin/../lib/gcc/x86_64-w64-mingw32/7.2.0/../../../../x86_64-w64-mingw32/include"/>
+				</Compiler>
+				<MakeCommands>
+					<Build command="E:/MingGW/mingw64/bin/mingw32-make.exe -f &quot;E:/Projects/Clion/Science work/Graph/MPIpt/cmake-build-debug/Makefile&quot;  VERBOSE=1 MPIpt/fast"/>
+					<CompileFile command="E:/MingGW/mingw64/bin/mingw32-make.exe -f &quot;E:/Projects/Clion/Science work/Graph/MPIpt/cmake-build-debug/Makefile&quot;  VERBOSE=1 &quot;$file&quot;"/>
+					<Clean command="E:/MingGW/mingw64/bin/mingw32-make.exe -f &quot;E:/Projects/Clion/Science work/Graph/MPIpt/cmake-build-debug/Makefile&quot;  VERBOSE=1 clean"/>
+					<DistClean command="E:/MingGW/mingw64/bin/mingw32-make.exe -f &quot;E:/Projects/Clion/Science work/Graph/MPIpt/cmake-build-debug/Makefile&quot;  VERBOSE=1 clean"/>
+				</MakeCommands>
+			</Target>
+			<Target title="edit_cache">
+				<Option working_dir="E:/Projects/Clion/Science work/Graph/MPIpt/cmake-build-debug"/>
+				<Option type="4"/>
+				<MakeCommands>
+					<Build command="E:/MingGW/mingw64/bin/mingw32-make.exe -f &quot;E:/Projects/Clion/Science work/Graph/MPIpt/cmake-build-debug/Makefile&quot;  VERBOSE=1 edit_cache"/>
+					<CompileFile command="E:/MingGW/mingw64/bin/mingw32-make.exe -f &quot;E:/Projects/Clion/Science work/Graph/MPIpt/cmake-build-debug/Makefile&quot;  VERBOSE=1 &quot;$file&quot;"/>
+					<Clean command="E:/MingGW/mingw64/bin/mingw32-make.exe -f &quot;E:/Projects/Clion/Science work/Graph/MPIpt/cmake-build-debug/Makefile&quot;  VERBOSE=1 clean"/>
+					<DistClean command="E:/MingGW/mingw64/bin/mingw32-make.exe -f &quot;E:/Projects/Clion/Science work/Graph/MPIpt/cmake-build-debug/Makefile&quot;  VERBOSE=1 clean"/>
+				</MakeCommands>
+			</Target>
+			<Target title="rebuild_cache">
+				<Option working_dir="E:/Projects/Clion/Science work/Graph/MPIpt/cmake-build-debug"/>
+				<Option type="4"/>
+				<MakeCommands>
+					<Build command="E:/MingGW/mingw64/bin/mingw32-make.exe -f &quot;E:/Projects/Clion/Science work/Graph/MPIpt/cmake-build-debug/Makefile&quot;  VERBOSE=1 rebuild_cache"/>
+					<CompileFile command="E:/MingGW/mingw64/bin/mingw32-make.exe -f &quot;E:/Projects/Clion/Science work/Graph/MPIpt/cmake-build-debug/Makefile&quot;  VERBOSE=1 &quot;$file&quot;"/>
+					<Clean command="E:/MingGW/mingw64/bin/mingw32-make.exe -f &quot;E:/Projects/Clion/Science work/Graph/MPIpt/cmake-build-debug/Makefile&quot;  VERBOSE=1 clean"/>
+					<DistClean command="E:/MingGW/mingw64/bin/mingw32-make.exe -f &quot;E:/Projects/Clion/Science work/Graph/MPIpt/cmake-build-debug/Makefile&quot;  VERBOSE=1 clean"/>
+				</MakeCommands>
+			</Target>
+		</Build>
+		<Unit filename="E:/Projects/Clion/Science work/Graph/MPIpt/Cclass.cpp">
+			<Option target="MPIpt"/>
+		</Unit>
+		<Unit filename="E:/Projects/Clion/Science work/Graph/MPIpt/Cclass.h">
+			<Option target="MPIpt"/>
+		</Unit>
+		<Unit filename="E:/Projects/Clion/Science work/Graph/MPIpt/MPI_pack.cpp">
+			<Option target="MPIpt"/>
+		</Unit>
+		<Unit filename="E:/Projects/Clion/Science work/Graph/MPIpt/chainreduction1.cpp">
+			<Option target="MPIpt"/>
+		</Unit>
+		<Unit filename="E:/Projects/Clion/Science work/Graph/MPIpt/chainreduction2.cpp">
+			<Option target="MPIpt"/>
+		</Unit>
+		<Unit filename="E:/Projects/Clion/Science work/Graph/MPIpt/funcs.h">
+			<Option target="MPIpt"/>
+		</Unit>
+		<Unit filename="E:/Projects/Clion/Science work/Graph/MPIpt/globals.h">
+			<Option target="MPIpt"/>
+		</Unit>
+		<Unit filename="E:/Projects/Clion/Science work/Graph/MPIpt/main.cpp">
+			<Option target="MPIpt"/>
+		</Unit>
+		<Unit filename="E:/Projects/Clion/Science work/Graph/MPIpt/pairconnection.cpp">
+			<Option target="MPIpt"/>
+		</Unit>
+		<Unit filename="E:/Projects/Clion/Science work/Graph/MPIpt/stdafx.h">
+			<Option target="MPIpt"/>
+		</Unit>
+		<Unit filename="E:/Projects/Clion/Science work/Graph/MPIpt/CMakeLists.txt">
+			<Option virtualFolder="CMake Files\"/>
+		</Unit>
+	</Project>
+</CodeBlocks_project_file>
