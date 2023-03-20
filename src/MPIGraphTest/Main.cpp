@@ -1,19 +1,22 @@
 #include "stdafx.h"
 #include "funcs.h"
 #include "globals.h"
+#include "../Helpers/InputParser.h"
+#include "ApplicationSettings.h"
+#include "../Helpers/Settings.h"
 
-ifstream input("input.txt");
-ofstream output;
-
-int n = 0, m = 0;
-int Num0 = 0, Num2 = 0, Num3 = 0, Num4 = 0, Num5 = 0, Chr = 0, Ch1 = 0, Ch2 = 0, Chrs = 0,
-        Decomp1 = 0, Decomp2 = 0, Decomp3 = 0, Bridges = 0, Pendunt = 0, Factors = 0;
+int n, m;
+int Num0, Num2, Num3, Num4, Num5, Chr, Ch1, Ch2, Chrs,
+        Decomp1, Decomp2, Decomp3, Bridges, Pendunt, Factors;
 vector<bool> Visited;
 vector<vector<bool>> Mask1;
 vector<bool> Mask2;
 vector<Edge> Bin;
 Edge Sum;
 double averageTime;
+Settings AppSettings;
+ifstream input;
+ofstream output;
 
 void MakeAdjacencyMatrix(vector<vector<Edge>> &H, vector<Edge> &E) {
     for (int i = 0; i < H.size(); i++) {
@@ -50,9 +53,9 @@ void ComputeBinomialCoefficients() {
 Str GetData() {
     Str Gp;
     if (!input.is_open()) {
-        cout << "File can not be opened!\n";
-        return Gp;
+        throw "GetData: File can not be opened!";
     }
+
     char string[50];
     vector<Edge> E;
     input.getline(string, 50);
@@ -274,7 +277,8 @@ void ComputeGraph(Str &Gp, int &bufSize, int &vectorSize, int &size, int &option
 }
 
 void Master(int size) {
-    output.open("output.txt");
+    setlocale(LC_ALL, "");
+
     Str Gp;
     if (IS_TEST_TIME == 1) {
         n = TEST_GRAPH_NODE_SIZE;
@@ -400,9 +404,8 @@ void Master(int size) {
         cout << " 3-dimension graphs " << Num3 << endl;
         cout << " 4-dimension graphs " << Num4 << endl;
         cout << " 5-dimension graphs " << Num5 << endl;
-        cout << "Solution:" << endl;
-        Sum.PrintEdge();
-        double value = 0, p = 0.9, z = 0.1;
+
+        double value = 0, p = AppSettings.ReliabilityValue, z = 1 - AppSettings.ReliabilityValue;
         int q = Sum.Power;
         for (int i = 0; i < q; i++) {
             value += Sum.C[i] * pow(p, q - i) * pow(z, i);
@@ -463,12 +466,66 @@ void Slaves(int rank) {
     MPI_Send(&Factors, 1, MPI_INT, HOST_PROCESSOR, FACTORS_TAG, MPI_COMM_WORLD);
 }
 
+void SetGlobals(int argc, char** argv, int rank) {
+    n = 0;
+    m = 0;
+    Num0 = 0;
+    Num2 = 0;
+    Num3 = 0;
+    Num4 = 0;
+    Num5 = 0;
+    Chr = 0;
+    Ch1 = 0;
+    Ch2 = 0;
+    Chrs = 0;
+    Decomp1 = 0;
+    Decomp2 = 0;
+    Decomp3 = 0;
+    Bridges = 0;
+    Pendunt = 0;
+    Factors = 0;
+
+    InputParser inputParser(argc, argv);
+    std::string str;
+    str = inputParser.getCmdOption("-p");
+    AppSettings.ReliabilityValue = !str.empty() ? std::stod(str) : RELIABILITY_VALUE;
+
+    if (rank == 0) {
+        str = inputParser.getCmdOption("-input");
+        input.open(!str.empty() ? str : "input.txt");
+        str = inputParser.getCmdOption("-output");
+        output.open(!str.empty() ? str : "output.txt");
+    }
+}
+
+void ErrorHandler(const char *str) {
+    std::cout << "--------------------------------" << std::endl;
+    std::cout << "Occurred next error:" << std::endl;
+    std::cout << str << std::endl;
+    std::cout << "--------------------------------" << std::endl;
+}
+
 int main(int argc, char **argv) {
     int rank, size;
     MPI_Init(&argc, &argv);
     MPI_Comm_rank(MPI_COMM_WORLD, &rank);
     MPI_Comm_size(MPI_COMM_WORLD, &size);
-    rank == 0 ? Master(size) : Slaves(rank);
+
+    try {
+        SetGlobals(argc, argv, rank);
+
+        if (rank == 0) {
+            Master(size);
+        } else {
+            Slaves(rank);
+        }
+    }
+    catch (const char *str) {
+        ErrorHandler(str);
+
+        return EXIT_FAILURE;
+    }
+
     MPI_Finalize();
     input.close();
     output.close();

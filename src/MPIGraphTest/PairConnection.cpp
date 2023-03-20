@@ -2,6 +2,7 @@
 #include "funcs.h"
 #include "globals.h"
 #include "Cclass.h"
+#include "ApplicationSettings.h"
 
 vector<int> GetNodePower(vector<vector<Edge>> &H) {
     vector <int> nodepower(H.size());

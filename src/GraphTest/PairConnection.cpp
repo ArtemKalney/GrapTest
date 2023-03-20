@@ -1,6 +1,7 @@
 #include "Stdafx.h"
 #include "Funcs.h"
 #include "Globals.h"
+#include "ApplicationSettings.h"
 
 // Compute the vector of degrees of nodes. The node number in the adjacency matrix is the same
 // as the number in the vector

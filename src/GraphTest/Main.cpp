@@ -1,15 +1,17 @@
 #include "Funcs.h"
 #include "Globals.h"
+#include "ApplicationSettings.h"
+#include "../Helpers/InputParser.h"
 
-ifstream input("input.txt");
-ofstream output;
-
-int num0 = 0, num2 = 0, num3 = 0, num4 = 0, num5 = 0, chr = 0, ch1 = 0, ch2 = 0, chrs = 0,
-    decomp1 = 0, decomp2 = 0, decomp3 = 0, bridges = 0, pendunt = 0, factors = 0;
+int num0, num2, num3, num4, num5, chr, ch1, ch2, chrs,
+    decomp1, decomp2, decomp3, bridges, pendunt, factors;
 vector<bool> visitedNodes;
 vector<vector<bool> > maskApc;
 vector<bool> maskMenc;
 vector<edge> Bin;
+Settings AppSettings;
+ifstream input;
+ofstream output;
 
 void MakeAdjacencyMatrix(vector<vector<edge>> &H, vector<edge> &E)
 {
@@ -24,13 +26,41 @@ void MakeAdjacencyMatrix(vector<vector<edge>> &H, vector<edge> &E)
 	}
 }
 
-int main() {
-    output.open("output.txt");
+void SetGlobals(int argc, char** argv) {
+    num0 = 0;
+    num2 = 0;
+    num3 = 0;
+    num4 = 0;
+    num5 = 0;
+    chr = 0;
+    ch1 = 0;
+    ch2 = 0;
+    chrs = 0;
+    decomp1 = 0;
+    decomp2 = 0;
+    decomp3 = 0;
+    bridges = 0;
+    pendunt = 0;
+    factors = 0;
+
+    InputParser inputParser(argc, argv);
+    std::string str;
+    str = inputParser.getCmdOption("-p");
+    AppSettings.ReliabilityValue = !str.empty() ? std::stod(str) : RELIABILITY_VALUE;
+
+    str = inputParser.getCmdOption("-input");
+    input.open(!str.empty() ? str : "input.txt");
+    str = inputParser.getCmdOption("-output");
+    output.open(!str.empty() ? str : "output.txt");
+}
+
+int main(int argc, char** argv) {
+    SetGlobals(argc, argv);
     setlocale(LC_ALL, "");
 
     if (!input.is_open()) {
         cout << "File can not be opened!\n";
-        system("pause>>void");
+
         return 0;
     }
 
@@ -72,7 +102,7 @@ int main() {
     input >> str;
     if (strcmp(str, "$$$") != 0) {
         cout << "Incorrect entry" << endl;
-        system("pause>>void");
+
         return 0;
     }
 
@@ -83,7 +113,7 @@ int main() {
     cin >> option;
     if (option != 1 && option != 2 && option != 3) {
         cout << "Wrong number" << endl;
-        system("pause>>void");
+
         return 0;
     }
 
@@ -112,7 +142,7 @@ int main() {
     // Create a pseudo-edge F, which we multiply by the end of the calculations
     edge F = Bin.front();
     unsigned int startTime = clock();
-    double value = 0, p = 0.9, z = 0.1;
+    double value = 0, p = AppSettings.ReliabilityValue, z = 1 - AppSettings.ReliabilityValue;
     edge sum;
 
     // Computing APC
@@ -227,10 +257,10 @@ int main() {
     cout << " 3-nodes graphs " << num3 << endl;
     cout << " 4-nodes graphs " << num4 << endl;
     cout << " 5-nodes graphs " << num5 << endl;
-    cout << "Solution:" << endl;
+
     if(sum.power < m)
         sum = sum*Bin[m - sum.power];
-    sum.PrintEdge();
+
     for (int i = 0; i < sum.power; i++)
         value += sum.C[i] * pow(p, sum.power - i) * pow(z, i);
     cout << "Value at point " << p << ": " << setprecision(15) << value << endl;
@@ -242,6 +272,5 @@ int main() {
     input.close();
     output.close();
 
-    system("pause>>void");
     return 0;
 }
