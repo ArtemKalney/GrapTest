@@ -26,6 +26,115 @@ void MakeAdjacencyMatrix(vector<vector<edge>> &H, vector<edge> &E)
 	}
 }
 
+std::vector<edge> GetRandomGraph(int n, int m) {
+    srand(time(0)); // Randomized generator of random numbers
+    vector<edge> E;
+
+    vector<int> P(n);
+    vector<int> L;
+    for (int i = 0; i < P.size(); i++) P[i] = i;
+
+    int q = rand() % (P.size() - 1);
+    for (int i = 0; i < n - 1; i++) {
+        edge newEdge;
+        bool reduct = false;
+        L.push_back(P[q]);
+        P.erase(P.begin() + q);
+
+        int s = 0, t = 0;
+        if (P.size() - 1 != 0) s = rand() % (P.size() - 1);
+        if (L.size() - 1 != 0) t = rand() % (L.size() - 1);
+        q = s;
+
+        newEdge.simple = 0;
+        newEdge.power = 1;
+        newEdge.C.push_back(1);
+        newEdge.C.resize(m + 1);
+        newEdge.node1 = P[s];
+        newEdge.node2 = L[t];
+        E.push_back(newEdge);
+    }
+
+    for (int i = 0; i < m - n + 1; i++) {
+        edge newEdge;
+        bool reduct = false;
+        int s = 0, t = 0;
+        s = rand() % n;
+        t = rand() % n;
+        while (s == t) t = rand() % n;
+
+        newEdge.simple = 0;
+        newEdge.power = 1;
+        newEdge.C.push_back(1);
+        newEdge.C.resize(m + 1);
+        newEdge.node1 = s;
+        newEdge.node2 = t;
+        for (int i = 0; i < E.size(); i++) // work with multi edges
+            if ((E[i].node1 == newEdge.node1 && E[i].node2 == newEdge.node2) || (E[i].node1 == newEdge.node2 && E[i].node2 == newEdge.node1)) {
+                E[i].simple++;
+                reduct = true;
+            }
+        if (!reduct)
+        {
+            E.push_back(newEdge);
+        }
+    }
+
+    vector<vector<edge>> S(n);
+    MakeAdjacencyMatrix(S, E);
+
+//    bool r = IsConnected(S);
+//    if (!r) cout << "Unconnected graph generate!" << endl;
+
+    return E;
+}
+
+void ConvertGraphToKAOFO(std::vector<edge> &graph, int nodeCount, std::vector<int> &KAO, std::vector<int> &FO) {
+    int count = 0;
+    KAO.push_back(count);
+    for (int node = 0; node < nodeCount; ++node) {
+        for(auto item : graph) {
+            if (item.node1 == node || item.node2 == node) {
+                count++;
+                FO.push_back(item.node1 == node ? item.node2 : item.node1);
+            }
+        }
+        KAO.push_back(count);
+    }
+}
+
+void OutputGraph(std::vector<edge> &graph, int nodeCount) {
+    output << "Graph(" << nodeCount << "," << graph.size() << ")" << std::endl;
+    output << nodeCount << " " << graph.size() << std::endl;
+    for(auto item : graph) {
+        output << item.node1 + 1 << " " << item.node2 + 1 << std::endl;
+    }
+    output << "$$$" << std::endl;
+}
+
+void OutputKAOFO(std::vector<int> &KAO, std::vector<int> &FO) {
+    output << FO.size() << std::endl;
+    output << KAO.size() << std::endl;
+
+    for(int i=0; i < KAO.size(); i++) {
+        if (i != KAO.size() - 1) {
+            output << KAO[i] << ",";
+        }
+        else {
+            output << KAO[i] << std::endl;
+        }
+    }
+
+    for(int i=0; i < FO.size(); i++) {
+        if (i != FO.size() - 1) {
+            output << FO[i] + 1 << ",";
+        }
+        else {
+            output << FO[i] + 1 << std::endl;
+        }
+    }
+}
+
 void SetGlobals(int argc, char** argv) {
     num0 = 0;
     num2 = 0;
@@ -43,6 +152,8 @@ void SetGlobals(int argc, char** argv) {
     pendunt = 0;
     factors = 0;
 
+    AppSettings.IsNumberComputation = IS_NUMBER_COMPUTATION;
+
     InputParser inputParser(argc, argv);
     std::string str;
     str = inputParser.getCmdOption("-p");
@@ -57,6 +168,18 @@ void SetGlobals(int argc, char** argv) {
 int main(int argc, char** argv) {
     SetGlobals(argc, argv);
     setlocale(LC_ALL, "");
+
+    if (IS_GRAPH_GENERATION == 1) {
+        auto graph = GetRandomGraph(GRAPH_GENERATION_NODE_SIZE, GRAPH_GENERATION_EDGE_SIZE);
+
+        std::vector<int> KAO, FO;
+        ConvertGraphToKAOFO(graph, GRAPH_GENERATION_NODE_SIZE, KAO, FO);
+
+        OutputGraph(graph, GRAPH_GENERATION_NODE_SIZE);
+        OutputKAOFO(KAO, FO);
+
+        return 0;
+    }
 
     if (!input.is_open()) {
         cout << "File can not be opened!\n";
@@ -233,8 +356,6 @@ int main(int argc, char** argv) {
                         output << setprecision(15) << R.C[k] << " ";
                     output << endl;
                 }
-
-        return 0;
     }
 
     unsigned int endTime = clock();
@@ -258,16 +379,27 @@ int main(int argc, char** argv) {
     cout << " 4-nodes graphs " << num4 << endl;
     cout << " 5-nodes graphs " << num5 << endl;
 
+    if (option == 3) {
+        return 0;
+    }
+
     if(sum.power < m)
         sum = sum*Bin[m - sum.power];
 
-    for (int i = 0; i < sum.power; i++)
-        value += sum.C[i] * pow(p, sum.power - i) * pow(z, i);
-    cout << "Value at point " << p << ": " << setprecision(15) << value << endl;
+    if (AppSettings.IsNumberComputation == 1) {
+        value = sum.value;
+        cout << "Value: " << setprecision(15) << value << endl;
+        output << "Value: " << setprecision(15) << value << endl;
+    }
+    else {
+        for (int i = 0; i < sum.power; i++)
+            value += sum.C[i] * pow(p, sum.power - i) * pow(z, i);
+        cout << "Value at point " << p << ": " << setprecision(15) << value << endl;
 
-    for (int i = 0; i < sum.C.size(); i++)
-        output << setprecision(15) << sum.C[i] << " ";
-    output << endl;
+        for (int i = 0; i < sum.C.size(); i++)
+            output << setprecision(15) << sum.C[i] << " ";
+        output << endl;
+    }
 
     input.close();
     output.close();

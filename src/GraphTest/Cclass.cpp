@@ -49,14 +49,20 @@ edge operator *(edge x, edge y)
 
         try {
             F.power = x.power + y.power;
-            for (int i = 0; i<x.C.size(); i++)
-                for (int j = 0; j<y.C.size(); j++) {
-                    if (x.C[i] != 0 && y.C[j] != 0) {
-                        if (i + j >= F.C.size())
-                            throw "Eror - vector is out of size";
-                        F.C[i + j] += x.C[i] * y.C[j];
+
+            if (AppSettings.IsNumberComputation == 1) {
+                F.value = x.value * y.value;
+            }
+            else {
+                for (int i = 0; i<x.C.size(); i++)
+                    for (int j = 0; j<y.C.size(); j++) {
+                        if (x.C[i] != 0 && y.C[j] != 0) {
+                            if (i + j >= F.C.size())
+                                throw "Eror - vector is out of size";
+                            F.C[i + j] += x.C[i] * y.C[j];
+                        }
                     }
-                }
+            }
         }
         catch (char *str) {
             cout << str << endl;
@@ -120,8 +126,13 @@ edge operator +(edge x, edge y)
         }
 
         F.power = x.power;
-        for (int i = 0; i<F.C.size(); i++)
-            F.C[i] = x.C[i] + y.C[i];
+        if (AppSettings.IsNumberComputation == 1) {
+            F.value = x.value + y.value;
+        }
+        else {
+            for (int i = 0; i<F.C.size(); i++)
+                F.C[i] = x.C[i] + y.C[i];
+        }
     }
 
     if (!x.C.empty() && y.C.empty()) F = x;
@@ -179,14 +190,24 @@ edge operator -(edge x, edge y)
         }
 
         F.power = x.power;
-        for (int i = 0; i<F.C.size(); i++)
-            F.C[i] = x.C[i] - y.C[i];
+        if (AppSettings.IsNumberComputation == 1) {
+            F.value = x.value - y.value;
+        }
+        else {
+            for (int i = 0; i<F.C.size(); i++)
+                F.C[i] = x.C[i] - y.C[i];
+        }
     }
 
     if (!x.C.empty() && y.C.empty()) F = x;
     if (x.C.empty() && !y.C.empty()) {
         F = y;
-        for (int i = 0; i<F.C.size(); i++) F.C[i] = -F.C[i];
+        if (AppSettings.IsNumberComputation == 1) {
+            F.value = -F.value;
+        }
+        else {
+            for (int i = 0; i<F.C.size(); i++) F.C[i] = -F.C[i];
+        }
     }
 
     return F;
@@ -214,8 +235,13 @@ edge operator ~(edge x)
         // Subtract from unity the same degree as x
         F.power = x.power;
         edge I = Bin[F.power];
-        for (int i = 0; i<F.C.size(); i++)
-            F.C[i] = I.C[i] - x.C[i];
+        if (AppSettings.IsNumberComputation == 1) {
+            F.value = 1 - x.value;
+        }
+        else {
+            for (int i = 0; i<F.C.size(); i++)
+                F.C[i] = I.C[i] - x.C[i];
+        }
     }
     else F.C.push_back(1);
 
@@ -227,8 +253,13 @@ edge operator *(int x, edge y)
     edge F;
     if (!y.C.empty()) {
         F = y;
-        for (int i = 0; i<F.C.size(); i++)
-            F.C[i] = x*F.C[i];
+        if (AppSettings.IsNumberComputation == 1) {
+            F.value = x*F.value;
+        }
+        else {
+            for (int i = 0; i<F.C.size(); i++)
+                F.C[i] = x*F.C[i];
+        }
     }
 
     return F;
@@ -239,8 +270,13 @@ edge operator *(edge x, int y)
     edge F;
     if (!x.C.empty()) {
         F = x;
-        for (int i = 0; i<F.C.size(); i++)
-            F.C[i] = y*F.C[i];
+        if (AppSettings.IsNumberComputation == 1) {
+            F.value = y*F.value;
+        }
+        else {
+            for (int i = 0; i<F.C.size(); i++)
+                F.C[i] = y*F.C[i];
+        }
     }
 
     return F;
