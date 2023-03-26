@@ -4,7 +4,7 @@
 #define RELIABILITY_VALUE 0.9
 
 /// Определяет что считается (полином или число)
-#define IS_NUMBER_COMPUTATION 1
+#define IS_NUMBER_COMPUTATION 0
 
 #define MAX_DIMENSIONAL 6
 
